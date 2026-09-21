@@ -4,10 +4,7 @@
 	"type": "module",
 	"main": "./dist/index.mjs",
 	"exports": {
-		".": {
-			"types": "./dist/index.d.mts",
-			"import": "./dist/index.mjs"
-		}
+		".": "./src/index.ts"
 	},
 	"files": [
 		"dist"
