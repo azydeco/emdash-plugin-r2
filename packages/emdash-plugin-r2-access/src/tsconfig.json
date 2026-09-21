@@ -7,10 +7,10 @@
 		"esModuleInterop": true,
 		"declaration": true,
 		"outDir": "./dist",
-		"rootDir": "./src"
+		"rootDir": "packages/emdash-plugin-r2-access/src"
 	},
 	"include": [
-		"src/**/*"
+		"packages/emdash-plugin-r2-access/src/**/*"
 	],
 	"exclude": [
 		"node_modules",
