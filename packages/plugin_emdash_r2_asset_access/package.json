@@ -1,14 +1,11 @@
 {
-	"name": "plugin_emdash_r2_asset_access",
+	"name": "@azydeco/plugin_emdash_r2_asset_access",
 	"version": "0.1.0",
 	"private": true,
 	"type": "module",
 	"main": "dist/index.mjs",
 	"exports": {
-		".": {
-			"import": "./dist/index.mjs",
-			"types": "./dist/index.d.mts"
-		},
+		".": "./src/index.ts",
 		"./sandbox": "./dist/plugin.mjs"
 	},
 	"files": [
