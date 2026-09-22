@@ -17,6 +17,7 @@
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.1",
     "@astrojs/react": "^6.0.5",
+    "@azydeco/emdash-plugin-r2-access": "link:../packages/emdash-plugin-r2-access",
     "@emdash-cms/cloudflare": "^0.38.0",
     "@emdash-cms/plugin-forms": "^0.2.6",
     "@emdash-cms/plugin-webhook-notifier": "^0.2.0",
