@@ -2,13 +2,10 @@
 	"name": "@azydeco/emdash-plugin-r2-access",
 	"version": "0.1.0",
 	"type": "module",
-	"main": "./dist/index.mjs",
+	"files": ["src"],
 	"exports": {
 		".": "./src/index.ts"
 	},
-	"files": [
-		"dist"
-	],
 	"scripts": {
 		"dev": "tsdown src/index.ts --format esm --dts --watch",
 		"typecheck": "tsc --noEmit"

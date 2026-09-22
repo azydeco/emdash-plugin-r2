@@ -5,7 +5,7 @@ import { formsPlugin } from "@emdash-cms/plugin-forms";
 import webhookNotifier from "@emdash-cms/plugin-webhook-notifier";
 import { defineConfig, fontProviders } from "astro/config";
 import emdash from "emdash/astro";
-import { emdashPluginR2Plugin } from "../packages/emdash-plugin-r2-access/src";
+import { emdashPluginR2Plugin } from "@azydeco/emdash-plugin-r2-access";
 
 export default defineConfig({
 	output: "server",
