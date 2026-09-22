@@ -6,6 +6,7 @@ import webhookNotifier from "@emdash-cms/plugin-webhook-notifier";
 import { defineConfig, fontProviders } from "astro/config";
 import emdash from "emdash/astro";
 import { emdashPluginR2Plugin } from "@azydeco/emdash-plugin-r2-access";
+import myPlugin from '@azydeco/plugin_emdash_r2_asset_access'
 
 export default defineConfig({
 	output: "server",
@@ -20,7 +21,7 @@ export default defineConfig({
 			database: d1({ binding: "DB", session: "auto" }),
 			storage: r2({ binding: "MEDIA" }),
 			plugins: [formsPlugin(), emdashPluginR2Plugin()],
-			sandboxed: [webhookNotifier],
+			sandboxed: [webhookNotifier, myPlugin],
 			sandboxRunner: sandbox(),
 			marketplace: "https://marketplace.emdashcms.com",
 		}),
