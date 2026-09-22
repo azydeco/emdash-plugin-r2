@@ -16,13 +16,19 @@
 	// KV, and route/hook registration. Changing these between
 	// releases requires a version bump because installed
 	// users have consented to the old contract.
-	"capabilities": [],
+	"capabilities": ["content:read", "network:request:unrestricted"],
 	"allowedHosts": [],
 	"storage": {},
 	"admin": {
 	  "pages": [
+		{ "path": "/settings", "label": "Settings", "icon": "settings" },
 		{ "path": "/configuration-setting", "label": "Configuration - setting page", "icon": "settings" },
 	  	{ "path": "/asset-listing", "label": "Plugin - Asset Listing Page", "icon": "settings" }
-	  ]
+	  ],
+	//   "settingsSchema": {
+ 	//     "apiKey": { "type": "secret", "label": "API key" },
+ 	//     "enabled": { "type": "boolean", "label": "Enabled", "default": true },
+ 	//     "maxItems": { "type": "number", "label": "Max items", "default": 100 }
+ 	//   }
 	}
 }
