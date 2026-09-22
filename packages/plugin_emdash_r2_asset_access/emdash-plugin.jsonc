@@ -20,6 +20,9 @@
 	"allowedHosts": [],
 	"storage": {},
 	"admin": {
-	  "pages": [{ "path": "/settings", "label": "Settings", "icon": "settings" }],
+	  "pages": [
+		{ "path": "/configuration-setting", "label": "Configuration - setting page", "icon": "settings" },
+	  	{ "path": "/asset-listing", "label": "Plugin - Asset Listing Page", "icon": "settings" }
+	  ]
 	}
 }
