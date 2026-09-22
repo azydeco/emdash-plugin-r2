@@ -10,7 +10,7 @@ export function emdashPluginR2Plugin(options: EmdashPluginR2Options = {}): Plugi
 		id: "emdash-plugin-r2",
 		version: "0.1.0",
 		format: "native",
-		entrypoint: "emdash-plugin-r2",
+		entrypoint: "@azydeco/emdash-plugin-r2-access",
 		options,
 	};
 }
