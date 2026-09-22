@@ -3,7 +3,7 @@
 
 	"slug": "plugin_emdash_r2_asset_access",
 	// TODO: set your atproto handle (e.g. "example.com") or DID before running `emdash-plugin bundle` or any local-dev integration. The plugin cannot load without it.
-	"publisher": "",
+	"publisher": "example.com",
 
 	"license": "MIT",
 	"author": { "name": "azydeco" },
