@@ -29,5 +29,9 @@
 		"emdash": ">=0.12.0",
 		"typescript": "^5.9.0",
 		"vitest": "^4.1.0"
+	},
+	"dependencies": {
+		"@emdash-cms/blocks": "^0.38.0",
+		"zod": "^4.6.5"
 	}
 }
