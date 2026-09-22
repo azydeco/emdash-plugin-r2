@@ -18,5 +18,8 @@
 	// users have consented to the old contract.
 	"capabilities": [],
 	"allowedHosts": [],
-	"storage": {}
+	"storage": {},
+	"admin": {
+	  "pages": [{ "path": "/settings", "label": "Settings", "icon": "settings" }],
+	}
 }
