@@ -5,7 +5,10 @@
 	"type": "module",
 	"main": "dist/index.mjs",
 	"exports": {
-		".": "./src/index.ts",
+		".": {
+			"import": "./dist/index.mjs",
+			"types": "./dist/index.d.mts"
+		},
 		"./sandbox": "./dist/plugin.mjs"
 	},
 	"files": [

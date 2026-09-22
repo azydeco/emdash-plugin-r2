@@ -6,7 +6,7 @@ import type { SandboxedPlugin } from "emdash/plugin";
  * per-route inference (`ctx` is `PluginContext` automatically; hook
  * `event` parameters are typed by hook name).
  */
-export default {
+const plugin: SandboxedPlugin = {
 	routes: {
 		hello: {
 			handler: async (_routeCtx, ctx) => {
@@ -15,4 +15,6 @@ export default {
 			},
 		},
 	},
-} satisfies SandboxedPlugin;
+};
+
+export default plugin;
