@@ -11,7 +11,12 @@ function renderSettings(): BlockResponse {
         fields: [
           { type: "text_input", action_id: "api_key", label: "API Key" },
           { type: "text_input", action_id: "api_url", label: "API URL" },
-          { type: "toggle", action_id: "enabled", label: "Enabled", initial_value: true },
+          {
+            type: "toggle",
+            action_id: "enabled",
+            label: "Enabled",
+            initial_value: true,
+          },
         ],
         submit: { label: "Save", action_id: "save" },
       },
@@ -26,14 +31,25 @@ function renderSettings(): BlockResponse {
  * `event` parameters are typed by hook name).
  */
 const plugin: SandboxedPlugin = {
-	routes: {
-		hello: {
-			handler: async (_routeCtx, ctx) => {
-				ctx.log.info("hello route called", { pluginId: ctx.plugin.id });
-				return { greeting: "hello", pluginId: ctx.plugin.id };
-			},
-		},
-	},
+  routes: {
+    admin: {
+      handler: async (_routeCtx, ctx) => {
+        const interaction = _routeCtx.input as BlockInteraction;
+
+        if (interaction.type === "page_load") {
+          return renderSettings();
+        }
+
+        return { blocks: [] };
+      },
+    },
+    hello: {
+      handler: async (_routeCtx, ctx) => {
+        ctx.log.info("hello route called", { pluginId: ctx.plugin.id });
+        return { greeting: "hello", pluginId: ctx.plugin.id };
+      },
+    },
+  },
 };
 
 async function saveSettings(
