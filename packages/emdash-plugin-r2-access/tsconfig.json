@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"module": "preserve",
+		"moduleResolution": "bundler",
+		"strict": true,
+		"esModuleInterop": true,
+		"declaration": true,
+		"outDir": "./dist",
+		"rootDir": "packages/emdash-plugin-r2-access/src"
+	},
+	"include": [
+		"packages/emdash-plugin-r2-access/src/**/*"
+	],
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
+}

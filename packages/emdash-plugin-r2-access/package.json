@@ -1,0 +1,31 @@
+{
+	"name": "@azydeco/emdash-plugin-r2-access",
+	"version": "0.1.0",
+	"type": "module",
+	"files": [
+		"src"
+	],
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"dev": "tsdown src/index.ts --format esm --dts --watch",
+		"typecheck": "tsc --noEmit"
+	},
+	"keywords": [
+		"emdash",
+		"emdash-plugin"
+	],
+	"license": "MIT",
+	"peerDependencies": {
+		"emdash": "*"
+	},
+	"devDependencies": {
+		"emdash": "*",
+		"typescript": "^5.9.0"
+	},
+	"dependencies": {
+		"@emdash-cms/blocks": "^0.38.0",
+		"zod": "^4.6.5"
+	}
+}
