@@ -1,5 +1,5 @@
-import type { SandboxedPlugin } from "emdash/plugin";
-import type { BlockResponse } from "@emdash-cms/blocks";
+import type { SandboxedPlugin, PluginContext } from "emdash/plugin";
+import type { BlockInteraction, BlockResponse } from "@emdash-cms/blocks";
 
 function renderSettings(): BlockResponse {
   return {
@@ -35,5 +35,14 @@ const plugin: SandboxedPlugin = {
 		},
 	},
 };
+
+async function saveSettings(
+  ctx: PluginContext,
+  values: { apiKey?: string; enabled: boolean; maxItems: number },
+) {
+  if (values.apiKey) await ctx.kv.set("settings:apiKey", values.apiKey);
+  await ctx.kv.set("settings:enabled", values.enabled);
+  await ctx.kv.set("settings:maxItems", values.maxItems);
+}
 
 export default plugin;
