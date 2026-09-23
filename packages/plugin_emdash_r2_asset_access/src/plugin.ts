@@ -9,6 +9,7 @@ function renderSettings(): BlockResponse {
         type: "form",
         block_id: "settings",
         fields: [
+          { type: "text_input", action_id: "api_key", label: "API Key" },
           { type: "text_input", action_id: "api_url", label: "API URL" },
           { type: "toggle", action_id: "enabled", label: "Enabled", initial_value: true },
         ],

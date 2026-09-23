@@ -29,6 +29,6 @@
  	//     "apiKey": { "type": "secret", "label": "API key" },
  	//     "enabled": { "type": "boolean", "label": "Enabled", "default": true },
  	//     "maxItems": { "type": "number", "label": "Max items", "default": 100 }
- 	//   }
+ 	//   },
 	}
 }
