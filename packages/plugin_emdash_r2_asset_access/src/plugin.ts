@@ -1,6 +1,14 @@
 import type { SandboxedPlugin, PluginContext } from "emdash/plugin";
 import type { BlockInteraction, BlockResponse } from "@emdash-cms/blocks";
 
+async function loadSettings(ctx: PluginContext) {
+  const [apiKey, enabled] = await Promise.all([
+    ctx.kv.get<string>("settings:apiKey"),
+    ctx.kv.get<string>("settings:enabled"),
+  ]);
+  return { apiKey, enabled };
+}
+
 function renderSettings(): BlockResponse {
   return {
     blocks: [
@@ -58,7 +66,6 @@ async function saveSettings(
 ) {
   if (values.apiKey) await ctx.kv.set("settings:apiKey", values.apiKey);
   await ctx.kv.set("settings:enabled", values.enabled);
-  await ctx.kv.set("settings:maxItems", values.maxItems);
 }
 
 export default plugin;
