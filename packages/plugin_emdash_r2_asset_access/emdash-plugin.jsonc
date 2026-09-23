@@ -1,34 +1,37 @@
 {
-	"$schema": "./node_modules/@emdash-cms/plugin-cli/schemas/emdash-plugin.schema.json",
+  "$schema": "./node_modules/@emdash-cms/plugin-cli/schemas/emdash-plugin.schema.json",
 
-	"slug": "plugin_emdash_r2_asset_access",
-	// TODO: set your atproto handle (e.g. "example.com") or DID before running `emdash-plugin bundle` or any local-dev integration. The plugin cannot load without it.
-	"publisher": "example.com",
+  "slug": "plugin_emdash_r2_asset_access",
+  // TODO: set your atproto handle (e.g. "example.com") or DID before running `emdash-plugin bundle` or any local-dev integration. The plugin cannot load without it.
+  "publisher": "example.com",
 
-	"license": "MIT",
-	"author": { "name": "azydeco" },
-	// TODO: replace the placeholder with a real security contact email or url before publishing. The lexicon mandates at least one.
-	"security": { "email": "TODO@example.com" },
-	"repo": "https://github.com/azydeco/emdash-plugin-r2",
+  "license": "MIT",
+  "author": { "name": "azydeco" },
+  // TODO: replace the placeholder with a real security contact email or url before publishing. The lexicon mandates at least one.
+  "security": { "email": "TODO@example.com" },
+  "repo": "https://github.com/azydeco/emdash-plugin-r2",
 
-	// Trust contract — what runtime APIs the plugin asks for.
-	// Empty arrays mean no extra privileges beyond logging,
-	// KV, and route/hook registration. Changing these between
-	// releases requires a version bump because installed
-	// users have consented to the old contract.
-	"capabilities": ["content:read", "network:request:unrestricted"],
-	"allowedHosts": [],
-	"storage": {},
-	"admin": {
-	  "pages": [
-		{ "path": "/settings", "label": "Settings", "icon": "settings" },
-		{ "path": "/configuration-setting", "label": "Configuration - setting page", "icon": "settings" },
-	  	{ "path": "/asset-listing", "label": "Plugin - Asset Listing Page", "icon": "settings" }
-	  ],
-	//   "settingsSchema": {
- 	//     "apiKey": { "type": "secret", "label": "API key" },
- 	//     "enabled": { "type": "boolean", "label": "Enabled", "default": true },
- 	//     "maxItems": { "type": "number", "label": "Max items", "default": 100 }
- 	//   },
-	}
+  // Trust contract — what runtime APIs the plugin asks for.
+  // Empty arrays mean no extra privileges beyond logging,
+  // KV, and route/hook registration. Changing these between
+  // releases requires a version bump because installed
+  // users have consented to the old contract.
+  "capabilities": ["content:read", "network:request:unrestricted"],
+  "allowedHosts": [],
+  "storage": {},
+  "admin": {
+    "pages": [
+      { "path": "/settings", "label": "Settings", "icon": "settings" },
+      {
+        "path": "/configuration-setting",
+        "label": "Configuration - setting page",
+        "icon": "settings",
+      },
+      {
+        "path": "/asset-listing",
+        "label": "Plugin - Asset Listing Page",
+        "icon": "settings",
+      },
+    ],
+  },
 }

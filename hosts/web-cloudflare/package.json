@@ -1,5 +1,5 @@
 {
-  "name": "test-site",
+  "name": "web-cloudflare",
   "version": "0.0.3",
   "private": true,
   "type": "module",
@@ -17,13 +17,12 @@
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.1",
     "@astrojs/react": "^6.0.5",
-    "@azydeco/plugin_emdash_r2_asset_access": "workspace:*",
-    "@azydeco/emdash-plugin-r2-access": "workspace:*",
-    "@emdash-cms/cloudflare": "^0.38.0",
+    "@emdash-cms/cloudflare": "^0.39.1",
     "@emdash-cms/plugin-forms": "^0.2.6",
     "@emdash-cms/plugin-webhook-notifier": "^0.2.0",
+    "@azydeco/emdash_plugin_r2_asset_access": "workspace:*",
     "astro": "^7.3.2",
-    "emdash": "^0.38.0",
+    "emdash": "^0.39.1",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
