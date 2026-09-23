@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/azydeco/emdash-plugin-r2/issues"
   },
-  "homepage": "https://github.com/azydeco/emdash-plugin-r2#readme"
+  "homepage": "https://github.com/azydeco/emdash-plugin-r2#readme",
+  "devDependencies": {
+    "prettier": "3.9.9"
+  }
 }
