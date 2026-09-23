@@ -19,6 +19,45 @@ export function createPlugin(options: EmdashPluginR2Options = {}) {
 	return definePlugin({
 		id: "emdash-plugin-r2",
 		version: "0.1.0",
+		admin: {
+ 			settingsSchema: {
+ 			    projectName: {
+      		        type: "string",
+      		        label: "Project name",
+      		        description: "Name shown in activity exports",
+ 			    },
+ 			    notes: {
+ 			        type: "string",
+ 			        label: "Internal notes",
+ 			        multiline: true,
+ 			    },
+ 			    mode: {
+ 			        type: "select",
+ 			        label: "Recording mode",
+ 			        options: [
+ 			            { value: "creates", label: "New entries only" },
+ 			            { value: "all", label: "New and updated entries" },
+ 			        ],
+ 			        default: "all",
+ 			    },
+ 			    retentionDays: {
+ 			        type: "number",
+ 			        label: "Retention in days",
+ 			        min: 1,
+ 			        max: 365,
+ 			        default: 30,
+ 			    },
+ 			    enabled: {
+ 			        type: "boolean",
+ 			        label: "Record activity",
+ 			        default: true,
+ 			    },
+ 			    exportToken: {
+ 			        type: "secret",
+ 			        label: "Export token",
+ 		 	    },
+ 		 	},
+  		},
 
 		capabilities: ["content:read"],
 		storage: {
