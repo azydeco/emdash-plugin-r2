@@ -2,16 +2,20 @@ import type { SandboxedPlugin, PluginContext } from "emdash/plugin";
 import type { BlockInteraction, BlockResponse } from "@emdash-cms/blocks";
 
 async function loadSettings(ctx: PluginContext) {
-  const [api_key, api_url, enabled] = await Promise.all([
-    ctx.kv.get<string>("settings:apiKey"),
-    ctx.kv.get<string>("settings:apiUrl"),
-    ctx.kv.get<string>("settings:enabled"),
-  ]);
-  return { api_key, api_url, enabled };
+  const [bucket_name, api_key, secret_access_key, api_url, enabled] =
+    await Promise.all([
+      ctx.kv.get<string>("settings:bucketName"),
+      ctx.kv.get<string>("settings:apiKey"),
+      ctx.kv.get<string>("settings:secretAccessKey"),
+      ctx.kv.get<string>("settings:apiUrl"),
+      ctx.kv.get<string>("settings:enabled"),
+    ]);
+  return { bucket_name, api_key, secret_access_key, api_url, enabled };
 }
 
 async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
-  const { api_key, api_url, enabled } = await loadSettings(ctx);
+  const { bucket_name, api_key, secret_access_key, api_url, enabled } =
+    await loadSettings(ctx);
 
   return {
     blocks: [
@@ -22,9 +26,21 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
         fields: [
           {
             type: "text_input",
+            action_id: "bucket_name",
+            label: "Bucket Name",
+            initial_value: bucket_name ?? "",
+          },
+          {
+            type: "text_input",
             action_id: "api_key",
             label: "API Key",
             initial_value: api_key ?? "",
+          },
+          {
+            type: "text_input",
+            action_id: "secret_access_key",
+            label: "Secret Access Key",
+            initial_value: secret_access_key ?? "",
           },
           {
             type: "text_input",
@@ -82,9 +98,19 @@ const plugin: SandboxedPlugin = {
 
 async function saveSettings(
   ctx: PluginContext,
-  values: { api_key?: string; api_url?: string; enabled: boolean },
+  values: {
+    bucket_name?: string;
+    api_key?: string;
+    secret_access_key?: string;
+    api_url?: string;
+    enabled: boolean;
+  },
 ) {
+  if (values.bucket_name)
+    await ctx.kv.set("settings:bucketName", values.bucket_name);
   if (values.api_key) await ctx.kv.set("settings:apiKey", values.api_key);
+  if (values.secret_access_key)
+    await ctx.kv.set("settings:secretAccessKey", values.secret_access_key);
   if (values.api_url) await ctx.kv.set("settings:apiUrl", values.api_url);
   await ctx.kv.set("settings:enabled", values.enabled);
 }
