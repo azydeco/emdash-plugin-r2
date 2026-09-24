@@ -71,6 +71,15 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
         ],
         submit: { label: "Save", action_id: "save" },
       },
+      {
+        type: "form",
+        block_id: "cloudflare",
+        fields: [],
+        submit: {
+          label: "Fetch",
+          action_id: "fetch_r2",
+        },
+      },
     ],
   };
 }
