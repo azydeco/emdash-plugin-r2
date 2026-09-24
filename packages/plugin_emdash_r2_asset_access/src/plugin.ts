@@ -9,7 +9,9 @@ async function loadSettings(ctx: PluginContext) {
   return { apiKey, enabled };
 }
 
-function renderSettings(): BlockResponse {
+async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
+  const { apiKey, enabled } = await loadSettings(ctx);
+
   return {
     blocks: [
       { type: "header", text: "Save Log settings" },
@@ -17,7 +19,7 @@ function renderSettings(): BlockResponse {
         type: "form",
         block_id: "settings",
         fields: [
-          { type: "text_input", action_id: "api_key", label: "API Key" },
+          { type: "secret_input", action_id: "api_key", label: "API Key" },
           { type: "text_input", action_id: "api_url", label: "API URL" },
           {
             type: "toggle",
@@ -45,7 +47,14 @@ const plugin: SandboxedPlugin = {
         const interaction = _routeCtx.input as BlockInteraction;
 
         if (interaction.type === "page_load") {
-          return renderSettings();
+          return renderSettings(ctx);
+        }
+
+        if (
+          interaction.type === "form_submit" &&
+          interaction.action_id === "save"
+        ) {
+          await saveSettings(ctx, interaction.values ?? {});
         }
 
         return { blocks: [] };
@@ -62,7 +71,7 @@ const plugin: SandboxedPlugin = {
 
 async function saveSettings(
   ctx: PluginContext,
-  values: { apiKey?: string; enabled: boolean; maxItems: number },
+  values: { apiKey?: string; enabled: boolean },
 ) {
   if (values.apiKey) await ctx.kv.set("settings:apiKey", values.apiKey);
   await ctx.kv.set("settings:enabled", values.enabled);
