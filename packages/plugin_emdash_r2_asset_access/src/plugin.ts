@@ -31,16 +31,14 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
             initial_value: bucket_name ?? "",
           },
           {
-            type: "text_input",
+            type: "secret_input",
             action_id: "api_key",
             label: "API Key",
-            initial_value: api_key ?? "",
           },
           {
-            type: "text_input",
+            type: "secret_input",
             action_id: "secret_access_key",
             label: "Secret Access Key",
-            initial_value: secret_access_key ?? "",
           },
           {
             type: "text_input",
