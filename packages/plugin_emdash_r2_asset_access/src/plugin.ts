@@ -105,6 +105,7 @@ const plugin: SandboxedPlugin = {
           interaction.action_id === "save"
         ) {
           await saveSettings(ctx, interaction.values ?? {});
+          return renderSettings(ctx);
         }
 
         if (
