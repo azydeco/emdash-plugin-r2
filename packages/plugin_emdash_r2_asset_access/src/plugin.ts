@@ -13,6 +13,22 @@ async function loadSettings(ctx: PluginContext) {
   return { bucket_name, api_key, secret_access_key, api_url, enabled };
 }
 
+async function fetchR2(ctx: PluginContext) {
+  if (!ctx.http) return;
+
+  const { bucket_name, api_key, secret_access_key, api_url, enabled } =
+    await loadSettings(ctx);
+
+  if (!api_url) return;
+
+  const response = await ctx.http.fetch(api_url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
 async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
   const { bucket_name, api_key, secret_access_key, api_url, enabled } =
     await loadSettings(ctx);
@@ -80,6 +96,13 @@ const plugin: SandboxedPlugin = {
           interaction.action_id === "save"
         ) {
           await saveSettings(ctx, interaction.values ?? {});
+        }
+
+        if (
+          interaction.type === "form_submit" &&
+          interaction.action_id === "fetch_r2"
+        ) {
+          await fetchR2(ctx);
         }
 
         return { blocks: [] };
