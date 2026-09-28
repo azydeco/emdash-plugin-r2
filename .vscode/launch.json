@@ -20,5 +20,11 @@
       "url": "http://127.0.0.1:4321/_emdash/api/auth/dev-bypass?redirect=/_emdash/admin/",
       "webRoot": "${workspaceFolder}/hosts/web-cloudflare"
     }
+  ],
+  "compounds": [
+    {
+      "name": "Test sandboxed plugin + Emdash admin",
+      "configurations": ["Launch Emdash Admin"]
+    }
   ]
 }
