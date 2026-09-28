@@ -9,7 +9,7 @@ import r2Plugin from "@azydeco/emdash_plugin_r2_asset_access";
 
 export default defineConfig({
   output: "server",
-  adapter: cloudflare(),
+  adapter: cloudflare({ inspectorPort: 9229 }),
   image: {
     layout: "constrained",
     responsiveStyles: true,
