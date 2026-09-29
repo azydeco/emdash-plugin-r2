@@ -129,7 +129,10 @@ const plugin: SandboxedPlugin = {
           interaction.type === "form_submit" &&
           interaction.action_id === "save"
         ) {
-          await saveSettings(ctx, interaction.values ?? {});
+          await saveSettings(ctx, {
+            ...(interaction.values ?? {}),
+            enabled: interaction.values?.enabled === true,
+          });
           return renderSettings(ctx);
         }
 
