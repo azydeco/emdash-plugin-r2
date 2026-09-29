@@ -161,36 +161,6 @@ async function fetchR2(ctx: PluginContext) {
   if (!api_url || !api_key || !secret_access_key || !bucket_name)
     return { blocks: [{ type: "header", text: "Missing settings" }] };
 
-  // const config: S3ClientConfig = {
-  //   region: "auto",
-  //   endpoint: api_url,
-  //   credentials: {
-  //     accessKeyId: api_key,
-  //     secretAccessKey: secret_access_key,
-  //   },
-  // };
-
-  // const client = new S3Client(config);
-  // const command = new ListObjectsV2Command({
-  //   Bucket: bucket_name,
-  // });
-
-  // const response = await client.send(command);
-
-  // const response = await ctx.http.fetch(`${api_url}${bucket_name}`, {
-  //   method: "GET",
-  //   headers: {
-  //     Authorization: `Basic ${btoa(`${api_key}:${secret_access_key}`)}`,
-  //     "x-amz-content-sha256": "UNSIGNED-PAYLOAD",
-  //     "x-amz-date": new Date().toISOString().replace(/[:-]|\.\d{3}/g, ""),
-  //   },
-  // });
-  // return {
-  //   blocks: [
-  //     { type: "section", text: `${await response.text()}` },
-  //   ],
-  // };
-
   const config: S3Credentials = {
     accessKeyId: api_key,
     secretAccessKey: secret_access_key,
@@ -201,12 +171,16 @@ async function fetchR2(ctx: PluginContext) {
 
   const result = await listBucketObjectsDirect(ctx, config);
   // result may exceed the maximum size of 65536 bytes
-  if (result.length > 65536) {
+  if (result.length > 65000) {
+    const sections = [];
+    for (let i = 0; i < result.length; i += 65000) {
+      sections.push({
+        type: "section",
+        text: result.slice(i, i + 65000).toString(),
+      });
+    }
     return {
-      blocks: [
-        { type: "header", text: "R2 Bucket Objects" },
-        { type: "section", text: result.length.toString() },
-      ],
+      blocks: [{ type: "header", text: "R2 Bucket Objects" }, ...sections],
     };
   }
   return {
