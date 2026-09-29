@@ -46,7 +46,8 @@ async function fetchR2(ctx: PluginContext) {
     method: "GET",
     headers: {
       Authorization: `Basic ${btoa(`${api_key}:${secret_access_key}`)}`,
-      "Content-Type": "application/json",
+      "x-amz-content-sha256": "UNSIGNED-PAYLOAD",
+      "x-amz-date": new Date().toISOString(),
     },
   });
   return {
