@@ -1,5 +1,10 @@
 import type { SandboxedPlugin, PluginContext } from "emdash/plugin";
 import type { BlockInteraction, BlockResponse } from "@emdash-cms/blocks";
+// import {
+//   ListObjectsV2Command,
+//   S3Client,
+//   type S3ClientConfig,
+// } from "@aws-sdk/client-s3";
 
 async function loadSettings(ctx: PluginContext) {
   const [bucket_name, api_key, secret_access_key, api_url, enabled] =
@@ -19,8 +24,23 @@ async function fetchR2(ctx: PluginContext) {
   const { bucket_name, api_key, secret_access_key, api_url, enabled } =
     await loadSettings(ctx);
 
-  if (!api_url) return;
+  if (!api_url || !api_key || !secret_access_key || !bucket_name) return;
 
+  // const config: S3ClientConfig = {
+  //   region: "auto",
+  //   endpoint: api_url,
+  //   credentials: {
+  //     accessKeyId: api_key,
+  //     secretAccessKey: secret_access_key,
+  //   },
+  // };
+
+  // const client = new S3Client(config);
+  // const command = new ListObjectsV2Command({
+  //   Bucket: bucket_name,
+  // });
+
+  // const response = await client.send(command);
   const response = await ctx.http.fetch(api_url, {
     method: "POST",
     headers: {
