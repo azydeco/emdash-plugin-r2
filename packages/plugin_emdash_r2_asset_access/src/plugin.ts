@@ -49,8 +49,9 @@ async function fetchR2(ctx: PluginContext) {
       "Content-Type": "application/json",
     },
   });
-
-  return;
+  return {
+    blocks: [{ type: "header", text: `${response.status.toString()}` }],
+  };
 }
 
 async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
@@ -136,7 +137,8 @@ const plugin: SandboxedPlugin = {
           interaction.type === "form_submit" &&
           interaction.action_id === "fetch_r2"
         ) {
-          await fetchR2(ctx);
+          const result = await fetchR2(ctx);
+          return result;
         }
 
         return { blocks: [] };
