@@ -36,9 +36,11 @@ async function hmacSha256(
 }
 
 export async function listBucketObjectsDirect(
+  ctx: PluginContext,
   creds: S3Credentials,
   prefix = "",
 ): Promise<string> {
+  if (!ctx.http) return "HTTP client not available";
   const now = new Date();
   const amzDate = now.toISOString().replace(/[:-]|\.\d{3}/g, ""); // YYYYMMDDTHHMMSSZ
   const dateStamp = amzDate.slice(0, 8); // YYYYMMDD
@@ -119,7 +121,7 @@ export async function listBucketObjectsDirect(
   // 7. Dispatch HTTP Fetch
   const targetUrl =
     "https://" + creds.endpointHost + canonicalUri + "?" + canonicalQuery;
-  const response = await fetch(targetUrl, {
+  const response = await ctx.http.fetch(targetUrl, {
     method: "GET",
     headers: {
       Host: creds.endpointHost,
@@ -131,7 +133,8 @@ export async function listBucketObjectsDirect(
 
   if (!response.ok) {
     const errorText = await response.text();
-    throw new Error("S3 Error (" + response.status + "): " + errorText);
+    return errorText;
+    // throw new Error("S3 Error (" + response.status + "): " + errorText);
   }
 
   return await response.text();
@@ -150,12 +153,13 @@ async function loadSettings(ctx: PluginContext) {
 }
 
 async function fetchR2(ctx: PluginContext) {
-  if (!ctx.http) return;
+  if (!ctx.http) return { blocks: [] };
 
   const { bucket_name, api_key, secret_access_key, api_url, enabled } =
     await loadSettings(ctx);
 
-  if (!api_url || !api_key || !secret_access_key || !bucket_name) return;
+  if (!api_url || !api_key || !secret_access_key || !bucket_name)
+    return { blocks: [{ type: "header", text: "Missing settings" }] };
 
   // const config: S3ClientConfig = {
   //   region: "auto",
@@ -173,18 +177,42 @@ async function fetchR2(ctx: PluginContext) {
 
   // const response = await client.send(command);
 
-  const response = await ctx.http.fetch(`${api_url}${bucket_name}`, {
-    method: "GET",
-    headers: {
-      Authorization: `Basic ${btoa(`${api_key}:${secret_access_key}`)}`,
-      "x-amz-content-sha256": "UNSIGNED-PAYLOAD",
-      "x-amz-date": new Date().toISOString().replace(/[:-]|\.\d{3}/g, ""),
-    },
-  });
+  // const response = await ctx.http.fetch(`${api_url}${bucket_name}`, {
+  //   method: "GET",
+  //   headers: {
+  //     Authorization: `Basic ${btoa(`${api_key}:${secret_access_key}`)}`,
+  //     "x-amz-content-sha256": "UNSIGNED-PAYLOAD",
+  //     "x-amz-date": new Date().toISOString().replace(/[:-]|\.\d{3}/g, ""),
+  //   },
+  // });
+  // return {
+  //   blocks: [
+  //     { type: "section", text: `${await response.text()}` },
+  //   ],
+  // };
+
+  const config: S3Credentials = {
+    accessKeyId: api_key,
+    secretAccessKey: secret_access_key,
+    region: "auto",
+    bucket: bucket_name,
+    endpointHost: new URL(api_url).host,
+  };
+
+  const result = await listBucketObjectsDirect(ctx, config);
+  // result may exceed the maximum size of 65536 bytes
+  if (result.length > 65536) {
+    return {
+      blocks: [
+        { type: "header", text: "R2 Bucket Objects" },
+        { type: "section", text: result.length.toString() },
+      ],
+    };
+  }
   return {
     blocks: [
-      { type: "header", text: `${response.status.toString()}` },
-      { type: "section", text: `${await response.text()}` },
+      { type: "header", text: "R2 Bucket Objects" },
+      { type: "section", text: result.toString() },
     ],
   };
 }
