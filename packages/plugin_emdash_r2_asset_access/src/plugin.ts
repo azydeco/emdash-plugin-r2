@@ -50,7 +50,10 @@ async function fetchR2(ctx: PluginContext) {
     },
   });
   return {
-    blocks: [{ type: "header", text: `${response.status.toString()}` }],
+    blocks: [
+      { type: "header", text: `${response.status.toString()}` },
+      { type: "section", text: `${await response.text()}` },
+    ],
   };
 }
 
