@@ -41,12 +41,16 @@ async function fetchR2(ctx: PluginContext) {
   // });
 
   // const response = await client.send(command);
-  const response = await ctx.http.fetch(api_url, {
-    method: "POST",
+
+  const response = await ctx.http.fetch(`${api_url}${bucket_name}`, {
+    method: "GET",
     headers: {
+      Authorization: `Basic ${btoa(`${api_key}:${secret_access_key}`)}`,
       "Content-Type": "application/json",
     },
   });
+
+  return;
 }
 
 async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
