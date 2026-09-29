@@ -45,9 +45,10 @@ async function fetchR2(ctx: PluginContext) {
   const response = await ctx.http.fetch(`${api_url}${bucket_name}`, {
     method: "GET",
     headers: {
+      // <Code>InvalidRequest</Code><Message>Please use AWS4-HMAC-SHA256</Message>
       Authorization: `Basic ${btoa(`${api_key}:${secret_access_key}`)}`,
       "x-amz-content-sha256": "UNSIGNED-PAYLOAD",
-      "x-amz-date": new Date().toISOString(),
+      "x-amz-date": new Date().toISOString().replace(/[:-]|\.\d{3}/g, ""),
     },
   });
   return {
