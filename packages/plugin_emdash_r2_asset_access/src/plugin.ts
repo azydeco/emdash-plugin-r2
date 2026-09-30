@@ -171,24 +171,16 @@ async function fetchR2(ctx: PluginContext) {
 
   const xml = await listBucketObjectsDirect(ctx, config);
   const keys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map((match) => match[1]);
-  // result may exceed the maximum size of 65536 bytes
-  // if (result.length > 65000) {
-  //   const sections = [];
-  //   for (let i = 0; i < result.length; i += 65000) {
-  //     sections.push({
-  //       type: "section",
-  //       text: result.slice(i, i + 65000).toString(),
-  //     });
-  //   }
-  //   return {
-  //     blocks: [{ type: "header", text: "R2 Bucket Objects" }, ...sections],
-  //   };
-  // }
+
+  const sections = [];
+  for (const i of keys) {
+    sections.push({
+      type: "section",
+      text: i.toString(),
+    });
+  }
   return {
-    blocks: [
-      { type: "header", text: "R2 Bucket Objects" },
-      { type: "section", text: keys.toString() },
-    ],
+    blocks: [{ type: "header", text: "R2 Bucket Objects" }, ...sections],
   };
 }
 
