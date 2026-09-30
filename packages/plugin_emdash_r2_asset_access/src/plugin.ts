@@ -141,21 +141,19 @@ export async function listBucketObjectsDirect(
 }
 
 async function loadSettings(ctx: PluginContext) {
-  const [bucket_name, api_key, secret_access_key, api_url, enabled] =
-    await Promise.all([
-      ctx.kv.get<string>("settings:bucketName"),
-      ctx.kv.get<string>("settings:apiKey"),
-      ctx.kv.get<string>("settings:secretAccessKey"),
-      ctx.kv.get<string>("settings:apiUrl"),
-      ctx.kv.get<string>("settings:enabled"),
-    ]);
-  return { bucket_name, api_key, secret_access_key, api_url, enabled };
+  const [bucket_name, api_key, secret_access_key, api_url] = await Promise.all([
+    ctx.kv.get<string>("settings:bucketName"),
+    ctx.kv.get<string>("settings:apiKey"),
+    ctx.kv.get<string>("settings:secretAccessKey"),
+    ctx.kv.get<string>("settings:apiUrl"),
+  ]);
+  return { bucket_name, api_key, secret_access_key, api_url };
 }
 
 async function fetchR2(ctx: PluginContext) {
   if (!ctx.http) return { blocks: [] };
 
-  const { bucket_name, api_key, secret_access_key, api_url, enabled } =
+  const { bucket_name, api_key, secret_access_key, api_url } =
     await loadSettings(ctx);
 
   if (!api_url || !api_key || !secret_access_key || !bucket_name)
@@ -185,7 +183,7 @@ async function fetchR2(ctx: PluginContext) {
 }
 
 async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
-  const { bucket_name, api_key, secret_access_key, api_url, enabled } =
+  const { bucket_name, api_key, secret_access_key, api_url } =
     await loadSettings(ctx);
 
   return {
@@ -216,12 +214,6 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
             action_id: "api_url",
             label: "API URL",
             initial_value: api_url ?? "",
-          },
-          {
-            type: "toggle",
-            action_id: "enabled",
-            label: "Enabled",
-            initial_value: true,
           },
         ],
         submit: { label: "Save", action_id: "save" },
@@ -259,10 +251,7 @@ const plugin: SandboxedPlugin = {
           interaction.type === "form_submit" &&
           interaction.action_id === "save"
         ) {
-          await saveSettings(ctx, {
-            ...(interaction.values ?? {}),
-            enabled: interaction.values?.enabled === true,
-          });
+          await saveSettings(ctx, interaction.values ?? {});
           return renderSettings(ctx);
         }
 
@@ -293,7 +282,6 @@ async function saveSettings(
     api_key?: string;
     secret_access_key?: string;
     api_url?: string;
-    enabled: boolean;
   },
 ) {
   if (values.bucket_name)
@@ -302,7 +290,6 @@ async function saveSettings(
   if (values.secret_access_key)
     await ctx.kv.set("settings:secretAccessKey", values.secret_access_key);
   if (values.api_url) await ctx.kv.set("settings:apiUrl", values.api_url);
-  await ctx.kv.set("settings:enabled", values.enabled);
 }
 
 export default plugin;
