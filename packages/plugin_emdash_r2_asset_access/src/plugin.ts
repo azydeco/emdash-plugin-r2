@@ -155,7 +155,7 @@ async function loadSettings(ctx: PluginContext) {
 async function fetchR2(ctx: PluginContext) {
   if (!ctx.http) return { blocks: [] };
 
-  const { bucket_name, api_key, secret_access_key, api_url } =
+  const { bucket_name, api_key, secret_access_key, api_url, public_endpoint } =
     await loadSettings(ctx);
 
   if (!api_url || !api_key || !secret_access_key || !bucket_name)
@@ -173,11 +173,29 @@ async function fetchR2(ctx: PluginContext) {
   const keys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map((match) => match[1]);
 
   const sections = [];
-  for (const i of keys) {
-    sections.push({
-      type: "section",
-      text: i.toString(),
-    });
+
+  if (public_endpoint) {
+    for (const i of keys) {
+      // Some of our keys include spaces
+      const encodedKey = encodeURIComponent(i);
+
+      //  In case the public endpoint does not end with a slash
+      const url = public_endpoint.endsWith("/")
+        ? public_endpoint + encodedKey
+        : public_endpoint + "/" + encodedKey;
+
+      sections.push({
+        type: "section",
+        text: `${url.toString()}`,
+      });
+    }
+  } else {
+    for (const i of keys) {
+      sections.push({
+        type: "section",
+        text: i.toString(),
+      });
+    }
   }
   return {
     blocks: [{ type: "header", text: "R2 Bucket Objects" }, ...sections],
@@ -270,7 +288,6 @@ const plugin: SandboxedPlugin = {
           const result = await fetchR2(ctx);
           return result;
         }
-
         return { blocks: [] };
       },
     },
