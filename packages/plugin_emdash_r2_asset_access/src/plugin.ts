@@ -231,7 +231,7 @@ async function fetchR2(ctx: PluginContext) {
     }
   }
   return {
-    blocks: [{ type: "header", text: "R2 Bucket Objects" }, ...sections],
+    blocks: [{ type: "header", text: "R2 Bucket Images" }, ...sections],
   };
 }
 
@@ -282,9 +282,6 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
 }
 
 async function renderAssets(ctx: PluginContext): Promise<BlockResponse> {
-  const { bucket_name, api_key, secret_access_key, api_url, public_endpoint } =
-    await loadSettings(ctx);
-
   return {
     blocks: [
       { type: "header", text: "R2 Bucket Images" },
