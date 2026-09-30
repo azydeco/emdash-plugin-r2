@@ -287,7 +287,7 @@ async function renderAssets(ctx: PluginContext): Promise<BlockResponse> {
 
   return {
     blocks: [
-      { type: "header", text: "Save Log settings" },
+      { type: "header", text: "R2 Bucket Images" },
       {
         type: "form",
         block_id: "cloudflare",
