@@ -1,6 +1,29 @@
 import type { SandboxedPlugin, PluginContext } from "emdash/plugin";
 import type { BlockInteraction, BlockResponse } from "@emdash-cms/blocks";
 
+const supportedFileTypes = [
+  "avif",
+  "AVIF",
+  "apng",
+  "APNG",
+  "png",
+  "PNG",
+  "jpg",
+  "JPG",
+  "jpeg",
+  "JPEG",
+  "webp",
+  "WEBP",
+  "zip",
+  "ZIP",
+  "pdf",
+  "PDF",
+  "mp4",
+  "MP4",
+  "gif",
+  "GIF",
+];
+
 interface S3Credentials {
   accessKeyId: string;
   secretAccessKey: string;
@@ -170,10 +193,15 @@ async function fetchR2(ctx: PluginContext) {
   };
 
   const xml = await listBucketObjectsDirect(ctx, config);
-  let keys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map((match) => match[1]);
-
-  // First 100 keys for testing
-  keys = keys.splice(100);
+  let allKeys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map(
+    (match) => match[1],
+  );
+  const keys = allKeys.filter((i) => {
+    const name = i.toLowerCase();
+    return supportedFileTypes.some((supported) =>
+      name.endsWith(`.${supported}`),
+    );
+  });
 
   const sections = [];
 
