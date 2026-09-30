@@ -277,6 +277,17 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
         ],
         submit: { label: "Save", action_id: "save" },
       },
+    ],
+  };
+}
+
+async function renderAssets(ctx: PluginContext): Promise<BlockResponse> {
+  const { bucket_name, api_key, secret_access_key, api_url, public_endpoint } =
+    await loadSettings(ctx);
+
+  return {
+    blocks: [
+      { type: "header", text: "Save Log settings" },
       {
         type: "form",
         block_id: "cloudflare",
@@ -306,26 +317,34 @@ const plugin: SandboxedPlugin = {
   routes: {
     admin: {
       handler: async (_routeCtx, ctx) => {
-        const interaction = _routeCtx.input as BlockInteraction;
+        if (_routeCtx.input.page === "/configuration-setting") {
+          const interaction = _routeCtx.input as BlockInteraction;
 
-        if (interaction.type === "page_load") {
-          return renderSettings(ctx);
-        }
+          if (interaction.type === "page_load") {
+            return renderSettings(ctx);
+          }
 
-        if (
-          interaction.type === "form_submit" &&
-          interaction.action_id === "save"
-        ) {
-          await saveSettings(ctx, interaction.values ?? {});
-          return renderSettings(ctx);
-        }
+          if (
+            interaction.type === "form_submit" &&
+            interaction.action_id === "save"
+          ) {
+            await saveSettings(ctx, interaction.values ?? {});
+            return renderSettings(ctx);
+          }
+        } else if (_routeCtx.input.page === "/asset-listing") {
+          const interaction = _routeCtx.input as BlockInteraction;
 
-        if (
-          interaction.type === "form_submit" &&
-          interaction.action_id === "fetch_r2"
-        ) {
-          const result = await fetchR2(ctx);
-          return result;
+          if (interaction.type === "page_load") {
+            return renderAssets(ctx);
+          }
+
+          if (
+            interaction.type === "form_submit" &&
+            interaction.action_id === "fetch_r2"
+          ) {
+            const result = await fetchR2(ctx);
+            return result;
+          }
         }
         return { blocks: [] };
       },
