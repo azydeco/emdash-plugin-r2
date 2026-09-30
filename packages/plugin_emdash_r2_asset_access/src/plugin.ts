@@ -253,6 +253,12 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
           action_id: "fetch_r2",
         },
       },
+      // {
+      //   type: "image",
+      //   block_id: "assets",
+      //   url: `https://images.azydeco.com/%2Fassets%2FBanner%20Black.png`,
+      //   alt: "azydeco banner",
+      // },
     ],
   };
 }
