@@ -141,13 +141,15 @@ export async function listBucketObjectsDirect(
 }
 
 async function loadSettings(ctx: PluginContext) {
-  const [bucket_name, api_key, secret_access_key, api_url] = await Promise.all([
-    ctx.kv.get<string>("settings:bucketName"),
-    ctx.kv.get<string>("settings:apiKey"),
-    ctx.kv.get<string>("settings:secretAccessKey"),
-    ctx.kv.get<string>("settings:apiUrl"),
-  ]);
-  return { bucket_name, api_key, secret_access_key, api_url };
+  const [bucket_name, api_key, secret_access_key, api_url, public_endpoint] =
+    await Promise.all([
+      ctx.kv.get<string>("settings:bucketName"),
+      ctx.kv.get<string>("settings:apiKey"),
+      ctx.kv.get<string>("settings:secretAccessKey"),
+      ctx.kv.get<string>("settings:apiUrl"),
+      ctx.kv.get<string>("settings:publicEndpoint"),
+    ]);
+  return { bucket_name, api_key, secret_access_key, api_url, public_endpoint };
 }
 
 async function fetchR2(ctx: PluginContext) {
@@ -183,7 +185,7 @@ async function fetchR2(ctx: PluginContext) {
 }
 
 async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
-  const { bucket_name, api_key, secret_access_key, api_url } =
+  const { bucket_name, api_key, secret_access_key, api_url, public_endpoint } =
     await loadSettings(ctx);
 
   return {
@@ -214,6 +216,12 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
             action_id: "api_url",
             label: "API URL",
             initial_value: api_url ?? "",
+          },
+          {
+            type: "text_input",
+            action_id: "public_endpoint",
+            label: "Public Endpoint (optional)",
+            initial_value: public_endpoint ?? "",
           },
         ],
         submit: { label: "Save", action_id: "save" },
@@ -282,6 +290,7 @@ async function saveSettings(
     api_key?: string;
     secret_access_key?: string;
     api_url?: string;
+    public_endpoint?: string;
   },
 ) {
   if (values.bucket_name)
@@ -290,6 +299,8 @@ async function saveSettings(
   if (values.secret_access_key)
     await ctx.kv.set("settings:secretAccessKey", values.secret_access_key);
   if (values.api_url) await ctx.kv.set("settings:apiUrl", values.api_url);
+  if (values.public_endpoint)
+    await ctx.kv.set("settings:publicEndpoint", values.public_endpoint);
 }
 
 export default plugin;
