@@ -170,7 +170,10 @@ async function fetchR2(ctx: PluginContext) {
   };
 
   const xml = await listBucketObjectsDirect(ctx, config);
-  const keys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map((match) => match[1]);
+  let keys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map((match) => match[1]);
+
+  // First 100 keys for testing
+  keys = keys.splice(100);
 
   const sections = [];
 
@@ -185,8 +188,10 @@ async function fetchR2(ctx: PluginContext) {
         : public_endpoint + "/" + encodedKey;
 
       sections.push({
-        type: "section",
-        text: `${url.toString()}`,
+        type: "image",
+        block_id: `image_${i}`,
+        url: `${url}`,
+        alt: i.toString(),
       });
     }
   } else {
