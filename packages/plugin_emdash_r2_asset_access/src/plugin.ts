@@ -18,8 +18,6 @@ const supportedFileTypes = [
   "ZIP",
   "pdf",
   "PDF",
-  "mp4",
-  "MP4",
   "gif",
   "GIF",
 ];
