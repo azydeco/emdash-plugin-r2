@@ -194,12 +194,14 @@ async function fetchR2(ctx: PluginContext) {
   let allKeys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map(
     (match) => match[1],
   );
-  const keys = allKeys.filter((i) => {
+  let keys = allKeys.filter((i) => {
     const name = i.toLowerCase();
     return supportedFileTypes.some((supported) =>
       name.endsWith(`.${supported}`),
     );
   });
+
+  keys = keys.slice(0, 100);
 
   const sections = [];
 
@@ -214,10 +216,28 @@ async function fetchR2(ctx: PluginContext) {
         : public_endpoint + "/" + encodedKey;
 
       sections.push({
-        type: "image",
-        block_id: `image_${i}`,
-        url: `${url}`,
-        alt: i.toString(),
+        type: "columns",
+        columns: [
+          [
+            {
+              type: "image",
+              block_id: `image_${i}`,
+              url: `${url}`,
+              alt: i.toString(),
+            },
+          ],
+          [
+            {
+              type: "section",
+              text: `${i.toString()}`,
+            },
+            {
+              type: "form",
+              fields: [],
+              submit: { label: "Copy", action_id: `copy_${i.toString()}` },
+            },
+          ],
+        ],
       });
     }
   } else {
@@ -293,10 +313,21 @@ async function renderAssets(ctx: PluginContext): Promise<BlockResponse> {
         },
       },
       // {
-      //   type: "image",
-      //   block_id: "assets",
-      //   url: `https://images.azydeco.com/%2Fassets%2FBanner%20Black.png`,
-      //   alt: "azydeco banner",
+      //   type: "columns",
+      //   columns: [
+      //     [
+      //       {
+      //         type: "section",
+      //         text: "column 1",
+      //       },
+      //     ],
+      //     [
+      //       {
+      //         type: "section",
+      //         text: "column 2",
+      //       },
+      //     ],
+      //   ],
       // },
     ],
   };
