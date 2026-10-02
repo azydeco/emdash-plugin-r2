@@ -201,7 +201,7 @@ async function fetchR2(ctx: PluginContext) {
     );
   });
 
-  keys = keys.slice(0, 100);
+  keys = keys.slice(0, 50);
 
   const sections = [];
 
@@ -224,6 +224,10 @@ async function fetchR2(ctx: PluginContext) {
               block_id: `image_${i}`,
               url: `${url}`,
               alt: i.toString(),
+            },
+            {
+              type: "section",
+              text: `${url.toString()}`,
             },
           ],
           [
@@ -312,23 +316,6 @@ async function renderAssets(ctx: PluginContext): Promise<BlockResponse> {
           action_id: "fetch_r2",
         },
       },
-      // {
-      //   type: "columns",
-      //   columns: [
-      //     [
-      //       {
-      //         type: "section",
-      //         text: "column 1",
-      //       },
-      //     ],
-      //     [
-      //       {
-      //         type: "section",
-      //         text: "column 2",
-      //       },
-      //     ],
-      //   ],
-      // },
     ],
   };
 }
