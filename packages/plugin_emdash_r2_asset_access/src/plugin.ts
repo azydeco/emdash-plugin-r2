@@ -303,23 +303,6 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
   };
 }
 
-async function renderAssets(ctx: PluginContext): Promise<BlockResponse> {
-  return {
-    blocks: [
-      { type: "header", text: "R2 Bucket Images" },
-      {
-        type: "form",
-        block_id: "cloudflare",
-        fields: [],
-        submit: {
-          label: "Fetch",
-          action_id: "fetch_r2",
-        },
-      },
-    ],
-  };
-}
-
 /**
  * Sandboxed plugin entry. The default export is a bare object; the
  * `satisfies SandboxedPlugin` annotation gives TypeScript per-hook /
