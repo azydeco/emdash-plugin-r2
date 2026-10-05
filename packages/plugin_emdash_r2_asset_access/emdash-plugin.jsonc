@@ -22,7 +22,7 @@
   "admin": {
     "pages": [
       {
-        "path": "/configuration-setting",
+        "path": "/settings",
         "label": "R2 Asset Access Settings",
         "icon": "settings",
       },

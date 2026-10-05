@@ -330,7 +330,7 @@ const plugin: SandboxedPlugin = {
   routes: {
     admin: {
       handler: async (_routeCtx, ctx) => {
-        if (_routeCtx.input.page === "/configuration-setting") {
+        if (_routeCtx.input.page === "/settings") {
           const interaction = _routeCtx.input as BlockInteraction;
 
           if (interaction.type === "page_load") {
@@ -345,19 +345,8 @@ const plugin: SandboxedPlugin = {
             return renderSettings(ctx);
           }
         } else if (_routeCtx.input.page === "/asset-listing") {
-          const interaction = _routeCtx.input as BlockInteraction;
-
-          if (interaction.type === "page_load") {
-            return renderAssets(ctx);
-          }
-
-          if (
-            interaction.type === "form_submit" &&
-            interaction.action_id === "fetch_r2"
-          ) {
-            const result = await fetchR2(ctx);
-            return result;
-          }
+          const result = await fetchR2(ctx);
+          return result;
         }
         return { blocks: [] };
       },
