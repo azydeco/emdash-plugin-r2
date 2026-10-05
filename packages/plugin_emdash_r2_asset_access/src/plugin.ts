@@ -66,99 +66,103 @@ export async function listBucketObjectsDirect(
   const amzDate = now.toISOString().replace(/[:-]|\.\d{3}/g, ""); // YYYYMMDDTHHMMSSZ
   const dateStamp = amzDate.slice(0, 8); // YYYYMMDD
 
-  // 1. Build and sort query parameters
-  const queryParams = new URLSearchParams({
-    "list-type": "2",
-  });
-  if (prefix) queryParams.set("prefix", prefix);
-  queryParams.sort();
+  try {
+    // 1. Build and sort query parameters
+    const queryParams = new URLSearchParams({
+      "list-type": "2",
+    });
+    if (prefix) queryParams.set("prefix", prefix);
+    queryParams.sort();
 
-  const canonicalQuery = queryParams.toString();
-  const isR2Path = creds.endpointHost.includes("cloudflare");
-  const canonicalUri = isR2Path ? "/" + creds.bucket : "/";
+    const canonicalQuery = queryParams.toString();
+    const isR2Path = creds.endpointHost.includes("cloudflare");
+    const canonicalUri = isR2Path ? "/" + creds.bucket : "/";
 
-  // 2. Canonical Headers (sorted, lowercase)
-  const emptyPayloadHash =
-    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-  const canonicalHeaders =
-    "host:" +
-    creds.endpointHost +
-    "\n" +
-    "x-amz-content-sha256:" +
-    emptyPayloadHash +
-    "\n" +
-    "x-amz-date:" +
-    amzDate +
-    "\n";
-  const signedHeaders = "host;x-amz-content-sha256;x-amz-date";
+    // 2. Canonical Headers (sorted, lowercase)
+    const emptyPayloadHash =
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+    const canonicalHeaders =
+      "host:" +
+      creds.endpointHost +
+      "\n" +
+      "x-amz-content-sha256:" +
+      emptyPayloadHash +
+      "\n" +
+      "x-amz-date:" +
+      amzDate +
+      "\n";
+    const signedHeaders = "host;x-amz-content-sha256;x-amz-date";
 
-  // 3. Build Canonical Request
-  const canonicalRequest = [
-    "GET",
-    canonicalUri,
-    canonicalQuery,
-    canonicalHeaders,
-    signedHeaders,
-    emptyPayloadHash,
-  ].join("\n");
+    // 3. Build Canonical Request
+    const canonicalRequest = [
+      "GET",
+      canonicalUri,
+      canonicalQuery,
+      canonicalHeaders,
+      signedHeaders,
+      emptyPayloadHash,
+    ].join("\n");
 
-  // 4. Build String to Sign
-  const credentialScope = dateStamp + "/" + creds.region + "/s3/aws4_request";
-  const stringToSign = [
-    "AWS4-HMAC-SHA256",
-    amzDate,
-    credentialScope,
-    await sha256Hex(canonicalRequest),
-  ].join("\n");
+    // 4. Build String to Sign
+    const credentialScope = dateStamp + "/" + creds.region + "/s3/aws4_request";
+    const stringToSign = [
+      "AWS4-HMAC-SHA256",
+      amzDate,
+      credentialScope,
+      await sha256Hex(canonicalRequest),
+    ].join("\n");
 
-  // 5. Derive Signing Key
-  const kDate = await hmacSha256(
-    new TextEncoder().encode("AWS4" + creds.secretAccessKey),
-    dateStamp,
-  );
-  const kRegion = await hmacSha256(kDate, creds.region);
-  const kService = await hmacSha256(kRegion, "s3");
-  const kSigning = await hmacSha256(kService, "aws4_request");
+    // 5. Derive Signing Key
+    const kDate = await hmacSha256(
+      new TextEncoder().encode("AWS4" + creds.secretAccessKey),
+      dateStamp,
+    );
+    const kRegion = await hmacSha256(kDate, creds.region);
+    const kService = await hmacSha256(kRegion, "s3");
+    const kSigning = await hmacSha256(kService, "aws4_request");
 
-  // 6. Calculate Signature
-  const signatureBytes = new Uint8Array(
-    await hmacSha256(kSigning, stringToSign),
-  );
-  const signatureHex = Array.from(signatureBytes)
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
+    // 6. Calculate Signature
+    const signatureBytes = new Uint8Array(
+      await hmacSha256(kSigning, stringToSign),
+    );
+    const signatureHex = Array.from(signatureBytes)
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
 
-  const authorizationHeader =
-    "AWS4-HMAC-SHA256 Credential=" +
-    creds.accessKeyId +
-    "/" +
-    credentialScope +
-    ", " +
-    "SignedHeaders=" +
-    signedHeaders +
-    ", Signature=" +
-    signatureHex;
+    const authorizationHeader =
+      "AWS4-HMAC-SHA256 Credential=" +
+      creds.accessKeyId +
+      "/" +
+      credentialScope +
+      ", " +
+      "SignedHeaders=" +
+      signedHeaders +
+      ", Signature=" +
+      signatureHex;
 
-  // 7. Dispatch HTTP Fetch
-  const targetUrl =
-    "https://" + creds.endpointHost + canonicalUri + "?" + canonicalQuery;
-  const response = await ctx.http.fetch(targetUrl, {
-    method: "GET",
-    headers: {
-      Host: creds.endpointHost,
-      "x-amz-date": amzDate,
-      "x-amz-content-sha256": emptyPayloadHash,
-      Authorization: authorizationHeader,
-    },
-  });
+    // 7. Dispatch HTTP Fetch
+    const targetUrl =
+      "https://" + creds.endpointHost + canonicalUri + "?" + canonicalQuery;
+    const response = await ctx.http.fetch(targetUrl, {
+      method: "GET",
+      headers: {
+        Host: creds.endpointHost,
+        "x-amz-date": amzDate,
+        "x-amz-content-sha256": emptyPayloadHash,
+        Authorization: authorizationHeader,
+      },
+    });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    return errorText;
-    // throw new Error("S3 Error (" + response.status + "): " + errorText);
+    if (!response.ok) {
+      const errorText = await response.text();
+      return errorText;
+      // throw new Error("S3 Error (" + response.status + "): " + errorText);
+    }
+
+    return await response.text();
+  } catch (e) {
+    return `S3 Error: ${e}`;
   }
-
-  return await response.text();
 }
 
 async function loadSettings(ctx: PluginContext) {
