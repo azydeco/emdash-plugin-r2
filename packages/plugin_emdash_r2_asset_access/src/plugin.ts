@@ -267,7 +267,26 @@ async function fetchR2(ctx: PluginContext) {
     }
   }
   return {
-    blocks: [{ type: "header", text: "R2 Bucket Images" }, ...sections],
+    blocks: [
+      { type: "header", text: "R2 Bucket Images" },
+      {
+        type: "form",
+        block_id: "cloudflare",
+        fields: [
+          {
+            type: "text_input",
+            action_id: "prefix",
+            label: "Prefix (optional)",
+            initial_value: prefix ?? "",
+          },
+        ],
+        submit: {
+          label: "Search by prefix",
+          action_id: "fetch_r2",
+        },
+      },
+      ...sections,
+    ],
   };
 }
 
@@ -365,8 +384,25 @@ const plugin: SandboxedPlugin = {
             };
           }
         } else if (page === "/asset-listing") {
-          const result = await fetchR2(ctx);
-          return result;
+          const interaction = _routeCtx.input as BlockInteraction;
+
+          if (interaction.type === "page_load") {
+            const result = await fetchR2(ctx);
+            return result;
+          }
+
+          if (
+            interaction.type === "form_submit" &&
+            interaction.action_id === "fetch_r2"
+          ) {
+            const refresh = await saveSettings(ctx, interaction.values ?? {});
+
+            const result = {
+              ...(await fetchR2(ctx)),
+              toast: { type: "success", message: "Refreshed images" },
+            };
+            return result;
+          }
         }
         return { blocks: [] };
       },
