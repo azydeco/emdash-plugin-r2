@@ -340,7 +340,15 @@ const plugin: SandboxedPlugin = {
   routes: {
     admin: {
       handler: async (_routeCtx, ctx) => {
-        if (_routeCtx.input.page === "/settings") {
+        const page =
+          typeof _routeCtx.input === "object" &&
+          _routeCtx.input !== null &&
+          "page" in _routeCtx.input &&
+          typeof _routeCtx.input.page === "string"
+            ? _routeCtx.input.page
+            : "";
+
+        if (page === "/settings") {
           const interaction = _routeCtx.input as BlockInteraction;
 
           if (interaction.type === "page_load") {
@@ -357,7 +365,7 @@ const plugin: SandboxedPlugin = {
               toast: { type: "success", message: "Saved settings" },
             };
           }
-        } else if (_routeCtx.input.page === "/asset-listing") {
+        } else if (page === "/asset-listing") {
           const result = await fetchR2(ctx);
           return result;
         }
