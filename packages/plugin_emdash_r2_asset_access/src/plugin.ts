@@ -166,15 +166,29 @@ export async function listBucketObjectsDirect(
 }
 
 async function loadSettings(ctx: PluginContext) {
-  const [bucket_name, api_key, secret_access_key, api_url, public_endpoint] =
-    await Promise.all([
-      ctx.kv.get<string>("settings:bucketName"),
-      ctx.kv.get<string>("settings:apiKey"),
-      ctx.kv.get<string>("settings:secretAccessKey"),
-      ctx.kv.get<string>("settings:apiUrl"),
-      ctx.kv.get<string>("settings:publicEndpoint"),
-    ]);
-  return { bucket_name, api_key, secret_access_key, api_url, public_endpoint };
+  const [
+    bucket_name,
+    api_key,
+    secret_access_key,
+    api_url,
+    public_endpoint,
+    prefix,
+  ] = await Promise.all([
+    ctx.kv.get<string>("settings:bucketName"),
+    ctx.kv.get<string>("settings:apiKey"),
+    ctx.kv.get<string>("settings:secretAccessKey"),
+    ctx.kv.get<string>("settings:apiUrl"),
+    ctx.kv.get<string>("settings:publicEndpoint"),
+    ctx.kv.get<string>("settings:prefix"),
+  ]);
+  return {
+    bucket_name,
+    api_key,
+    secret_access_key,
+    api_url,
+    public_endpoint,
+    prefix,
+  };
 }
 
 async function fetchR2(ctx: PluginContext) {
@@ -234,12 +248,7 @@ async function fetchR2(ctx: PluginContext) {
               text: `${url.toString()}`,
             },
           ],
-          [
-            {
-              type: "section",
-              text: `${i.toString()}`,
-            },
-          ],
+          [],
         ],
       });
     }
@@ -257,8 +266,14 @@ async function fetchR2(ctx: PluginContext) {
 }
 
 async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
-  const { bucket_name, api_key, secret_access_key, api_url, public_endpoint } =
-    await loadSettings(ctx);
+  const {
+    bucket_name,
+    api_key,
+    secret_access_key,
+    api_url,
+    public_endpoint,
+    prefix,
+  } = await loadSettings(ctx);
 
   return {
     blocks: [
@@ -292,8 +307,14 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
           {
             type: "text_input",
             action_id: "public_endpoint",
-            label: "Public Endpoint (optional)",
+            label: "Public Endpoint",
             initial_value: public_endpoint ?? "",
+          },
+          {
+            type: "text_input",
+            action_id: "prefix",
+            label: "Prefix (optional)",
+            initial_value: prefix ?? "",
           },
         ],
         submit: { label: "Save", action_id: "save" },
@@ -350,6 +371,7 @@ async function saveSettings(
     secret_access_key?: string;
     api_url?: string;
     public_endpoint?: string;
+    prefix?: string;
   },
 ) {
   if (values.bucket_name)
@@ -360,6 +382,7 @@ async function saveSettings(
   if (values.api_url) await ctx.kv.set("settings:apiUrl", values.api_url);
   if (values.public_endpoint)
     await ctx.kv.set("settings:publicEndpoint", values.public_endpoint);
+  await ctx.kv.set("settings:prefix", values.prefix);
 }
 
 export default plugin;
