@@ -194,8 +194,14 @@ async function loadSettings(ctx: PluginContext) {
 async function fetchR2(ctx: PluginContext) {
   if (!ctx.http) return { blocks: [] };
 
-  const { bucket_name, api_key, secret_access_key, api_url, public_endpoint } =
-    await loadSettings(ctx);
+  const {
+    bucket_name,
+    api_key,
+    secret_access_key,
+    api_url,
+    public_endpoint,
+    prefix,
+  } = await loadSettings(ctx);
 
   if (!api_url || !api_key || !secret_access_key || !bucket_name)
     return { blocks: [{ type: "header", text: "Missing settings" }] };
@@ -208,7 +214,7 @@ async function fetchR2(ctx: PluginContext) {
     endpointHost: new URL(api_url).host,
   };
 
-  const xml = await listBucketObjectsDirect(ctx, config);
+  const xml = await listBucketObjectsDirect(ctx, config, prefix ?? "");
   let allKeys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map(
     (match) => match[1],
   );
