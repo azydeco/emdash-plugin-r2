@@ -14,8 +14,6 @@ const supportedFileTypes = [
   "JPEG",
   "webp",
   "WEBP",
-  "zip",
-  "ZIP",
   "pdf",
   "PDF",
   "gif",
