@@ -25,13 +25,13 @@
     "emdash": ">=0.12.0"
   },
   "devDependencies": {
-    "@emdash-cms/plugin-cli": "0.10.0",
+    "@emdash-cms/plugin-cli": "0.13.2",
     "emdash": ">=0.12.0",
     "typescript": "^5.9.0",
     "vitest": "^4.1.0"
   },
   "dependencies": {
-    "@emdash-cms/blocks": "^0.38.0",
+    "@emdash-cms/blocks": "^1.1.0",
     "zod": "^4.6.5"
   }
 }
