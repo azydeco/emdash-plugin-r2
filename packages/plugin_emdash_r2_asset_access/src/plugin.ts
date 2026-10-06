@@ -239,11 +239,6 @@ async function fetchR2(ctx: PluginContext) {
               type: "section",
               text: `${i.toString()}`,
             },
-            {
-              type: "form",
-              fields: [],
-              submit: { label: "Copy", action_id: `copy_${i.toString()}` },
-            },
           ],
         ],
       });
