@@ -248,13 +248,13 @@ async function fetchR2(ctx: PluginContext) {
               url: `${url}`,
               alt: i.toString(),
             },
-            {
-              type: "section",
-              text: `${url.toString()}`,
-            },
           ],
           [],
         ],
+      });
+      sections.push({
+        type: "section",
+        text: `${url.toString()}`,
       });
       sections.push({ type: "divider" });
     }
