@@ -17,12 +17,12 @@
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.1",
     "@astrojs/react": "^6.0.5",
-    "@emdash-cms/cloudflare": "^0.39.1",
-    "@emdash-cms/plugin-forms": "^0.2.6",
-    "@emdash-cms/plugin-webhook-notifier": "^0.2.0",
+    "@emdash-cms/cloudflare": "^1.1.0",
+    "@emdash-cms/plugin-forms": "^0.2.9",
+    "@emdash-cms/plugin-webhook-notifier": "^0.2.2",
     "@azydeco/emdash_plugin_r2_asset_access": "workspace:*",
     "astro": "^7.3.2",
-    "emdash": "^0.39.1",
+    "emdash": "^1.1.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

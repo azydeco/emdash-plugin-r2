@@ -21,16 +21,15 @@
   "storage": {},
   "admin": {
     "pages": [
-      { "path": "/settings", "label": "Settings", "icon": "settings" },
       {
-        "path": "/configuration-setting",
-        "label": "Configuration - setting page",
+        "path": "/settings",
+        "label": "R2 Asset Access Settings",
         "icon": "settings",
       },
       {
         "path": "/asset-listing",
-        "label": "Plugin - Asset Listing Page",
-        "icon": "settings",
+        "label": "R2 Asset Listing",
+        "icon": "image",
       },
     ],
   },

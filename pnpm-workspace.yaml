@@ -8,13 +8,13 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - prettier@3.9.9
-  - '@emdash-cms/admin@0.39.0 || 0.39.1'
-  - '@emdash-cms/auth@0.39.0 || 0.39.1'
-  - '@emdash-cms/blocks@0.39.0 || 0.39.1'
-  - '@emdash-cms/cloudflare@0.39.0 || 0.39.1'
-  - '@emdash-cms/gutenberg-to-portable-text@0.39.0 || 0.39.1'
+  - '@emdash-cms/admin@0.39.0 || 0.39.1 || 0.40.0 || 1.1.0'
+  - '@emdash-cms/auth@0.39.0 || 0.39.1 || 0.40.0 || 1.1.0'
+  - '@emdash-cms/blocks@0.39.0 || 0.39.1 || 0.40.0 || 1.1.0'
+  - '@emdash-cms/cloudflare@0.39.0 || 0.39.1 || 0.40.0 || 1.1.0'
+  - '@emdash-cms/gutenberg-to-portable-text@0.39.0 || 0.39.1 || 0.40.0 || 1.1.0'
   - "@emdash-cms/plugin-types@0.4.0"
   - "@emdash-cms/registry-client@0.6.1"
   - "@emdash-cms/registry-lexicons@0.6.0"
   - "@emdash-cms/registry-verification@0.3.2"
-  - emdash@0.39.0 || 0.39.1
+  - emdash@0.39.0 || 0.39.1 || 0.40.0 || 1.1.0

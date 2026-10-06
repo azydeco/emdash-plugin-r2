@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "emdash: dev (site)",
+      "type": "shell",
+      "command": "pnpm dev",
+      "options": { "cwd": "${workspaceFolder}/hosts/web-cloudflare" },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "emdash",
+        "pattern": [
+          { "regexp": "^.*$", "file": 1, "location": 2, "message": 3 }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".*(astro|vite).*",
+          "endsPattern": ".*(Local|localhost:4321).*"
+        }
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "emdash: stop dev",
+      "type": "shell",
+      "command": "pkill -f 'astro dev' || true",
+      "problemMatcher": []
+    },
+    {
+      "label": "emdash: plugin watch",
+      "type": "shell",
+      "command": "pnpm dev",
+      "options": {
+        "cwd": "${workspaceFolder}/packages/plugin_emdash_r2_asset_access"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    }
+  ]
+}
