@@ -257,6 +257,7 @@ async function fetchR2(ctx: PluginContext) {
           [],
         ],
       });
+      sections.push({ type: "divider" });
     }
   } else {
     for (const i of keys) {
