@@ -225,7 +225,7 @@ async function fetchR2(ctx: PluginContext) {
     );
   });
 
-  keys = keys.slice(0, 50);
+  keys = keys.slice(0, 100);
 
   const sections = [];
 
@@ -352,7 +352,10 @@ const plugin: SandboxedPlugin = {
             interaction.action_id === "save"
           ) {
             await saveSettings(ctx, interaction.values ?? {});
-            return renderSettings(ctx);
+            return {
+              ...(await renderSettings(ctx)),
+              toast: { type: "success", message: "Saved settings" },
+            };
           }
         } else if (_routeCtx.input.page === "/asset-listing") {
           const result = await fetchR2(ctx);
