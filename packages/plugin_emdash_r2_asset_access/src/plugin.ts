@@ -223,7 +223,8 @@ async function fetchR2(ctx: PluginContext) {
     );
   });
 
-  keys = keys.slice(0, 100);
+  // Prevents error Block response exceeds maximum node count 2000
+  keys = keys.slice(0, 125);
 
   const sections = [];
 
