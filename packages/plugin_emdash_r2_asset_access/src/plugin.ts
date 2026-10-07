@@ -302,7 +302,7 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
 
   return {
     blocks: [
-      { type: "header", text: "Save Log settings" },
+      { type: "header", text: "R2 Asset Access Settings" },
       {
         type: "form",
         block_id: "settings",
@@ -358,6 +358,14 @@ const plugin: SandboxedPlugin = {
   routes: {
     admin: {
       handler: async (_routeCtx, ctx) => {
+        const actionId =
+          typeof _routeCtx.input === "object" &&
+          _routeCtx.input !== null &&
+          "action_id" in _routeCtx.input &&
+          typeof _routeCtx.input.action_id === "string"
+            ? _routeCtx.input.action_id
+            : undefined;
+
         const page =
           typeof _routeCtx.input === "object" &&
           _routeCtx.input !== null &&
@@ -373,10 +381,7 @@ const plugin: SandboxedPlugin = {
             return renderSettings(ctx);
           }
 
-          if (
-            interaction.type === "form_submit" &&
-            interaction.action_id === "save"
-          ) {
+          if (interaction.type === "form_submit" && actionId === "save") {
             await saveSettings(ctx, interaction.values ?? {});
             return {
               ...(await renderSettings(ctx)),
@@ -391,10 +396,7 @@ const plugin: SandboxedPlugin = {
             return result;
           }
 
-          if (
-            interaction.type === "form_submit" &&
-            interaction.action_id === "fetch_r2"
-          ) {
+          if (interaction.type === "form_submit" && actionId === "fetch_r2") {
             const refresh = await saveSettings(ctx, interaction.values ?? {});
 
             const result = {
