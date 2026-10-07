@@ -224,7 +224,7 @@ async function fetchR2(ctx: PluginContext) {
   });
 
   // Prevents error Block response exceeds maximum node count 2000
-  keys = keys.slice(0, 125);
+  keys = keys.slice(0, 75);
 
   const sections = [];
 
@@ -248,13 +248,25 @@ async function fetchR2(ctx: PluginContext) {
               url: `${url}`,
               alt: i.toString(),
             },
+          ],
+          [
             {
-              type: "section",
-              text: `${url.toString()}`,
+              type: "actions",
+              elements: [
+                {
+                  type: "button",
+                  label: "Save to media library",
+                  action_id: `copy_${url}`,
+                  style: "primary",
+                },
+              ],
             },
           ],
-          [],
         ],
+      });
+      sections.push({
+        type: "section",
+        text: `${url.toString()}`,
       });
       sections.push({ type: "divider" });
     }
@@ -302,7 +314,7 @@ async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
 
   return {
     blocks: [
-      { type: "header", text: "Save Log settings" },
+      { type: "header", text: "R2 Asset Access Settings" },
       {
         type: "form",
         block_id: "settings",
@@ -358,6 +370,14 @@ const plugin: SandboxedPlugin = {
   routes: {
     admin: {
       handler: async (_routeCtx, ctx) => {
+        const actionId =
+          typeof _routeCtx.input === "object" &&
+          _routeCtx.input !== null &&
+          "action_id" in _routeCtx.input &&
+          typeof _routeCtx.input.action_id === "string"
+            ? _routeCtx.input.action_id
+            : undefined;
+
         const page =
           typeof _routeCtx.input === "object" &&
           _routeCtx.input !== null &&
@@ -369,32 +389,40 @@ const plugin: SandboxedPlugin = {
         if (page === "/settings") {
           const interaction = _routeCtx.input as BlockInteraction;
 
-          if (interaction.type === "page_load") {
-            return renderSettings(ctx);
-          }
-
-          if (
-            interaction.type === "form_submit" &&
-            interaction.action_id === "save"
-          ) {
+          if (interaction.type === "form_submit" && actionId === "save") {
             await saveSettings(ctx, interaction.values ?? {});
             return {
               ...(await renderSettings(ctx)),
               toast: { type: "success", message: "Saved settings" },
             };
           }
+          return renderSettings(ctx);
         } else if (page === "/asset-listing") {
-          const interaction = _routeCtx.input as BlockInteraction;
+          if (actionId && actionId?.startsWith("copy_") && ctx.http) {
+            console.log(ctx.site.url);
 
-          if (interaction.type === "page_load") {
-            const result = await fetchR2(ctx);
-            return result;
+            const url = actionId.replace("copy_", "");
+            const image = await ctx.http.fetch(url, {
+              method: "GET",
+            });
+            if (ctx.media && ctx.media.upload && image.ok) {
+              await ctx.media.upload(
+                url.split("/").pop() ?? "example.png",
+                image.headers.get("content-type") ?? "application/octet-stream",
+                await image.arrayBuffer(),
+              );
+
+              const result = {
+                ...(await fetchR2(ctx)),
+                toast: { type: "success", message: "Saved to media library" },
+              };
+              return result;
+            }
           }
 
-          if (
-            interaction.type === "form_submit" &&
-            interaction.action_id === "fetch_r2"
-          ) {
+          const interaction = _routeCtx.input as BlockInteraction;
+
+          if (interaction.type === "form_submit" && actionId === "fetch_r2") {
             const refresh = await saveSettings(ctx, interaction.values ?? {});
 
             const result = {
@@ -403,6 +431,8 @@ const plugin: SandboxedPlugin = {
             };
             return result;
           }
+          const result = await fetchR2(ctx);
+          return result;
         }
         return { blocks: [] };
       },

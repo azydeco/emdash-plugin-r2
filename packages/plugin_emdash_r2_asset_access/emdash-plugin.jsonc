@@ -16,7 +16,12 @@
   // KV, and route/hook registration. Changing these between
   // releases requires a version bump because installed
   // users have consented to the old contract.
-  "capabilities": ["content:read", "network:request:unrestricted"],
+  "capabilities": [
+    "content:read",
+    "network:request:unrestricted",
+    "media:read",
+    "media:write",
+  ],
   "allowedHosts": [],
   "storage": {},
   "admin": {
