@@ -377,10 +377,6 @@ const plugin: SandboxedPlugin = {
         if (page === "/settings") {
           const interaction = _routeCtx.input as BlockInteraction;
 
-          if (interaction.type === "page_load") {
-            return renderSettings(ctx);
-          }
-
           if (interaction.type === "form_submit" && actionId === "save") {
             await saveSettings(ctx, interaction.values ?? {});
             return {
@@ -388,13 +384,9 @@ const plugin: SandboxedPlugin = {
               toast: { type: "success", message: "Saved settings" },
             };
           }
+          return renderSettings(ctx);
         } else if (page === "/asset-listing") {
           const interaction = _routeCtx.input as BlockInteraction;
-
-          if (interaction.type === "page_load") {
-            const result = await fetchR2(ctx);
-            return result;
-          }
 
           if (interaction.type === "form_submit" && actionId === "fetch_r2") {
             const refresh = await saveSettings(ctx, interaction.values ?? {});
@@ -405,6 +397,8 @@ const plugin: SandboxedPlugin = {
             };
             return result;
           }
+          const result = await fetchR2(ctx);
+          return result;
         }
         return { blocks: [] };
       },
