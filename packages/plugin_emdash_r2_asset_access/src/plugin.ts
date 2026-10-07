@@ -406,8 +406,14 @@ const plugin: SandboxedPlugin = {
               method: "GET",
             });
             if (ctx.media && ctx.media.upload && image.ok) {
+              const existing = await ctx.media.list();
+
+              console.log(existing);
+
+              const filename = url.split("/").pop() || "example.png";
+
               await ctx.media.upload(
-                url.split("/").pop() ?? "example.png",
+                filename,
                 image.headers.get("content-type") ?? "application/octet-stream",
                 await image.arrayBuffer(),
               );
