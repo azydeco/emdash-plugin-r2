@@ -407,16 +407,21 @@ const plugin: SandboxedPlugin = {
             });
             if (ctx.media && ctx.media.upload && image.ok) {
               const existing = await ctx.media.list();
-
-              console.log(existing);
-
               const filename = url.split("/").pop() || "example.png";
-
-              await ctx.media.upload(
-                filename,
-                image.headers.get("content-type") ?? "application/octet-stream",
-                await image.arrayBuffer(),
+              const filenameExists = existing.items.find(
+                (item) => item.filename === filename,
               );
+
+              // Prevent existing files from being uploaded
+              if (!filenameExists) {
+                console.log("uploading new media");
+                await ctx.media.upload(
+                  filename,
+                  image.headers.get("content-type") ??
+                    "application/octet-stream",
+                  await image.arrayBuffer(),
+                );
+              }
 
               const result = {
                 ...(await fetchR2(ctx)),
