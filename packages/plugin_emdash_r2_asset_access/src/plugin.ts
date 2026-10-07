@@ -399,8 +399,6 @@ const plugin: SandboxedPlugin = {
           return renderSettings(ctx);
         } else if (page === "/asset-listing") {
           if (actionId && actionId?.startsWith("copy_") && ctx.http) {
-            console.log(ctx.site.url);
-
             const url = actionId.replace("copy_", "");
             const image = await ctx.http.fetch(url, {
               method: "GET",
