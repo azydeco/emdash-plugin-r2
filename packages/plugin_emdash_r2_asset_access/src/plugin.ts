@@ -224,7 +224,7 @@ async function fetchR2(ctx: PluginContext) {
   });
 
   // Prevents error Block response exceeds maximum node count 2000
-  keys = keys.slice(0, 125);
+  keys = keys.slice(0, 75);
 
   const sections = [];
 
@@ -249,7 +249,19 @@ async function fetchR2(ctx: PluginContext) {
               alt: i.toString(),
             },
           ],
-          [],
+          [
+            {
+              type: "actions",
+              elements: [
+                {
+                  type: "button",
+                  label: "Run",
+                  action_id: `copy_${url}`,
+                  style: "primary",
+                },
+              ],
+            },
+          ],
         ],
       });
       sections.push({
@@ -386,6 +398,44 @@ const plugin: SandboxedPlugin = {
           }
           return renderSettings(ctx);
         } else if (page === "/asset-listing") {
+          if (actionId && actionId?.startsWith("copy_") && ctx.http) {
+            console.log(ctx.site.url);
+
+            const url = actionId.replace("copy_", "");
+            const image = await ctx.http.fetch(url, {
+              method: "GET",
+            });
+            const media = await ctx.media?.list();
+            console.log(media?.items);
+            // POST to the emdash api media upload_url
+            // const response = await ctx.http.fetch(
+            //   `${ctx.site.url}/_emdash/api/media/upload_url`,
+            //   {
+            //     method: "POST",
+            //     headers: {
+            //       "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify({
+            //       filename: url.split("/").pop(),
+            //       contentType: image.headers.get("content-type"),
+            //       size: image.headers.get("content-length"),
+            //     }),
+            //   },
+            // );
+            // const data = await response.json();
+            // const uploadUrl = data.upload_url;
+
+            // PUT to the signed url
+
+            // Confirm with POST to {mediaId}/confirm
+
+            const result = {
+              ...(await fetchR2(ctx)),
+              toast: { type: "success", message: "Saved to media library" },
+            };
+            return result;
+          }
+
           const interaction = _routeCtx.input as BlockInteraction;
 
           if (interaction.type === "form_submit" && actionId === "fetch_r2") {
