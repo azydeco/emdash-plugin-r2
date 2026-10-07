@@ -255,7 +255,7 @@ async function fetchR2(ctx: PluginContext) {
               elements: [
                 {
                   type: "button",
-                  label: "Run",
+                  label: "Save to media library",
                   action_id: `copy_${url}`,
                   style: "primary",
                 },
@@ -405,35 +405,19 @@ const plugin: SandboxedPlugin = {
             const image = await ctx.http.fetch(url, {
               method: "GET",
             });
-            const media = await ctx.media?.list();
-            console.log(media?.items);
-            // POST to the emdash api media upload_url
-            // const response = await ctx.http.fetch(
-            //   `${ctx.site.url}/_emdash/api/media/upload_url`,
-            //   {
-            //     method: "POST",
-            //     headers: {
-            //       "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({
-            //       filename: url.split("/").pop(),
-            //       contentType: image.headers.get("content-type"),
-            //       size: image.headers.get("content-length"),
-            //     }),
-            //   },
-            // );
-            // const data = await response.json();
-            // const uploadUrl = data.upload_url;
+            if (ctx.media && ctx.media.upload && image.ok) {
+              await ctx.media.upload(
+                url.split("/").pop() ?? "example.png",
+                image.headers.get("content-type") ?? "application/octet-stream",
+                await image.arrayBuffer(),
+              );
 
-            // PUT to the signed url
-
-            // Confirm with POST to {mediaId}/confirm
-
-            const result = {
-              ...(await fetchR2(ctx)),
-              toast: { type: "success", message: "Saved to media library" },
-            };
-            return result;
+              const result = {
+                ...(await fetchR2(ctx)),
+                toast: { type: "success", message: "Saved to media library" },
+              };
+              return result;
+            }
           }
 
           const interaction = _routeCtx.input as BlockInteraction;
