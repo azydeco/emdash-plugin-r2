@@ -6,9 +6,8 @@
   "publisher": "example.com",
 
   "license": "MIT",
-  "author": { "name": "azydeco" },
-  // TODO: replace the placeholder with a real security contact email or url before publishing. The lexicon mandates at least one.
-  "security": { "email": "TODO@example.com" },
+  "author": { "name": "Azydeco Software Ltd", "url": "https://azydeco.com" },
+  "security": { "email": "tellmemore@azydeco.com" },
   "repo": "https://github.com/azydeco/emdash-plugin-r2",
 
   // Trust contract — what runtime APIs the plugin asks for.
