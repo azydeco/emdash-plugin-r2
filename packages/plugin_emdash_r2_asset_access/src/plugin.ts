@@ -224,7 +224,7 @@ async function fetchR2(ctx: PluginContext) {
   });
 
   // Prevents error Block response exceeds maximum node count 2000
-  keys = keys.slice(0, 75);
+  keys = keys.slice(0, 85);
 
   const sections = [];
 
@@ -281,6 +281,10 @@ async function fetchR2(ctx: PluginContext) {
   return {
     blocks: [
       { type: "header", text: "R2 Bucket Images" },
+      {
+        type: "section",
+        text: "Example text",
+      },
       {
         type: "form",
         block_id: "cloudflare",
