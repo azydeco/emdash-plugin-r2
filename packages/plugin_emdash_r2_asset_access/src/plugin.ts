@@ -224,7 +224,7 @@ async function fetchR2(ctx: PluginContext) {
   });
 
   // Prevents error Block response exceeds maximum node count 2000
-  keys = keys.slice(0, 75);
+  keys = keys.slice(0, 85);
 
   const sections = [];
 
@@ -281,6 +281,10 @@ async function fetchR2(ctx: PluginContext) {
   return {
     blocks: [
       { type: "header", text: "R2 Bucket Images" },
+      {
+        type: "section",
+        text: "Example text",
+      },
       {
         type: "form",
         block_id: "cloudflare",
@@ -399,18 +403,27 @@ const plugin: SandboxedPlugin = {
           return renderSettings(ctx);
         } else if (page === "/asset-listing") {
           if (actionId && actionId?.startsWith("copy_") && ctx.http) {
-            console.log(ctx.site.url);
-
             const url = actionId.replace("copy_", "");
             const image = await ctx.http.fetch(url, {
               method: "GET",
             });
             if (ctx.media && ctx.media.upload && image.ok) {
-              await ctx.media.upload(
-                url.split("/").pop() ?? "example.png",
-                image.headers.get("content-type") ?? "application/octet-stream",
-                await image.arrayBuffer(),
+              const existing = await ctx.media.list();
+              const filename = url.split("/").pop() || "example.png";
+              const filenameExists = existing.items.find(
+                (item) => item.filename === filename,
               );
+
+              // Prevent existing files from being uploaded
+              if (!filenameExists) {
+                console.log("uploading new media");
+                await ctx.media.upload(
+                  filename,
+                  image.headers.get("content-type") ??
+                    "application/octet-stream",
+                  await image.arrayBuffer(),
+                );
+              }
 
               const result = {
                 ...(await fetchR2(ctx)),
