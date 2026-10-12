@@ -1,36 +1,16 @@
-# my-plugin
+# @azydeco/emdash_plugin_r2_asset_access
 
-A sandboxed plugin for [EmDash CMS](https://emdashcms.com).
+A sandboxed plugin for [EmDash](https://emdashcms.com) that allows images to be saved into the media library from an R2 bucket. Keys can optionally be searched by prefix.
 
-## Develop
+## Requirements
 
-```sh
-pnpm install
-pnpm typecheck
-pnpm test
-```
+- R2 bucket
+- Access Key
+- Secret Access Key
+- API URL
+- Public Endpoint
+- Prefix (optional)
 
-To test against a running EmDash site, run `pnpm dev` in this
-directory (rebuilds on save) and `pnpm add file:../path/to/this`
-in the site. Then `import myPlugin from "my-plugin"` and pass
-it into `emdash({ sandboxed: [myPlugin] })`.
+## Licence
 
-## Publish
-
-```sh
-emdash-plugin login        # if you're not already logged in
-emdash-plugin publish      # builds and uploads artifacts to your PDS
-```
-
-## Version bumps
-
-Bump `version` in `package.json` when you ship a release. The
-scaffold's `emdash-plugin.jsonc` deliberately omits `version` —
-the build pipeline reads it from `package.json` so there's a single
-source of truth. **Bump major** for breaking changes, **bump minor**
-for new routes or hooks, **bump patch** for fixes.
-
-You MUST bump version whenever you change `capabilities`, `allowedHosts`,
-or `storage` in the manifest. Installed users have consented to the
-old trust contract; a change without a version bump would let new
-behaviour slip past consent.
+Azydeco chooses the MIT license for this project to ensure that developers can feel they have access to the source code within their native Emdash deploys without a concern that they are expected to deliver access to the origins of this source within their own deploys. The freedoms of the MIT license both commercially and in terms of Source access are considered to be the best option for this project.
