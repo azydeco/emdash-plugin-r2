@@ -2,24 +2,28 @@
 	"name": "emdash-plugin-r2",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"dev": "pnpm -r --if-present --parallel run dev",
-		"test": "pnpm -r --if-present run test"
+	"keywords": [],
+	"homepage": "https://github.com/azydeco/emdash-plugin-r2#readme",
+	"bugs": {
+		"url": "https://github.com/azydeco/emdash-plugin-r2/issues"
 	},
+	"license": "ISC",
+	"author": "",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/azydeco/emdash-plugin-r2.git"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
 	"type": "commonjs",
-	"bugs": {
-		"url": "https://github.com/azydeco/emdash-plugin-r2/issues"
+	"main": "index.js",
+	"scripts": {
+		"dev": "pnpm -r --if-present --parallel run dev",
+		"test": "pnpm -r --if-present run test",
+		"format": "oxfmt && prettier --write \"**/*.astro\""
 	},
-	"homepage": "https://github.com/azydeco/emdash-plugin-r2#readme",
 	"devDependencies": {
+		"oxfmt": "^0.73.0",
+		"oxlint": "^1.88.0",
+		"oxlint-tsgolint": "^7.0.2004",
 		"prettier": "3.9.9",
 		"prettier-plugin-astro": "^1.1.0"
 	}

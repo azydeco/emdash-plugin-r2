@@ -1,6 +1,7 @@
 {
-  "recommendations": [
-    "streetsidesoftware.code-spell-checker",
-    "mhutchie.git-graph"
-  ]
+	"recommendations": [
+		"streetsidesoftware.code-spell-checker",
+		"mhutchie.git-graph",
+		"oxc.oxc-vscode"
+	]
 }
