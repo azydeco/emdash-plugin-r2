@@ -30,14 +30,20 @@ interface S3Credentials {
 
 // Utility: Compute SHA-256 hash in hexadecimal format
 async function sha256Hex(data: string): Promise<string> {
-	const hash = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(data));
+	const hash = await crypto.subtle.digest(
+		"SHA-256",
+		new TextEncoder().encode(data),
+	);
 	return Array.from(new Uint8Array(hash))
 		.map((b) => b.toString(16).padStart(2, "0"))
 		.join("");
 }
 
 // Utility: Compute HMAC-SHA256
-async function hmacSha256(key: ArrayBuffer | Uint8Array, data: string): Promise<ArrayBuffer> {
+async function hmacSha256(
+	key: ArrayBuffer | Uint8Array,
+	data: string,
+): Promise<ArrayBuffer> {
 	const cryptoKey = await crypto.subtle.importKey(
 		"raw",
 		key,
@@ -50,7 +56,7 @@ async function hmacSha256(key: ArrayBuffer | Uint8Array, data: string): Promise<
 
 export async function listBucketObjectsDirect(
 	ctx: PluginContext,
-	creds: S3Credentials,
+	credentials: S3Credentials,
 	prefix = "",
 ): Promise<string> {
 	if (!ctx.http) return "HTTP client not available";
@@ -67,14 +73,15 @@ export async function listBucketObjectsDirect(
 		queryParams.sort();
 
 		const canonicalQuery = queryParams.toString();
-		const isR2Path = creds.endpointHost.includes("cloudflare");
-		const canonicalUri = isR2Path ? "/" + creds.bucket : "/";
+		const isR2Path = credentials.endpointHost.includes("cloudflare");
+		const canonicalUri = isR2Path ? "/" + credentials.bucket : "/";
 
 		// 2. Canonical Headers (sorted, lowercase)
-		const emptyPayloadHash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+		const emptyPayloadHash =
+			"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 		const canonicalHeaders =
 			"host:" +
-			creds.endpointHost +
+			credentials.endpointHost +
 			"\n" +
 			"x-amz-content-sha256:" +
 			emptyPayloadHash +
@@ -95,7 +102,8 @@ export async function listBucketObjectsDirect(
 		].join("\n");
 
 		// 4. Build String to Sign
-		const credentialScope = dateStamp + "/" + creds.region + "/s3/aws4_request";
+		const credentialScope =
+			dateStamp + "/" + credentials.region + "/s3/aws4_request";
 		const stringToSign = [
 			"AWS4-HMAC-SHA256",
 			amzDate,
@@ -105,22 +113,24 @@ export async function listBucketObjectsDirect(
 
 		// 5. Derive Signing Key
 		const kDate = await hmacSha256(
-			new TextEncoder().encode("AWS4" + creds.secretAccessKey),
+			new TextEncoder().encode("AWS4" + credentials.secretAccessKey),
 			dateStamp,
 		);
-		const kRegion = await hmacSha256(kDate, creds.region);
+		const kRegion = await hmacSha256(kDate, credentials.region);
 		const kService = await hmacSha256(kRegion, "s3");
 		const kSigning = await hmacSha256(kService, "aws4_request");
 
 		// 6. Calculate Signature
-		const signatureBytes = new Uint8Array(await hmacSha256(kSigning, stringToSign));
+		const signatureBytes = new Uint8Array(
+			await hmacSha256(kSigning, stringToSign),
+		);
 		const signatureHex = Array.from(signatureBytes)
 			.map((b) => b.toString(16).padStart(2, "0"))
 			.join("");
 
 		const authorizationHeader =
 			"AWS4-HMAC-SHA256 Credential=" +
-			creds.accessKeyId +
+			credentials.accessKeyId +
 			"/" +
 			credentialScope +
 			", " +
@@ -130,11 +140,16 @@ export async function listBucketObjectsDirect(
 			signatureHex;
 
 		// 7. Dispatch HTTP Fetch
-		const targetUrl = "https://" + creds.endpointHost + canonicalUri + "?" + canonicalQuery;
+		const targetUrl =
+			"https://" +
+			credentials.endpointHost +
+			canonicalUri +
+			"?" +
+			canonicalQuery;
 		const response = await ctx.http.fetch(targetUrl, {
 			method: "GET",
 			headers: {
-				Host: creds.endpointHost,
+				Host: credentials.endpointHost,
 				"x-amz-date": amzDate,
 				"x-amz-content-sha256": emptyPayloadHash,
 				Authorization: authorizationHeader,
@@ -149,20 +164,26 @@ export async function listBucketObjectsDirect(
 
 		return await response.text();
 	} catch (e) {
-		return `S3 Error: ${e}`;
+		return `S3 Error:` + e;
 	}
 }
 
 async function loadSettings(ctx: PluginContext) {
-	const [bucket_name, api_key, secret_access_key, api_url, public_endpoint, prefix] =
-		await Promise.all([
-			ctx.kv.get<string>("settings:bucketName"),
-			ctx.kv.get<string>("settings:apiKey"),
-			ctx.kv.get<string>("settings:secretAccessKey"),
-			ctx.kv.get<string>("settings:apiUrl"),
-			ctx.kv.get<string>("settings:publicEndpoint"),
-			ctx.kv.get<string>("settings:prefix"),
-		]);
+	const [
+		bucket_name,
+		api_key,
+		secret_access_key,
+		api_url,
+		public_endpoint,
+		prefix,
+	] = await Promise.all([
+		ctx.kv.get<string>("settings:bucketName"),
+		ctx.kv.get<string>("settings:apiKey"),
+		ctx.kv.get<string>("settings:secretAccessKey"),
+		ctx.kv.get<string>("settings:apiUrl"),
+		ctx.kv.get<string>("settings:publicEndpoint"),
+		ctx.kv.get<string>("settings:prefix"),
+	]);
 	return {
 		bucket_name,
 		api_key,
@@ -176,8 +197,14 @@ async function loadSettings(ctx: PluginContext) {
 async function fetchR2(ctx: PluginContext) {
 	if (!ctx.http) return { blocks: [] };
 
-	const { bucket_name, api_key, secret_access_key, api_url, public_endpoint, prefix } =
-		await loadSettings(ctx);
+	const {
+		bucket_name,
+		api_key,
+		secret_access_key,
+		api_url,
+		public_endpoint,
+		prefix,
+	} = await loadSettings(ctx);
 
 	if (!api_url || !api_key || !secret_access_key || !bucket_name)
 		return { blocks: [{ type: "header", text: "Missing settings" }] };
@@ -191,10 +218,14 @@ async function fetchR2(ctx: PluginContext) {
 	};
 
 	const xml = await listBucketObjectsDirect(ctx, config, prefix ?? "");
-	let allKeys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map((match) => match[1]);
+	let allKeys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map(
+		(match) => match[1],
+	);
 	let keys = allKeys.filter((i) => {
 		const name = i.toLowerCase();
-		return supportedFileTypes.some((supported) => name.endsWith(`.${supported}`));
+		return supportedFileTypes.some((supported) =>
+			name.endsWith(`.${supported}`),
+		);
 	});
 
 	// Prevents error Block response exceeds maximum node count 2000
@@ -219,8 +250,8 @@ async function fetchR2(ctx: PluginContext) {
 						{
 							type: "image",
 							block_id: `image_${i}`,
-							url: `${url}`,
-							alt: i.toString(),
+							url: url,
+							alt: i,
 						},
 					],
 					[
@@ -240,7 +271,7 @@ async function fetchR2(ctx: PluginContext) {
 			});
 			sections.push({
 				type: "section",
-				text: `${url.toString()}`,
+				text: url,
 			});
 			sections.push({ type: "divider" });
 		}
@@ -248,7 +279,7 @@ async function fetchR2(ctx: PluginContext) {
 		for (const i of keys) {
 			sections.push({
 				type: "section",
-				text: i.toString(),
+				text: i,
 			});
 		}
 	}
@@ -281,52 +312,62 @@ async function fetchR2(ctx: PluginContext) {
 }
 
 async function renderSettings(ctx: PluginContext): Promise<BlockResponse> {
-	const { bucket_name, api_key, secret_access_key, api_url, public_endpoint, prefix } =
+	const { bucket_name, api_url, public_endpoint, prefix } =
 		await loadSettings(ctx);
 
 	return {
 		blocks: [
-			{ type: "header", text: "R2 Asset Access Settings" },
 			{
-				type: "form",
-				block_id: "settings",
-				fields: [
+				type: "tab",
+				panels: [
 					{
-						type: "text_input",
-						action_id: "bucket_name",
-						label: "Bucket Name",
-						initial_value: bucket_name ?? "",
-					},
-					{
-						type: "secret_input",
-						action_id: "api_key",
-						label: "API Key",
-					},
-					{
-						type: "secret_input",
-						action_id: "secret_access_key",
-						label: "Secret Access Key",
-					},
-					{
-						type: "text_input",
-						action_id: "api_url",
-						label: "API URL",
-						initial_value: api_url ?? "",
-					},
-					{
-						type: "text_input",
-						action_id: "public_endpoint",
-						label: "Public Endpoint",
-						initial_value: public_endpoint ?? "",
-					},
-					{
-						type: "text_input",
-						action_id: "prefix",
-						label: "Prefix (optional)",
-						initial_value: prefix ?? "",
+						label: "Settings",
+						blocks: [
+							{ type: "header", text: "R2 Asset Access Settings" },
+							{
+								type: "form",
+								block_id: "settings",
+								fields: [
+									{
+										type: "text_input",
+										action_id: "bucket_name",
+										label: "Bucket Name",
+										initial_value: bucket_name ?? "",
+									},
+									{
+										type: "secret_input",
+										action_id: "api_key",
+										label: "API Key",
+									},
+									{
+										type: "secret_input",
+										action_id: "secret_access_key",
+										label: "Secret Access Key",
+									},
+									{
+										type: "text_input",
+										action_id: "api_url",
+										label: "API URL",
+										initial_value: api_url ?? "",
+									},
+									{
+										type: "text_input",
+										action_id: "public_endpoint",
+										label: "Public Endpoint",
+										initial_value: public_endpoint ?? "",
+									},
+									{
+										type: "text_input",
+										action_id: "prefix",
+										label: "Prefix (optional)",
+										initial_value: prefix ?? "",
+									},
+								],
+								submit: { label: "Save", action_id: "save" },
+							},
+						],
 					},
 				],
-				submit: { label: "Save", action_id: "save" },
 			},
 		],
 	};
@@ -378,14 +419,17 @@ const plugin: SandboxedPlugin = {
 						if (ctx.media && ctx.media.upload && image.ok) {
 							const existing = await ctx.media.list();
 							const filename = url.split("/").pop() || "example.png";
-							const filenameExists = existing.items.find((item) => item.filename === filename);
+							const filenameExists = existing.items.find(
+								(item) => item.filename === filename,
+							);
 
 							// Prevent existing files from being uploaded
 							if (!filenameExists) {
 								console.log("uploading new media");
 								await ctx.media.upload(
 									filename,
-									image.headers.get("content-type") ?? "application/octet-stream",
+									image.headers.get("content-type") ??
+										"application/octet-stream",
 									await image.arrayBuffer(),
 								);
 							}
@@ -401,7 +445,7 @@ const plugin: SandboxedPlugin = {
 					const interaction = _routeCtx.input as BlockInteraction;
 
 					if (interaction.type === "form_submit" && actionId === "fetch_r2") {
-						const refresh = await saveSettings(ctx, interaction.values ?? {});
+						await saveSettings(ctx, interaction.values ?? {});
 
 						const result = {
 							...(await fetchR2(ctx)),
@@ -435,12 +479,14 @@ async function saveSettings(
 		prefix?: string;
 	},
 ) {
-	if (values.bucket_name) await ctx.kv.set("settings:bucketName", values.bucket_name);
+	if (values.bucket_name)
+		await ctx.kv.set("settings:bucketName", values.bucket_name);
 	if (values.api_key) await ctx.kv.set("settings:apiKey", values.api_key);
 	if (values.secret_access_key)
 		await ctx.kv.set("settings:secretAccessKey", values.secret_access_key);
 	if (values.api_url) await ctx.kv.set("settings:apiUrl", values.api_url);
-	if (values.public_endpoint) await ctx.kv.set("settings:publicEndpoint", values.public_endpoint);
+	if (values.public_endpoint)
+		await ctx.kv.set("settings:publicEndpoint", values.public_endpoint);
 	await ctx.kv.set("settings:prefix", values.prefix);
 }
 
