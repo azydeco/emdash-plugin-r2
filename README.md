@@ -18,7 +18,9 @@ A pnpm workspace containing two packages:
 
 After cloning the repository run `pnpm i` to install all of the dependencies required by the packages.
 
-From the project root run `pnpm dev` to start the website for testing (web-cloudflare) and the plugin (plugin_emdash_r2_asset_access).
+From the project root run `pnpm build`. This builds both the plugin and the site so that no errors occur when you start them.
+
+Run `pnpm dev` to start the website locally for testing (web-cloudflare) and the plugin (plugin_emdash_r2_asset_access).
 
 Once they have started in a browser go to <http://127.0.0.1:4321/_emdash/api/setup/dev-bypass?redirect=/_emdash/admin> to open the Emdash admin UI. On the admin sidebar find R2 Asset Access Settings and open it. Enter your keys and urls from Cloudflare then click on save. There will be a confirmation pop up.
 

@@ -9,7 +9,7 @@ The pnpm workspace looks in `hosts/*` and `packages/*` for the local Emdash site
 
 ## Running locally
 
-Before running any of the scripts in a terminal do `pnpm i` to install all of the dependencies in the workspace.
+Before running any of the scripts in a terminal do `pnpm i` to install all of the dependencies in the workspace. With the dependencies installed run `pnpm build` to build each package.
 
 Running `pnpm dev` from the root runs the dev script in each package, building the Emdash plugin starting the local site, which can be accessed in a browser on <http://localhost:4321/>.
 
