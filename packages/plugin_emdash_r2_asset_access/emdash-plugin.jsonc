@@ -14,7 +14,12 @@
 	// KV, and route/hook registration. Changing these between
 	// releases requires a version bump because installed
 	// users have consented to the old contract.
-	"capabilities": ["content:read", "network:request:unrestricted", "media:read", "media:write"],
+	"capabilities": [
+		"content:read",
+		"network:request:unrestricted",
+		"media:read",
+		"media:write",
+	],
 	"allowedHosts": [],
 	"storage": {},
 	"release": {
@@ -24,11 +29,6 @@
 	},
 	"admin": {
 		"pages": [
-			{
-				"path": "/settings",
-				"label": "R2 Asset Access Settings",
-				"icon": "settings",
-			},
 			{
 				"path": "/asset-listing",
 				"label": "R2 Asset Listing",
