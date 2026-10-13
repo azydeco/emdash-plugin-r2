@@ -1,26 +1,26 @@
 {
-  "name": "emdash-plugin-r2",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "dev": "pnpm -r --if-present --parallel run dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/azydeco/emdash-plugin-r2.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/azydeco/emdash-plugin-r2/issues"
-  },
-  "homepage": "https://github.com/azydeco/emdash-plugin-r2#readme",
-  "devDependencies": {
-    "prettier": "3.9.9",
-    "prettier-plugin-astro": "^1.1.0"
-  }
+	"name": "emdash-plugin-r2",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "pnpm -r --if-present --parallel run dev",
+		"test": "pnpm -r --if-present run test"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/azydeco/emdash-plugin-r2.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "commonjs",
+	"bugs": {
+		"url": "https://github.com/azydeco/emdash-plugin-r2/issues"
+	},
+	"homepage": "https://github.com/azydeco/emdash-plugin-r2#readme",
+	"devDependencies": {
+		"prettier": "3.9.9",
+		"prettier-plugin-astro": "^1.1.0"
+	}
 }
