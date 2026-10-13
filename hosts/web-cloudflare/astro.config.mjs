@@ -8,38 +8,37 @@ import emdash from "emdash/astro";
 import r2Plugin from "@azydeco/emdash_plugin_r2_asset_access";
 
 export default defineConfig({
-  output: "server",
-  adapter: cloudflare({ inspectorPort: 9229 }),
-  image: {
-    layout: "constrained",
-    responsiveStyles: true,
-  },
-  integrations: [
-    react(),
-    emdash({
-      database: d1({ binding: "DB", session: "auto" }),
-      storage: r2({ binding: "MEDIA" }),
-      plugins: [formsPlugin()],
-      sandboxed: [webhookNotifier, r2Plugin],
-      sandboxRunner: sandbox(),
-      marketplace: "https://marketplace.emdashcms.com",
-    }),
-  ],
-  fonts: [
-    {
-      provider: fontProviders.google(),
-      name: "Inter",
-      cssVariable: "--font-body",
-      weights: [400, 500, 600, 700],
-      fallbacks: ["sans-serif"],
-    },
-    {
-      provider: fontProviders.google(),
-      name: "JetBrains Mono",
-      cssVariable: "--font-mono",
-      weights: [400, 500],
-      fallbacks: ["monospace"],
-    },
-  ],
-  devToolbar: { enabled: false },
+	output: "server",
+	adapter: cloudflare({ inspectorPort: 9229 }),
+	image: {
+		layout: "constrained",
+		responsiveStyles: true,
+	},
+	integrations: [
+		react(),
+		emdash({
+			database: d1({ binding: "DB", session: "auto" }),
+			storage: r2({ binding: "MEDIA" }),
+			plugins: [formsPlugin()],
+			sandboxed: [webhookNotifier, r2Plugin],
+			sandboxRunner: sandbox(),
+		}),
+	],
+	fonts: [
+		{
+			provider: fontProviders.google(),
+			name: "Inter",
+			cssVariable: "--font-body",
+			weights: [400, 500, 600, 700],
+			fallbacks: ["sans-serif"],
+		},
+		{
+			provider: fontProviders.google(),
+			name: "JetBrains Mono",
+			cssVariable: "--font-mono",
+			weights: [400, 500],
+			fallbacks: ["monospace"],
+		},
+	],
+	devToolbar: { enabled: false },
 });
