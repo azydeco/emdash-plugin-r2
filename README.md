@@ -20,7 +20,7 @@ After cloning the repository run `pnpm i` to install all of the dependencies req
 
 From the project root run `pnpm dev` to start the website for testing (web-cloudflare) and the plugin (plugin_emdash_r2_asset_access).
 
-Once they have started in a browser go to <http://127.0.0.1:4321/_emdash/api/setup/dev-bypass?redirect=/_emdash/admin> to go the Emdash admin UI. On the admin sidebar find R2 Asset Access Settings and open it. Enter your keys and urls from Cloudflare then click on save. There will be a confirmation pop up.
+Once they have started in a browser go to <http://127.0.0.1:4321/_emdash/api/setup/dev-bypass?redirect=/_emdash/admin> to open the Emdash admin UI. On the admin sidebar find R2 Asset Access Settings and open it. Enter your keys and urls from Cloudflare then click on save. There will be a confirmation pop up.
 
 Navigate to the R2 Asset Listing tab and the image contents of your Cloudflare R2 bucket will be listed. You can search again by inputting an optional prefix and then clicking on Search by prefix. This will make another fetch to the bucket. Each image is accompanied by its public URL and a Save to media library button. You can copy and paste the url into a page, or you can click on the Save button and the images will be added to your Emdash media library.
 
