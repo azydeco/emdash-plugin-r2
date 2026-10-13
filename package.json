@@ -17,6 +17,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "pnpm -r --if-present --parallel run dev",
+		"build": "pnpm -r --if-present run build",
 		"test": "pnpm -r --if-present run test",
 		"format": "oxfmt && prettier --write \"**/*.astro\""
 	},
