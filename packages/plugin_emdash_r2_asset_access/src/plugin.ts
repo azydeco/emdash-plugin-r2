@@ -223,6 +223,14 @@ async function fetchR2(ctx: PluginContext) {
 		};
 
 		const xml = await listBucketObjectsDirect(ctx, config, prefix ?? "");
+		if (!xml.includes("<Key>")) {
+			// If the fetch fails
+			sections.push({
+				type: "section",
+				text: xml,
+			});
+		}
+
 		let allKeys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map(
 			(match) => match[1],
 		);
@@ -381,24 +389,24 @@ async function fetchR2(ctx: PluginContext) {
 const plugin: SandboxedPlugin = {
 	routes: {
 		admin: {
-			handler: async (_routeCtx, ctx) => {
+			handler: async (routeCtx, ctx) => {
 				const actionId =
-					typeof _routeCtx.input === "object" &&
-					_routeCtx.input !== null &&
-					"action_id" in _routeCtx.input &&
-					typeof _routeCtx.input.action_id === "string"
-						? _routeCtx.input.action_id
+					typeof routeCtx.input === "object" &&
+					routeCtx.input !== null &&
+					"action_id" in routeCtx.input &&
+					typeof routeCtx.input.action_id === "string"
+						? routeCtx.input.action_id
 						: undefined;
 
 				const page =
-					typeof _routeCtx.input === "object" &&
-					_routeCtx.input !== null &&
-					"page" in _routeCtx.input &&
-					typeof _routeCtx.input.page === "string"
-						? _routeCtx.input.page
+					typeof routeCtx.input === "object" &&
+					routeCtx.input !== null &&
+					"page" in routeCtx.input &&
+					typeof routeCtx.input.page === "string"
+						? routeCtx.input.page
 						: "";
 
-				const interaction = _routeCtx.input as BlockInteraction;
+				const interaction = routeCtx.input as BlockInteraction;
 
 				if (interaction.type === "form_submit" && actionId === "save") {
 					await saveSettings(ctx, interaction.values ?? {});
