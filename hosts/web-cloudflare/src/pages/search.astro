@@ -31,40 +31,33 @@ const { items: results } = query
 				class="search-input"
 				autofocus
 			/>
-			<button type="submit" class="search-button">Search</button>
+			<button type="submit" class="search-button">
+				Search
+			</button>
 		</form>
 
-		{
-			query && (
-				<p class="search-summary">
-					{results.length === 0
-						? `No results for "${query}"`
-						: `${results.length} result${results.length === 1 ? "" : "s"} for "${query}"`}
-				</p>
-			)
-		}
+		{query && (
+			<p class="search-summary">
+				{results.length === 0
+					? `No results for "${query}"`
+					: `${results.length} result${results.length === 1 ? "" : "s"} for "${query}"`}
+			</p>
+		)}
 
-		{
-			results.length > 0 && (
-				<ol class="search-results">
-					{results.map((result) => (
-						<li class="search-result">
-							<a
-								href={`/posts/${result.slug ?? result.id}`}
-								class="result-link"
-							>
-								<h2 class="result-title">
-									{result.title ?? "Untitled"}
-								</h2>
-								{result.snippet && (
-									<p class="result-snippet" set:html={result.snippet} />
-								)}
-							</a>
-						</li>
-					))}
-				</ol>
-			)
-		}
+		{results.length > 0 && (
+			<ol class="search-results">
+				{results.map((result) => (
+					<li class="search-result">
+						<a href={`/posts/${result.slug ?? result.id}`} class="result-link">
+							<h2 class="result-title">{result.title ?? "Untitled"}</h2>
+							{result.snippet && (
+								<p class="result-snippet" set:html={result.snippet} />
+							)}
+						</a>
+					</li>
+				))}
+			</ol>
+		)}
 
 		{!query && <p class="search-hint">Enter a search term to find posts.</p>}
 	</section>

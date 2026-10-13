@@ -1,0 +1,46 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["eslint", "typescript", "unicorn", "oxc", "import", "vitest", "react", "jsx-a11y"],
+	"categories": {
+		"correctness": "error",
+		"suspicious": "warn",
+		"perf": "warn"
+	},
+	"rules": {
+		// The plugin compiles JSX with the automatic runtime (`jsx: "react-jsx"` in
+		// its tsconfig, React 19), so no `React` import is needed and the rule
+		// fires on every element.
+		"react/react-in-jsx-scope": "off",
+		// A stylesheet has nothing to bind to; `import "./theme.css"` is the only
+		// way to pull one in for its side effect. The rule's own docs give
+		// `**/*.css` as the example allow-pattern for this case.
+		"import/no-unassigned-import": ["warn", { "allow": ["**/*.css"] }],
+		// `_type` is Portable Text's own field name (from the CMS content
+		// shape), not a private-variable convention we chose.
+		"no-underscore-dangle": ["warn", { "allow": ["_type"] }]
+	},
+	"overrides": [
+		{
+			// Test doubles for host interfaces (`KVAccess`, `RouteContext`) are
+			// generic over the stored value and only populate the fields the code
+			// under test reads; the casts are the documented way they say so.
+			"files": ["**/test-support.ts"],
+			"rules": {
+				"typescript/no-unsafe-type-assertion": "off"
+			}
+		}
+	],
+	"options": {
+		"typeAware": true
+	},
+	"ignorePatterns": [
+		"**/dist/**",
+		"**/.wrangler/**",
+		"**/.astro/**",
+		"**/emdash-env.d.ts",
+		"**/worker-configuration.d.ts",
+		"hosts/web-cloudflare/seed/seed.json",
+		"**/*.md",
+		"**/*.d.ts"
+	]
+}

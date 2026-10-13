@@ -1,11 +1,11 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
+import r2Plugin from "@azydeco/emdash_plugin_r2_asset_access";
 import { d1, r2, sandbox } from "@emdash-cms/cloudflare";
 import { formsPlugin } from "@emdash-cms/plugin-forms";
 import webhookNotifier from "@emdash-cms/plugin-webhook-notifier";
 import { defineConfig, fontProviders } from "astro/config";
 import emdash from "emdash/astro";
-import r2Plugin from "@azydeco/emdash_plugin_r2_asset_access";
 
 export default defineConfig({
 	output: "server",

@@ -4,7 +4,7 @@ A pnpm workspace containing two packages:
 
 - `hosts/web-cloudflare`
 - `packages/plugin_emdash_r2_asset_access`
-  
+
 ## Requirements
 
 - pnpm

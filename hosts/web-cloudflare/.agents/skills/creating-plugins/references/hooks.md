@@ -16,15 +16,15 @@ Simple handler or full config:
 import type { SandboxedPlugin } from "emdash/plugin";
 
 const plugin: SandboxedPlugin = {
-	hooks: {
-		"content:afterSave": {
-			priority: 100,
-			timeout: 5000,
-			handler: async (event, ctx) => {
-				ctx.log.info("Saved", { id: event.content.id });
-			},
-		},
-	},
+  hooks: {
+    "content:afterSave": {
+      priority: 100,
+      timeout: 5000,
+      handler: async (event, ctx) => {
+        ctx.log.info("Saved", { id: event.content.id });
+      },
+    },
+  },
 };
 
 export default plugin;
@@ -399,18 +399,18 @@ Event:
 
 ```typescript
 {
-	comment: {
-		collection: string;
-		contentId: string;
-		parentId: string | null;
-		authorName: string;
-		authorEmail: string;
-		authorUserId: string | null;
-		body: string;
-		ipHash: string | null;
-		userAgent: string | null;
-	}
-	metadata: Record<string, unknown>;
+  comment: {
+    collection: string;
+    contentId: string;
+    parentId: string | null;
+    authorName: string;
+    authorEmail: string;
+    authorUserId: string | null;
+    body: string;
+    ipHash: string | null;
+    userAgent: string | null;
+  }
+  metadata: Record<string, unknown>;
 }
 ```
 

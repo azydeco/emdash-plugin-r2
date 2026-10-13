@@ -50,25 +50,23 @@ const filteredPosts = posts.map((post) => ({
 			</p>
 		</header>
 
-		{
-			filteredPosts.length === 0 ? (
-				<p class="no-posts">No posts with this tag yet.</p>
-			) : (
-				<div class="posts-grid">
-					{filteredPosts.map(({ post, tags }) => (
-						<PostCard
-							title={post.data.title}
-							excerpt={post.data.excerpt}
-							featuredImage={post.data.featured_image}
-							href={`/posts/${post.id}`}
-							date={post.data.publishedAt ?? undefined}
-							readingTime={getReadingTime(post.data.content)}
-							tags={tags.map((t) => ({ slug: t.slug, label: t.label }))}
-						/>
-					))}
-				</div>
-			)
-		}
+		{filteredPosts.length === 0 ? (
+			<p class="no-posts">No posts with this tag yet.</p>
+		) : (
+			<div class="posts-grid">
+				{filteredPosts.map(({ post, tags }) => (
+					<PostCard
+						title={post.data.title}
+						excerpt={post.data.excerpt}
+						featuredImage={post.data.featured_image}
+						href={`/posts/${post.id}`}
+						date={post.data.publishedAt ?? undefined}
+						readingTime={getReadingTime(post.data.content)}
+						tags={tags.map((t) => ({ slug: t.slug, label: t.label }))}
+					/>
+				))}
+			</div>
+		)}
 	</section>
 </Base>
 

@@ -19,23 +19,23 @@ A clean, minimal blog built with [EmDash](https://github.com/emdash-cms/emdash) 
 
 ## Pages
 
-| Page | Route |
-|---|---|
-| Homepage | `/` |
-| All posts | `/posts` |
-| Single post | `/posts/:slug` |
+| Page             | Route             |
+| ---------------- | ----------------- |
+| Homepage         | `/`               |
+| All posts        | `/posts`          |
+| Single post      | `/posts/:slug`    |
 | Category archive | `/category/:slug` |
-| Tag archive | `/tag/:slug` |
-| Search | `/search` |
-| Static pages | `/pages/:slug` |
-| 404 | fallback |
+| Tag archive      | `/tag/:slug`      |
+| Search           | `/search`         |
+| Static pages     | `/pages/:slug`    |
+| 404              | fallback          |
 
 ## Screenshots
 
-| | Desktop | Mobile |
-|---|---|---|
+|       | Desktop                                                                                                                                     | Mobile                                                                                                                                    |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | Light | ![homepage light desktop](https://raw.githubusercontent.com/emdash-cms/emdash/main/assets/templates/blog/latest/homepage-light-desktop.jpg) | ![homepage light mobile](https://raw.githubusercontent.com/emdash-cms/emdash/main/assets/templates/blog/latest/homepage-light-mobile.jpg) |
-| Dark | ![homepage dark desktop](https://raw.githubusercontent.com/emdash-cms/emdash/main/assets/templates/blog/latest/homepage-dark-desktop.jpg) | ![homepage dark mobile](https://raw.githubusercontent.com/emdash-cms/emdash/main/assets/templates/blog/latest/homepage-dark-mobile.jpg) |
+| Dark  | ![homepage dark desktop](https://raw.githubusercontent.com/emdash-cms/emdash/main/assets/templates/blog/latest/homepage-dark-desktop.jpg)   | ![homepage dark mobile](https://raw.githubusercontent.com/emdash-cms/emdash/main/assets/templates/blog/latest/homepage-dark-mobile.jpg)   |
 
 ## Infrastructure
 

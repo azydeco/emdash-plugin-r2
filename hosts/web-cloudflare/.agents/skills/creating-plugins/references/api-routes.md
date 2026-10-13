@@ -9,26 +9,26 @@ import type { SandboxedPlugin } from "emdash/plugin";
 import { z } from "zod";
 
 const submissionInput = z.object({
-	formId: z.string().min(1),
-	limit: z.coerce.number().int().min(1).max(100).default(50),
+  formId: z.string().min(1),
+  limit: z.coerce.number().int().min(1).max(100).default(50),
 });
 
 const plugin: SandboxedPlugin = {
-	routes: {
-		submissions: {
-			permission: "content:read",
-			handler: async (routeCtx, ctx) => {
-				const parsed = submissionInput.safeParse(routeCtx.input);
-				if (!parsed.success) return { ok: false, error: "INVALID_INPUT" };
+  routes: {
+    submissions: {
+      permission: "content:read",
+      handler: async (routeCtx, ctx) => {
+        const parsed = submissionInput.safeParse(routeCtx.input);
+        if (!parsed.success) return { ok: false, error: "INVALID_INPUT" };
 
-				const result = await ctx.storage.submissions.query({
-					where: { formId: parsed.data.formId },
-					limit: parsed.data.limit,
-				});
-				return { ok: true, ...result };
-			},
-		},
-	},
+        const result = await ctx.storage.submissions.query({
+          where: { formId: parsed.data.formId },
+          limit: parsed.data.limit,
+        });
+        return { ok: true, ...result };
+      },
+    },
+  },
 };
 
 export default plugin;
@@ -38,19 +38,19 @@ The handler receives two arguments:
 
 ```typescript
 interface SandboxedRouteContext {
-	input: unknown;
-	request: {
-		url: string;
-		method: string;
-		headers: Record<string, string>;
-	};
-	requestMeta?: {
-		ip: string | null;
-		userAgent: string | null;
-		referer: string | null;
-		geo: { country: string | null; region: string | null; city: string | null } | null;
-	};
-	user?: UserInfo;
+  input: unknown;
+  request: {
+    url: string;
+    method: string;
+    headers: Record<string, string>;
+  };
+  requestMeta?: {
+    ip: string | null;
+    userAgent: string | null;
+    referer: string | null;
+    geo: { country: string | null; region: string | null; city: string | null } | null;
+  };
+  user?: UserInfo;
 }
 ```
 
@@ -92,11 +92,11 @@ The host resolves these checks before invoking the plugin. `routeCtx.user` then 
 
 ```typescript
 interface UserInfo {
-	id: string;
-	email: string;
-	name: string | null;
-	role: number;
-	createdAt: string;
+  id: string;
+  email: string;
+  name: string | null;
+  role: number;
+  createdAt: string;
 }
 ```
 
@@ -198,32 +198,32 @@ import type { SandboxedPlugin } from "emdash/plugin";
 import { z } from "zod";
 
 const createEventInput = z.object({
-	title: z.string().min(1),
-	startsAt: z.string().datetime(),
+  title: z.string().min(1),
+  startsAt: z.string().datetime(),
 });
 
 const plugin: SandboxedPlugin = {
-	routes: {
-		"events/create": {
-			permission: "content:create",
-			handler: async (routeCtx) => {
-				const parsed = createEventInput.safeParse(routeCtx.input);
-				if (!parsed.success) return { ok: false, error: "INVALID_EVENT" };
-				return { ok: true, id: crypto.randomUUID() };
-			},
-		},
-	},
-	mcp: {
-		tools: {
-			createEvent: {
-				description: "Create a calendar event requested by the user.",
-				route: "events/create",
-				input: createEventInput,
-				output: z.object({ ok: z.boolean(), id: z.string().optional() }),
-				destructive: false,
-			},
-		},
-	},
+  routes: {
+    "events/create": {
+      permission: "content:create",
+      handler: async (routeCtx) => {
+        const parsed = createEventInput.safeParse(routeCtx.input);
+        if (!parsed.success) return { ok: false, error: "INVALID_EVENT" };
+        return { ok: true, id: crypto.randomUUID() };
+      },
+    },
+  },
+  mcp: {
+    tools: {
+      createEvent: {
+        description: "Create a calendar event requested by the user.",
+        route: "events/create",
+        input: createEventInput,
+        output: z.object({ ok: z.boolean(), id: z.string().optional() }),
+        destructive: false,
+      },
+    },
+  },
 };
 
 export default plugin;
