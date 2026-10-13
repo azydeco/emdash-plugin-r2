@@ -229,7 +229,7 @@ async function fetchR2(ctx: PluginContext) {
 	});
 
 	// Prevents error Block response exceeds maximum node count 2000
-	keys = keys.slice(0, 85);
+	keys = keys.slice(0, 75);
 
 	const sections = [];
 
@@ -285,28 +285,85 @@ async function fetchR2(ctx: PluginContext) {
 	}
 	return {
 		blocks: [
-			{ type: "header", text: "R2 Bucket Images" },
 			{
-				type: "section",
-				text: "Example text",
-			},
-			{
-				type: "form",
-				block_id: "cloudflare",
-				fields: [
+				type: "tab",
+				panels: [
 					{
-						type: "text_input",
-						action_id: "prefix",
-						label: "Prefix (optional)",
-						initial_value: prefix ?? "",
+						label: "Settings",
+						blocks: [
+							{ type: "header", text: "R2 Asset Access Settings" },
+							{
+								type: "form",
+								block_id: "settings",
+								fields: [
+									{
+										type: "text_input",
+										action_id: "bucket_name",
+										label: "Bucket Name",
+										initial_value: bucket_name ?? "",
+									},
+									{
+										type: "secret_input",
+										action_id: "api_key",
+										label: "API Key",
+									},
+									{
+										type: "secret_input",
+										action_id: "secret_access_key",
+										label: "Secret Access Key",
+									},
+									{
+										type: "text_input",
+										action_id: "api_url",
+										label: "API URL",
+										initial_value: api_url ?? "",
+									},
+									{
+										type: "text_input",
+										action_id: "public_endpoint",
+										label: "Public Endpoint",
+										initial_value: public_endpoint ?? "",
+									},
+									{
+										type: "text_input",
+										action_id: "prefix",
+										label: "Prefix (optional)",
+										initial_value: prefix ?? "",
+									},
+								],
+								submit: { label: "Save", action_id: "save" },
+							},
+						],
+					},
+					{
+						label: "Images",
+						blocks: [
+							{ type: "header", text: "R2 Bucket Images" },
+							{
+								type: "section",
+								text: "Example text",
+							},
+							{
+								type: "form",
+								block_id: "cloudflare",
+								fields: [
+									{
+										type: "text_input",
+										action_id: "prefix",
+										label: "Prefix (optional)",
+										initial_value: prefix ?? "",
+									},
+								],
+								submit: {
+									label: "Search by prefix",
+									action_id: "fetch_r2",
+								},
+							},
+							...sections,
+						],
 					},
 				],
-				submit: {
-					label: "Search by prefix",
-					action_id: "fetch_r2",
-				},
 			},
-			...sections,
 		],
 	};
 }
