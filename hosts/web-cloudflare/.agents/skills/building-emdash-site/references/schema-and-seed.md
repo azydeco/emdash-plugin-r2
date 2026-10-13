@@ -83,11 +83,11 @@ Collections define content types. Each collection becomes a database table (`ec_
 
 ```json
 {
-	"slug": "title",
-	"label": "Title",
-	"type": "string",
-	"required": true,
-	"searchable": true
+  "slug": "title",
+  "label": "Title",
+  "type": "string",
+  "required": true,
+  "searchable": true
 }
 ```
 
@@ -142,37 +142,37 @@ Define `blockTypes` before collections that use a `blocks` field. Each type reta
 
 ```json
 {
-	"version": "1",
-	"blockTypes": [
-		{
-			"slug": "hero",
-			"label": "Hero",
-			"currentVersion": 1,
-			"versions": [
-				{
-					"version": 1,
-					"fields": [
-						{ "slug": "heading", "label": "Heading", "type": "string", "required": true },
-						{ "slug": "image", "label": "Image", "type": "image" }
-					]
-				}
-			]
-		}
-	],
-	"collections": [
-		{
-			"slug": "pages",
-			"label": "Pages",
-			"fields": [
-				{
-					"slug": "layout",
-					"label": "Layout",
-					"type": "blocks",
-					"validation": { "allowedTypes": ["hero"], "maxItems": 20 }
-				}
-			]
-		}
-	]
+  "version": "1",
+  "blockTypes": [
+    {
+      "slug": "hero",
+      "label": "Hero",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            { "slug": "heading", "label": "Heading", "type": "string", "required": true },
+            { "slug": "image", "label": "Image", "type": "image" }
+          ]
+        }
+      ]
+    }
+  ],
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "fields": [
+        {
+          "slug": "layout",
+          "label": "Layout",
+          "type": "blocks",
+          "validation": { "allowedTypes": ["hero"], "maxItems": 20 }
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -182,10 +182,10 @@ Seeded block values include their type version and stable key:
 
 ```json
 {
-	"_type": "hero",
-	"_version": 1,
-	"_key": "home-hero",
-	"heading": "Build something useful"
+  "_type": "hero",
+  "_version": 1,
+  "_key": "home-hero",
+  "heading": "Build something useful"
 }
 ```
 
@@ -199,15 +199,15 @@ Taxonomies are tag/category systems attached to collections.
 
 ```json
 {
-	"name": "category",
-	"label": "Categories",
-	"labelSingular": "Category",
-	"hierarchical": true,
-	"collections": ["posts"],
-	"terms": [
-		{ "slug": "development", "label": "Development" },
-		{ "slug": "design", "label": "Design" }
-	]
+  "name": "category",
+  "label": "Categories",
+  "labelSingular": "Category",
+  "hierarchical": true,
+  "collections": ["posts"],
+  "terms": [
+    { "slug": "development", "label": "Development" },
+    { "slug": "design", "label": "Design" }
+  ]
 }
 ```
 
@@ -222,13 +222,13 @@ Navigation menus, managed from the admin UI.
 
 ```json
 {
-	"name": "primary",
-	"label": "Primary Navigation",
-	"items": [
-		{ "type": "custom", "label": "Home", "url": "/" },
-		{ "type": "custom", "label": "About", "url": "/pages/about" },
-		{ "type": "custom", "label": "Posts", "url": "/posts" }
-	]
+  "name": "primary",
+  "label": "Primary Navigation",
+  "items": [
+    { "type": "custom", "label": "Home", "url": "/" },
+    { "type": "custom", "label": "About", "url": "/pages/about" },
+    { "type": "custom", "label": "Posts", "url": "/posts" }
+  ]
 }
 ```
 
@@ -243,49 +243,49 @@ Named regions where editors can add configurable widgets.
 
 ```json
 {
-	"name": "sidebar",
-	"label": "Sidebar",
-	"description": "Widget area displayed on single post pages",
-	"widgets": [
-		{
-			"type": "component",
-			"componentId": "core:search",
-			"title": "Search"
-		},
-		{
-			"type": "component",
-			"componentId": "core:categories",
-			"title": "Categories"
-		},
-		{
-			"type": "component",
-			"componentId": "core:tags",
-			"title": "Tags"
-		},
-		{
-			"type": "component",
-			"componentId": "core:recent-posts",
-			"title": "Recent Posts",
-			"props": { "count": 5, "showDate": true }
-		},
-		{
-			"type": "component",
-			"componentId": "core:archives",
-			"title": "Archives",
-			"props": { "type": "monthly", "limit": 6 }
-		},
-		{
-			"type": "content",
-			"title": "About",
-			"content": [
-				{
-					"_type": "block",
-					"style": "normal",
-					"children": [{ "_type": "span", "text": "Some rich text content." }]
-				}
-			]
-		}
-	]
+  "name": "sidebar",
+  "label": "Sidebar",
+  "description": "Widget area displayed on single post pages",
+  "widgets": [
+    {
+      "type": "component",
+      "componentId": "core:search",
+      "title": "Search"
+    },
+    {
+      "type": "component",
+      "componentId": "core:categories",
+      "title": "Categories"
+    },
+    {
+      "type": "component",
+      "componentId": "core:tags",
+      "title": "Tags"
+    },
+    {
+      "type": "component",
+      "componentId": "core:recent-posts",
+      "title": "Recent Posts",
+      "props": { "count": 5, "showDate": true }
+    },
+    {
+      "type": "component",
+      "componentId": "core:archives",
+      "title": "Archives",
+      "props": { "type": "monthly", "limit": 6 }
+    },
+    {
+      "type": "content",
+      "title": "About",
+      "content": [
+        {
+          "_type": "block",
+          "style": "normal",
+          "children": [{ "_type": "span", "text": "Some rich text content." }]
+        }
+      ]
+    }
+  ]
 }
 ```
 
@@ -311,23 +311,23 @@ Reusable content blocks that editors can insert via `/section` slash command in 
 
 ```json
 {
-	"slug": "newsletter-signup",
-	"title": "Newsletter Signup",
-	"description": "A call-to-action block for newsletter subscriptions",
-	"keywords": ["newsletter", "subscribe", "email", "cta"],
-	"source": "theme",
-	"content": [
-		{
-			"_type": "block",
-			"style": "h3",
-			"children": [{ "_type": "span", "text": "Stay in the loop" }]
-		},
-		{
-			"_type": "block",
-			"style": "normal",
-			"children": [{ "_type": "span", "text": "Get notified when new posts are published." }]
-		}
-	]
+  "slug": "newsletter-signup",
+  "title": "Newsletter Signup",
+  "description": "A call-to-action block for newsletter subscriptions",
+  "keywords": ["newsletter", "subscribe", "email", "cta"],
+  "source": "theme",
+  "content": [
+    {
+      "_type": "block",
+      "style": "h3",
+      "children": [{ "_type": "span", "text": "Stay in the loop" }]
+    },
+    {
+      "_type": "block",
+      "style": "normal",
+      "children": [{ "_type": "span", "text": "Get notified when new posts are published." }]
+    }
+  ]
 }
 ```
 
@@ -337,9 +337,9 @@ Named author profiles, independent of user accounts.
 
 ```json
 {
-	"id": "byline-editorial",
-	"slug": "emdash-editorial",
-	"displayName": "EmDash Editorial"
+  "id": "byline-editorial",
+  "slug": "emdash-editorial",
+  "displayName": "EmDash Editorial"
 }
 ```
 
@@ -347,10 +347,10 @@ Guest bylines:
 
 ```json
 {
-	"id": "byline-guest",
-	"slug": "guest-contributor",
-	"displayName": "Guest Contributor",
-	"isGuest": true
+  "id": "byline-guest",
+  "slug": "guest-contributor",
+  "displayName": "Guest Contributor",
+  "isGuest": true
 }
 ```
 
@@ -445,10 +445,10 @@ Declare the field with the collection it links to:
 
 ```json
 {
-	"slug": "author",
-	"label": "Author",
-	"type": "reference",
-	"validation": { "targetCollection": "authors", "multiple": false }
+  "slug": "author",
+  "label": "Author",
+  "type": "reference",
+  "validation": { "targetCollection": "authors", "multiple": false }
 }
 ```
 
@@ -472,21 +472,21 @@ Content fields of type `portableText` are arrays of blocks:
 
 ```json
 [
-	{
-		"_type": "block",
-		"style": "normal",
-		"children": [{ "_type": "span", "text": "A paragraph." }]
-	},
-	{
-		"_type": "block",
-		"style": "h2",
-		"children": [{ "_type": "span", "text": "A heading" }]
-	},
-	{
-		"_type": "block",
-		"style": "blockquote",
-		"children": [{ "_type": "span", "text": "A quote." }]
-	}
+  {
+    "_type": "block",
+    "style": "normal",
+    "children": [{ "_type": "span", "text": "A paragraph." }]
+  },
+  {
+    "_type": "block",
+    "style": "h2",
+    "children": [{ "_type": "span", "text": "A heading" }]
+  },
+  {
+    "_type": "block",
+    "style": "blockquote",
+    "children": [{ "_type": "span", "text": "A quote." }]
+  }
 ]
 ```
 
@@ -494,14 +494,14 @@ Inline marks (bold, italic, links):
 
 ```json
 {
-	"_type": "block",
-	"style": "normal",
-	"children": [
-		{ "_type": "span", "text": "This is " },
-		{ "_type": "span", "text": "bold", "marks": ["strong"] },
-		{ "_type": "span", "text": " and " },
-		{ "_type": "span", "text": "italic", "marks": ["em"] }
-	]
+  "_type": "block",
+  "style": "normal",
+  "children": [
+    { "_type": "span", "text": "This is " },
+    { "_type": "span", "text": "bold", "marks": ["strong"] },
+    { "_type": "span", "text": " and " },
+    { "_type": "span", "text": "italic", "marks": ["em"] }
+  ]
 }
 ```
 

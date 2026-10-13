@@ -12,23 +12,23 @@ import emdash, { local } from "emdash/astro";
 import { sqlite } from "emdash/db";
 
 export default defineConfig({
-	output: "server",
-	adapter: node({ mode: "standalone" }),
-	image: {
-		layout: "constrained",
-		responsiveStyles: true,
-	},
-	integrations: [
-		react(),
-		emdash({
-			database: sqlite({ url: "file:./data.db" }),
-			storage: local({
-				directory: "./uploads",
-				baseUrl: "/_emdash/api/media/file",
-			}),
-		}),
-	],
-	devToolbar: { enabled: false },
+  output: "server",
+  adapter: node({ mode: "standalone" }),
+  image: {
+    layout: "constrained",
+    responsiveStyles: true,
+  },
+  integrations: [
+    react(),
+    emdash({
+      database: sqlite({ url: "file:./data.db" }),
+      storage: local({
+        directory: "./uploads",
+        baseUrl: "/_emdash/api/media/file",
+      }),
+    }),
+  ],
+  devToolbar: { enabled: false },
 });
 ```
 
@@ -42,8 +42,8 @@ When behind a TLS-terminating reverse proxy, `Astro.url` returns the internal ad
 
 ```javascript
 emdash({
-	siteUrl: "https://mysite.example.com",
-	// ...
+  siteUrl: "https://mysite.example.com",
+  // ...
 });
 ```
 
@@ -68,20 +68,20 @@ import { defineConfig } from "astro/config";
 import emdash from "emdash/astro";
 
 export default defineConfig({
-	output: "server",
-	adapter: cloudflare(),
-	image: {
-		layout: "constrained",
-		responsiveStyles: true,
-	},
-	integrations: [
-		react(),
-		emdash({
-			database: d1({ binding: "DB", session: "auto" }),
-			storage: r2({ binding: "MEDIA" }),
-		}),
-	],
-	devToolbar: { enabled: false },
+  output: "server",
+  adapter: cloudflare(),
+  image: {
+    layout: "constrained",
+    responsiveStyles: true,
+  },
+  integrations: [
+    react(),
+    emdash({
+      database: d1({ binding: "DB", session: "auto" }),
+      storage: r2({ binding: "MEDIA" }),
+    }),
+  ],
+  devToolbar: { enabled: false },
 });
 ```
 
@@ -89,25 +89,25 @@ Requires a `wrangler.jsonc` with D1 and R2 bindings:
 
 ```jsonc
 {
-	"name": "my-site",
-	"main": "./src/worker.ts",
-	"compatibility_date": "2026-02-24",
-	"compatibility_flags": ["nodejs_compat"],
-	"d1_databases": [
-		{
-			"binding": "DB",
-			"database_name": "my-site",
-		},
-	],
-	"r2_buckets": [
-		{
-			"binding": "MEDIA",
-			"bucket_name": "my-site-media",
-		},
-	],
-	"triggers": {
-		"crons": ["* * * * *"],
-	},
+  "name": "my-site",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-02-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "my-site",
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "my-site-media",
+    },
+  ],
+  "triggers": {
+    "crons": ["* * * * *"],
+  },
 }
 ```
 
@@ -119,8 +119,8 @@ import handler, { createScheduledHandler, PluginBridge } from "@emdash-cms/cloud
 export { PluginBridge };
 
 export default {
-	...handler,
-	scheduled: createScheduledHandler(),
+  ...handler,
+  scheduled: createScheduledHandler(),
 } satisfies ExportedHandler;
 ```
 
@@ -147,7 +147,7 @@ import { defineLiveCollection } from "astro:content";
 import { emdashLoader } from "emdash/runtime";
 
 export const collections = {
-	_emdash: defineLiveCollection({ loader: emdashLoader() }),
+  _emdash: defineLiveCollection({ loader: emdashLoader() }),
 };
 ```
 
@@ -163,31 +163,31 @@ Auto-generated at the project root when the dev server starts. Provides TypeScri
 import type { BylineSummary, ContentBylineCredit, TaxonomyTerm, PortableTextBlock } from "emdash";
 
 export interface Post {
-	id: string;
-	slug: string | null;
-	status: string;
-	title: string;
-	featured_image?: {
-		id: string;
-		src?: string;
-		alt?: string;
-		width?: number;
-		height?: number;
-	};
-	content?: PortableTextBlock[];
-	excerpt?: string;
-	createdAt: Date;
-	updatedAt: Date;
-	publishedAt: Date | null;
-	byline?: BylineSummary | null;
-	bylines?: ContentBylineCredit[];
-	terms?: Record<string, TaxonomyTerm[]>;
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  featured_image?: {
+    id: string;
+    src?: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+  };
+  content?: PortableTextBlock[];
+  excerpt?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
 }
 
 declare module "emdash" {
-	interface EmDashCollections {
-		posts: Post;
-	}
+  interface EmDashCollections {
+    posts: Post;
+  }
 }
 ```
 
@@ -214,14 +214,14 @@ Key dependencies for a Node.js site:
 
 ```json
 {
-	"dependencies": {
-		"astro": "^7.0.0",
-		"emdash": "^1.0.0",
-		"@astrojs/node": "^11.1.5",
-		"@astrojs/react": "^6.0.5",
-		"react": "^19.0.0",
-		"react-dom": "^19.0.0"
-	}
+  "dependencies": {
+    "astro": "^7.0.0",
+    "emdash": "^1.0.0",
+    "@astrojs/node": "^11.1.5",
+    "@astrojs/react": "^6.0.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
 }
 ```
 

@@ -8,13 +8,13 @@ Declare navigation and widget cards in `emdash-plugin.jsonc`:
 
 ```jsonc title="emdash-plugin.jsonc"
 {
-	"admin": {
-		"pages": [
-			{ "path": "/settings", "label": "Settings", "icon": "settings" },
-			{ "path": "/reports", "label": "Reports", "icon": "chart" },
-		],
-		"widgets": [{ "id": "status", "title": "Plugin status", "size": "half" }],
-	},
+  "admin": {
+    "pages": [
+      { "path": "/settings", "label": "Settings", "icon": "settings" },
+      { "path": "/reports", "label": "Reports", "icon": "chart" },
+    ],
+    "widgets": [{ "id": "status", "title": "Plugin status", "size": "half" }],
+  },
 }
 ```
 
@@ -30,58 +30,58 @@ import type { BlockResponse } from "@emdash-cms/blocks";
 import { z } from "zod";
 
 const interactionSchema = z.discriminatedUnion("type", [
-	z.object({ type: z.literal("page_load"), page: z.string() }),
-	z.object({
-		type: z.literal("block_action"),
-		action_id: z.string(),
-		block_id: z.string().optional(),
-		value: z.unknown().optional(),
-	}),
-	z.object({
-		type: z.literal("form_submit"),
-		action_id: z.string(),
-		block_id: z.string().optional(),
-		values: z.object({ enabled: z.boolean() }),
-	}),
+  z.object({ type: z.literal("page_load"), page: z.string() }),
+  z.object({
+    type: z.literal("block_action"),
+    action_id: z.string(),
+    block_id: z.string().optional(),
+    value: z.unknown().optional(),
+  }),
+  z.object({
+    type: z.literal("form_submit"),
+    action_id: z.string(),
+    block_id: z.string().optional(),
+    values: z.object({ enabled: z.boolean() }),
+  }),
 ]);
 
 function settingsForm(enabled: boolean): BlockResponse {
-	return {
-		blocks: [
-			{ type: "header", text: "Settings" },
-			{
-				type: "form",
-				block_id: "settings",
-				fields: [
-					{ type: "toggle", action_id: "enabled", label: "Enabled", initial_value: enabled },
-				],
-				submit: { action_id: "save", label: "Save" },
-			},
-		],
-	};
+  return {
+    blocks: [
+      { type: "header", text: "Settings" },
+      {
+        type: "form",
+        block_id: "settings",
+        fields: [
+          { type: "toggle", action_id: "enabled", label: "Enabled", initial_value: enabled },
+        ],
+        submit: { action_id: "save", label: "Save" },
+      },
+    ],
+  };
 }
 
 const plugin: SandboxedPlugin = {
-	routes: {
-		admin: {
-			permission: "plugins:manage",
-			handler: async (routeCtx, ctx) => {
-				const parsed = interactionSchema.safeParse(routeCtx.input);
-				if (!parsed.success) return { blocks: [] };
-				const interaction = parsed.data;
-				if (interaction.type === "form_submit" && interaction.action_id === "save") {
-					await ctx.settings.set("enabled", interaction.values.enabled === true);
-					return {
-						...settingsForm(interaction.values.enabled === true),
-						toast: { type: "success", message: "Settings saved" },
-					};
-				}
+  routes: {
+    admin: {
+      permission: "plugins:manage",
+      handler: async (routeCtx, ctx) => {
+        const parsed = interactionSchema.safeParse(routeCtx.input);
+        if (!parsed.success) return { blocks: [] };
+        const interaction = parsed.data;
+        if (interaction.type === "form_submit" && interaction.action_id === "save") {
+          await ctx.settings.set("enabled", interaction.values.enabled === true);
+          return {
+            ...settingsForm(interaction.values.enabled === true),
+            toast: { type: "success", message: "Settings saved" },
+          };
+        }
 
-				const enabled = (await ctx.settings.get<boolean>("enabled")) ?? false;
-				return settingsForm(enabled);
-			},
-		},
-	},
+        const enabled = (await ctx.settings.get<boolean>("enabled")) ?? false;
+        return settingsForm(enabled);
+      },
+    },
+  },
 };
 
 export default plugin;
@@ -99,35 +99,35 @@ Declare saved-entry panels and actions in `emdash-plugin.jsonc`:
 
 ```jsonc title="emdash-plugin.jsonc"
 {
-	"admin": {
-		"editorPanels": [
-			{
-				"id": "health",
-				"title": "Content health",
-				"route": "editor/health",
-				"collections": ["posts"],
-				"draft": {
-					"read": { "translatable": true },
-					"patch": { "fields": ["title", "excerpt"] },
-				},
-			},
-		],
-		"editorActions": [
-			{
-				"id": "repair",
-				"label": "Repair metadata",
-				"route": "editor/repair",
-				"placement": "overflow",
-				"style": "danger",
-				"confirm": {
-					"title": "Repair?",
-					"text": "This changes the saved entry.",
-					"confirm": "Repair",
-					"deny": "Cancel",
-				},
-			},
-		],
-	},
+  "admin": {
+    "editorPanels": [
+      {
+        "id": "health",
+        "title": "Content health",
+        "route": "editor/health",
+        "collections": ["posts"],
+        "draft": {
+          "read": { "translatable": true },
+          "patch": { "fields": ["title", "excerpt"] },
+        },
+      },
+    ],
+    "editorActions": [
+      {
+        "id": "repair",
+        "label": "Repair metadata",
+        "route": "editor/repair",
+        "placement": "overflow",
+        "style": "danger",
+        "confirm": {
+          "title": "Repair?",
+          "text": "This changes the saved entry.",
+          "confirm": "Repair",
+          "deny": "Cancel",
+        },
+      },
+    ],
+  },
 }
 ```
 
@@ -145,19 +145,19 @@ Core and the admin contain a declarative field-widget path. Declare the widget i
 
 ```jsonc title="emdash-plugin.jsonc"
 {
-	"admin": {
-		"fieldWidgets": [
-			{
-				"name": "event-picker",
-				"label": "Event",
-				"fieldTypes": ["json"],
-				"elements": [
-					{ "type": "text_input", "action_id": "eventId", "label": "Event ID" },
-					{ "type": "toggle", "action_id": "featured", "label": "Featured" },
-				],
-			},
-		],
-	},
+  "admin": {
+    "fieldWidgets": [
+      {
+        "name": "event-picker",
+        "label": "Event",
+        "fieldTypes": ["json"],
+        "elements": [
+          { "type": "text_input", "action_id": "eventId", "label": "Event ID" },
+          { "type": "toggle", "action_id": "featured", "label": "Featured" },
+        ],
+      },
+    ],
+  },
 }
 ```
 
@@ -183,15 +183,15 @@ Native plugins may set `admin.entry` and export React components:
 
 ```typescript title="src/admin.tsx"
 export const pages = {
-	"/settings": SettingsPage,
+  "/settings": SettingsPage,
 };
 
 export const widgets = {
-	status: StatusWidget,
+  status: StatusWidget,
 };
 
 export const fields = {
-	picker: ColorPickerField,
+  picker: ColorPickerField,
 };
 ```
 
@@ -199,13 +199,13 @@ The plugin definition points to the entry and declares its surfaces:
 
 ```typescript
 definePlugin({
-	id: "color",
-	version: "1.0.0",
-	admin: {
-		entry: "@my-org/plugin-color/admin",
-		pages: [{ path: "/settings", label: "Settings" }],
-		widgets: [{ id: "status", title: "Status", size: "half" }],
-	},
+  id: "color",
+  version: "1.0.0",
+  admin: {
+    entry: "@my-org/plugin-color/admin",
+    pages: [{ path: "/settings", label: "Settings" }],
+    widgets: [{ id: "status", title: "Status", size: "half" }],
+  },
 });
 ```
 

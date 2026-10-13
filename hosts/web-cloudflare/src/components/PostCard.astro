@@ -35,56 +35,52 @@ const formattedDate = date
 
 <article class="post-card">
 	<a href={href} class="card-link">
-		{
-			featuredImage ? (
-				<div class="card-image">
-					<Image image={featuredImage} />
-				</div>
-			) : (
-				<div class="card-placeholder" />
-			)
-		}
+		{featuredImage ? (
+			<div class="card-image">
+				<Image image={featuredImage} />
+			</div>
+		) : (
+			<div class="card-placeholder" />
+		)}
 		<div class="card-body">
 			<div class="card-meta">
-				{
-					bylines && bylines.length > 0 && (
-						<>
-							<div class="card-bylines">
-								{bylines.slice(0, 1).map((credit) => (
-									<span class="card-byline">
-										{credit.byline.avatarMediaId && (
-											<img
-												src={`/_emdash/api/media/file/${credit.byline.avatarMediaId}`}
-												alt={credit.byline.displayName}
-												class="card-byline-avatar"
-											/>
-										)}
-										<span class="card-byline-name">
-											{credit.byline.displayName}
-										</span>
+				{bylines && bylines.length > 0 && (
+					<>
+						<div class="card-bylines">
+							{bylines.slice(0, 1).map((credit) => (
+								<span class="card-byline">
+									{credit.byline.avatarMediaId && (
+										<img
+											src={`/_emdash/api/media/file/${credit.byline.avatarMediaId}`}
+											alt={credit.byline.displayName}
+											class="card-byline-avatar"
+										/>
+									)}
+									<span class="card-byline-name">
+										{credit.byline.displayName}
 									</span>
-								))}
-								{bylines.length > 1 && (
-									<span
-										class="byline-more"
-										data-tooltip={bylines
-											.slice(1)
-											.map((c) => c.byline.displayName)
-											.join(", ")}
-										title={bylines
-											.slice(1)
-											.map((c) => c.byline.displayName)
-											.join(", ")}
-										tabindex="0"
-									>
-										+{bylines.length - 1}
-									</span>
-								)}
-							</div>
-							{(formattedDate || readingTime) && <span class="meta-dot" />}
-						</>
-					)
-				}
+								</span>
+							))}
+							{bylines.length > 1 && (
+								<span
+									class="byline-more"
+									data-tooltip={bylines
+										.slice(1)
+										.map((c) => c.byline.displayName)
+										.join(", ")}
+									title={bylines
+										.slice(1)
+										.map((c) => c.byline.displayName)
+										.join(", ")}
+									tabindex="0"
+								>
+									+{bylines.length - 1}
+								</span>
+							)}
+						</div>
+						{(formattedDate || readingTime) && <span class="meta-dot" />}
+					</>
+				)}
 				{formattedDate && <time>{formattedDate}</time>}
 				{formattedDate && readingTime && <span class="meta-dot" />}
 				{readingTime && <span>{readingTime} min</span>}
@@ -93,17 +89,15 @@ const formattedDate = date
 			{excerpt && <p class="card-excerpt">{excerpt}</p>}
 		</div>
 	</a>
-	{
-		tags && tags.length > 0 && (
-			<div class="card-tags">
-				{tags.slice(0, 2).map((tag) => (
-					<a href={`/tag/${tag.slug}`} class="card-tag">
-						{tag.label}
-					</a>
-				))}
-			</div>
-		)
-	}
+	{tags && tags.length > 0 && (
+		<div class="card-tags">
+			{tags.slice(0, 2).map((tag) => (
+				<a href={`/tag/${tag.slug}`} class="card-tag">
+					{tag.label}
+				</a>
+			))}
+		</div>
+	)}
 </article>
 
 <style>

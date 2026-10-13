@@ -24,7 +24,9 @@ if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 >
 	<article class="page-article">
 		<header class="page-header">
-			<h1 class="page-title" {...page.edit.title}>{page.data.title}</h1>
+			<h1 class="page-title" {...page.edit.title}>
+				{page.data.title}
+			</h1>
 		</header>
 
 		<div class="page-content">

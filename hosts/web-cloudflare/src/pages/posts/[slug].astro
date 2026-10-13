@@ -7,11 +7,7 @@ import {
 	decodeSlug,
 	getSiteSettings,
 } from "emdash";
-import {
-	Image,
-	PortableText,
-	WidgetArea,
-} from "emdash/ui";
+import { Image, PortableText, WidgetArea } from "emdash/ui";
 import { Comments, CommentForm } from "emdash/ui/comments";
 import Base from "../../layouts/Base.astro";
 import PostCard from "../../components/PostCard.astro";
@@ -116,75 +112,67 @@ const publishDate =
 >
 	<article class="article">
 		{/* Hero: Full-width featured image */}
-		{
-			post.data.featured_image && (
-				<div class="article-hero" {...post.edit.featured_image}>
-					<Image image={post.data.featured_image} />
-				</div>
-			)
-		}
+		{post.data.featured_image && (
+			<div class="article-hero" {...post.edit.featured_image}>
+				<Image image={post.data.featured_image} />
+			</div>
+		)}
 
 		{/* Three-column layout */}
 		<div class="article-grid">
 			{/* Left gutter: Meta information */}
 			<aside class="article-meta-col">
 				<div class="meta-sticky">
-					{
-						bylines.length > 0 && (
-							<div class="meta-block byline-block">
-								<span class="meta-label">
-									{bylines.length === 1 ? "Author" : "Authors"}
-								</span>
-								<div class="bylines">
-									{bylines.map((credit) => (
-										<div class="byline">
-											{credit.byline.avatarMediaId && (
-												<img
-													src={`/_emdash/api/media/file/${credit.byline.avatarMediaId}`}
-													alt={credit.byline.displayName}
-													class="byline-avatar"
-												/>
+					{bylines.length > 0 && (
+						<div class="meta-block byline-block">
+							<span class="meta-label">
+								{bylines.length === 1 ? "Author" : "Authors"}
+							</span>
+							<div class="bylines">
+								{bylines.map((credit) => (
+									<div class="byline">
+										{credit.byline.avatarMediaId && (
+											<img
+												src={`/_emdash/api/media/file/${credit.byline.avatarMediaId}`}
+												alt={credit.byline.displayName}
+												class="byline-avatar"
+											/>
+										)}
+										<div class="byline-info">
+											<span class="byline-name">
+												{credit.byline.displayName}
+											</span>
+											{credit.roleLabel && (
+												<span class="byline-role">{credit.roleLabel}</span>
 											)}
-											<div class="byline-info">
-												<span class="byline-name">
-													{credit.byline.displayName}
-												</span>
-												{credit.roleLabel && (
-													<span class="byline-role">{credit.roleLabel}</span>
-												)}
-											</div>
 										</div>
-									))}
-								</div>
+									</div>
+								))}
 							</div>
-						)
-					}
-					{
-						publishDate && (
-							<div class="meta-block">
-								<span class="meta-label">Published</span>
-								<time class="meta-value">{publishDate}</time>
-							</div>
-						)
-					}
+						</div>
+					)}
+					{publishDate && (
+						<div class="meta-block">
+							<span class="meta-label">Published</span>
+							<time class="meta-value">{publishDate}</time>
+						</div>
+					)}
 					<div class="meta-block">
 						<span class="meta-label">Reading time</span>
 						<span class="meta-value">{readingTime} min</span>
 					</div>
-					{
-						tags.length > 0 && (
-							<div class="meta-block">
-								<span class="meta-label">Tags</span>
-								<div class="meta-tags">
-									{tags.map((t) => (
-										<a href={`/tag/${t.slug}`} class="meta-tag">
-											{t.label}
-										</a>
-									))}
-								</div>
+					{tags.length > 0 && (
+						<div class="meta-block">
+							<span class="meta-label">Tags</span>
+							<div class="meta-tags">
+								{tags.map((t) => (
+									<a href={`/tag/${t.slug}`} class="meta-tag">
+										{t.label}
+									</a>
+								))}
 							</div>
-						)
-					}
+						</div>
+					)}
 				</div>
 			</aside>
 
@@ -192,37 +180,35 @@ const publishDate =
 			<div class="article-main">
 				<header class="article-header">
 					<div class="article-meta">
-						{
-							bylines.length > 0 && (
-								<>
-									<span class="article-meta-byline">
-										{bylines.map((credit, i) => (
-											<>
-												{i > 0 && ", "}
-												{credit.byline.displayName}
-											</>
-										))}
-									</span>
-									<span class="meta-dot" />
-								</>
-							)
-						}
-						{
-							publishDate && (
-								<>
-									<time>{publishDate}</time>
-									<span class="meta-dot" />
-								</>
-							)
-						}
+						{bylines.length > 0 && (
+							<>
+								<span class="article-meta-byline">
+									{bylines.map((credit, i) => (
+										<>
+											{i > 0 && ", "}
+											{credit.byline.displayName}
+										</>
+									))}
+								</span>
+								<span class="meta-dot" />
+							</>
+						)}
+						{publishDate && (
+							<>
+								<time>{publishDate}</time>
+								<span class="meta-dot" />
+							</>
+						)}
 						<span>{readingTime} min read</span>
 					</div>
-					<h1 class="article-title" {...post.edit.title}>{post.data.title}</h1>
-					{
-						post.data.excerpt && (
-							<p class="article-excerpt" {...post.edit.excerpt}>{post.data.excerpt}</p>
-						)
-					}
+					<h1 class="article-title" {...post.edit.title}>
+						{post.data.title}
+					</h1>
+					{post.data.excerpt && (
+						<p class="article-excerpt" {...post.edit.excerpt}>
+							{post.data.excerpt}
+						</p>
+					)}
 				</header>
 
 				<div class="article-content">
@@ -252,31 +238,29 @@ const publishDate =
 		</div>
 	</article>
 
-	{
-		otherPostsWithTags.length > 0 && (
-			<section class="more-posts">
-				<div class="more-inner">
-					<h2 class="more-title">Continue reading</h2>
-					<div class="more-grid">
-						{otherPostsWithTags.map(
-							({ post: p, tags: postTags, bylines: postBylines }) => (
-								<PostCard
-									title={p.data.title}
-									excerpt={p.data.excerpt}
-									featuredImage={p.data.featured_image}
-									href={`/posts/${p.id}`}
-									date={p.data.publishedAt ?? undefined}
-									readingTime={getReadingTime(p.data.content)}
-									tags={postTags.map((t) => ({ slug: t.slug, label: t.label }))}
-									bylines={postBylines}
-								/>
-							)
-						)}
-					</div>
+	{otherPostsWithTags.length > 0 && (
+		<section class="more-posts">
+			<div class="more-inner">
+				<h2 class="more-title">Continue reading</h2>
+				<div class="more-grid">
+					{otherPostsWithTags.map(
+						({ post: p, tags: postTags, bylines: postBylines }) => (
+							<PostCard
+								title={p.data.title}
+								excerpt={p.data.excerpt}
+								featuredImage={p.data.featured_image}
+								href={`/posts/${p.id}`}
+								date={p.data.publishedAt ?? undefined}
+								readingTime={getReadingTime(p.data.content)}
+								tags={postTags.map((t) => ({ slug: t.slug, label: t.label }))}
+								bylines={postBylines}
+							/>
+						),
+					)}
 				</div>
-			</section>
-		)
-	}
+			</div>
+		</section>
+	)}
 
 	<script>
 		// Build table of contents from h2/h3 headings
@@ -333,7 +317,7 @@ const publishDate =
 						}
 					});
 				},
-				{ rootMargin: "-80px 0px -80% 0px" }
+				{ rootMargin: "-80px 0px -80% 0px" },
 			);
 
 			headings.forEach((heading) => observer.observe(heading));
