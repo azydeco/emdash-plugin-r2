@@ -223,8 +223,27 @@ async function fetchR2(ctx: PluginContext) {
 		};
 
 		const xml = await listBucketObjectsDirect(ctx, config, prefix ?? "");
-		if (!xml.includes("<Key>")) {
-			// If the fetch fails
+		if (xml.includes("<Error>")) {
+			// Show the code and message in sections
+			const errorCodeMatch = xml.match(/<Code>(.*?)<\/Code>/);
+			const errorCode = errorCodeMatch
+				? errorCodeMatch[1]
+				: "Unknown error code";
+			sections.push({
+				type: "header",
+				text: `Error: ${errorCode}`,
+			});
+
+			const errorMessageMatch = xml.match(/<Message>(.*?)<\/Message>/);
+			const errorMessage = errorMessageMatch
+				? errorMessageMatch[1]
+				: "Unknown error";
+			sections.push({
+				type: "section",
+				text: errorMessage,
+			});
+		} else if (!xml.includes("<Key>")) {
+			// If the fetch fails or there are no keys
 			sections.push({
 				type: "section",
 				text: xml,
