@@ -2,25 +2,37 @@
 
 A pnpm workspace containing two packages:
 
-- `hosts/web-cloudflare`
-- `packages/plugin_emdash_r2_asset_access`
+- `hosts/web-cloudflare` - The test site that is run locally for testing the emdash plugin.
+- `packages/plugin_emdash_r2_asset_access` - @azydeco/emdash_plugin_r2_asset_access, the sandboxed emdash plugin.
 
 ## Requirements
 
-- pnpm
-- Cloudflare R2 bucket
-- API Key
-- Secret Access Key
-- API URL
-- Public Endpoint
+- **pnpm** - <https://pnpm.io/installation>
+- **Cloudflare R2 bucket**
+- **API Key**
+- **Secret Access Key**
+- **API URL**
+- **Public Endpoint**
 
 ## Testing locally
 
-After cloning the repository run `pnpm i` to install all of the dependencies required by the packages.
+After cloning the repository first install all of the dependencies required by the packages.
 
-From the project root run `pnpm build`. This builds both the plugin and the site so that no errors occur when you start them.
+```sh
+pnpm i
+```
 
-Run `pnpm dev` to start the website locally for testing (web-cloudflare) and the plugin (plugin_emdash_r2_asset_access).
+From the project root run the build script. This builds both the plugin and the site so that no errors occur when you start them.
+
+```sh
+pnpm build
+```
+
+Run dev to start the website locally for testing (web-cloudflare) and the plugin (plugin_emdash_r2_asset_access).
+
+```sh
+pnpm dev
+```
 
 Once they have started in a browser go to <http://127.0.0.1:4321/_emdash/api/setup/dev-bypass?redirect=/_emdash/admin> to open the Emdash admin UI. On the admin sidebar find R2 Asset Access Settings and open it. Enter your keys and urls from Cloudflare then click on save. There will be a confirmation pop up.
 
