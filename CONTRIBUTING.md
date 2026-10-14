@@ -4,8 +4,8 @@ The pnpm workspace looks in `hosts/*` and `packages/*` for the local Emdash site
 
 ## Requirements
 
-- Vscode
-- pnpm
+- **VSCode**
+- **pnpm** - <https://pnpm.io/installation>
 
 ## Running locally
 
@@ -32,3 +32,5 @@ The plugin can be built without starting the local development server by changin
 ## Formatting
 
 The root of the workspace includes .prettierrc, and prettier-plugin-astro is included in the devDependencies.
+
+The workspace extensions.json recommends the Vscode extension "oxc.oxc-vscode". There are .oxtfmtrc.json and .oxlintrc.json files in the root of the repository containing lintier and formatter rules.
