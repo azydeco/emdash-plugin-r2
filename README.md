@@ -2,8 +2,8 @@
 
 A pnpm workspace containing two packages:
 
-- `hosts/web-cloudflare` - The test site that is run locally for testing the emdash plugin.
-- `packages/plugin_emdash_r2_asset_access` - @azydeco/emdash_plugin_r2_asset_access, the sandboxed emdash plugin.
+- [`hosts/web-cloudflare`](hosts/web-cloudflare/README.md) - The test site that is run locally for testing the emdash plugin.
+- [`packages/plugin_emdash_r2_asset_access`](packages/plugin_emdash_r2_asset_access/README.md) - @azydeco/emdash_plugin_r2_asset_access, the sandboxed emdash plugin.
 
 ## Requirements
 

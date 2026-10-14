@@ -33,4 +33,4 @@ The plugin can be built without starting the local development server by changin
 
 The root of the workspace includes .prettierrc, and prettier-plugin-astro is included in the devDependencies.
 
-The workspace extensions.json recommends the Vscode extension "oxc.oxc-vscode". There are .oxtfmtrc.json and .oxlintrc.json files in the root of the repository containing linter and formatter rules.
+The workspace extensions.json recommends the Vscode extension "oxc.oxc-vscode". There are .oxfmtrc.json and .oxlintrc.json files in the root of the repository containing linter and formatter rules.
