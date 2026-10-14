@@ -1,4 +1,8 @@
-import type { Block, BlockInteraction, BlockResponse } from "@emdash-cms/blocks";
+import type {
+	Block,
+	BlockInteraction,
+	BlockResponse,
+} from "@emdash-cms/blocks";
 import type { SandboxedPlugin, PluginContext } from "emdash/plugin";
 
 const supportedFileTypes = [
@@ -371,7 +375,7 @@ async function renderPlugin(ctx: PluginContext): Promise<BlockResponse> {
 							},
 							{
 								type: "section",
-								text: "Supported file extensions are avif, apng, png, jpg, jpeg, webp, pdf and gif.",
+								text: "Supported file extensions are avif, apng, png, jpg, jpeg, webp, and gif.",
 							},
 						],
 					},
