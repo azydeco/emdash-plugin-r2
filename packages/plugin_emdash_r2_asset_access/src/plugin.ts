@@ -329,6 +329,33 @@ async function renderPlugin(ctx: PluginContext): Promise<BlockResponse> {
 				type: "tab",
 				panels: [
 					{
+						label: "Images",
+						blocks: [
+							{ type: "header", text: "R2 Bucket Images" },
+							{
+								type: "section",
+								text: "This is a sandbox plugin, as such some media features are not available",
+							},
+							{
+								type: "form",
+								block_id: "cloudflare",
+								fields: [
+									{
+										type: "text_input",
+										action_id: "prefix",
+										label: "Prefix (optional)",
+										initial_value: prefix ?? "",
+									},
+								],
+								submit: {
+									label: "Search by prefix",
+									action_id: "fetch_r2",
+								},
+							},
+							...sections,
+						],
+					},
+					{
 						label: "Settings",
 						blocks: [
 							{ type: "header", text: "R2 Asset Access Settings" },
@@ -377,33 +404,6 @@ async function renderPlugin(ctx: PluginContext): Promise<BlockResponse> {
 								type: "section",
 								text: "Supported file extensions are avif, apng, png, jpg, jpeg, webp, and gif.",
 							},
-						],
-					},
-					{
-						label: "Images",
-						blocks: [
-							{ type: "header", text: "R2 Bucket Images" },
-							{
-								type: "section",
-								text: "This is a sandbox plugin, as such some media features are not available",
-							},
-							{
-								type: "form",
-								block_id: "cloudflare",
-								fields: [
-									{
-										type: "text_input",
-										action_id: "prefix",
-										label: "Prefix (optional)",
-										initial_value: prefix ?? "",
-									},
-								],
-								submit: {
-									label: "Search by prefix",
-									action_id: "fetch_r2",
-								},
-							},
-							...sections,
 						],
 					},
 				],
