@@ -1,4 +1,4 @@
-import type { BlockInteraction, BlockResponse } from "@emdash-cms/blocks";
+import type { Block, BlockInteraction, BlockResponse } from "@emdash-cms/blocks";
 import type { SandboxedPlugin, PluginContext } from "emdash/plugin";
 
 const supportedFileTypes = [
@@ -188,7 +188,7 @@ async function loadSettings(ctx: PluginContext) {
 async function renderPlugin(ctx: PluginContext): Promise<BlockResponse> {
 	if (!ctx.http) return { blocks: [] };
 
-	const sections = [];
+	const sections: Block[] = [];
 
 	const {
 		bucket_name,
@@ -425,14 +425,6 @@ const plugin: SandboxedPlugin = {
 					typeof routeCtx.input.action_id === "string"
 						? routeCtx.input.action_id
 						: undefined;
-
-				const page =
-					typeof routeCtx.input === "object" &&
-					routeCtx.input !== null &&
-					"page" in routeCtx.input &&
-					typeof routeCtx.input.page === "string"
-						? routeCtx.input.page
-						: "";
 
 				const interaction = routeCtx.input as BlockInteraction;
 
