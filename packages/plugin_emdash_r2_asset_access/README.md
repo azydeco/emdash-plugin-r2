@@ -4,12 +4,12 @@ A sandboxed plugin for [EmDash](https://emdashcms.com) that allows images to be 
 
 ## Requirements
 
-- R2 bucket
-- Access Key
-- Secret Access Key
-- API URL
-- Public Endpoint
-- Prefix (optional)
+- **R2 bucket**
+- **Access Key**
+- **Secret Access Key**
+- **API URL**
+- **Public Endpoint**
+- **Prefix (optional)**
 
 ## Licence
 
