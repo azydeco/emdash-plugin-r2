@@ -385,7 +385,7 @@ async function renderPlugin(ctx: PluginContext): Promise<BlockResponse> {
 							{ type: "header", text: "R2 Bucket Images" },
 							{
 								type: "section",
-								text: "This is a native sandbox plugin, as such some media features are not available",
+								text: "This is a sandbox plugin, as such some media features are not available",
 							},
 							{
 								type: "form",
