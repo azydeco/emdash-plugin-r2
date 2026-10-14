@@ -426,14 +426,6 @@ const plugin: SandboxedPlugin = {
 						? routeCtx.input.action_id
 						: undefined;
 
-				const page =
-					typeof routeCtx.input === "object" &&
-					routeCtx.input !== null &&
-					"page" in routeCtx.input &&
-					typeof routeCtx.input.page === "string"
-						? routeCtx.input.page
-						: "";
-
 				const interaction = routeCtx.input as BlockInteraction;
 
 				if (interaction.type === "form_submit" && actionId === "save") {
