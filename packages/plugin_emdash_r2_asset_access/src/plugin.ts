@@ -194,7 +194,7 @@ async function loadSettings(ctx: PluginContext) {
 	};
 }
 
-async function fetchR2(ctx: PluginContext) {
+async function renderPlugin(ctx: PluginContext) {
 	if (!ctx.http) return { blocks: [] };
 
 	const sections = [];
@@ -434,7 +434,7 @@ const plugin: SandboxedPlugin = {
 				if (interaction.type === "form_submit" && actionId === "save") {
 					await saveSettings(ctx, interaction.values ?? {});
 					return {
-						...(await fetchR2(ctx)),
+						...(await renderPlugin(ctx)),
 						toast: { type: "success", message: "Saved settings" },
 					};
 				} else if (actionId && actionId?.startsWith("copy_") && ctx.http) {
@@ -460,7 +460,7 @@ const plugin: SandboxedPlugin = {
 						}
 
 						const result = {
-							...(await fetchR2(ctx)),
+							...(await renderPlugin(ctx)),
 							toast: { type: "success", message: "Saved to media library" },
 						};
 						return result;
@@ -472,12 +472,12 @@ const plugin: SandboxedPlugin = {
 					await saveSettings(ctx, interaction.values ?? {});
 
 					const result = {
-						...(await fetchR2(ctx)),
+						...(await renderPlugin(ctx)),
 						toast: { type: "success", message: "Refreshed images" },
 					};
 					return result;
 				}
-				const result = await fetchR2(ctx);
+				const result = await renderPlugin(ctx);
 				return result;
 			},
 		},
