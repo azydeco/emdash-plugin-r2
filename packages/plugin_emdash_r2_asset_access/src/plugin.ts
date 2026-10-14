@@ -224,7 +224,7 @@ async function renderPlugin(ctx: PluginContext) {
 
 		const xml = await listBucketObjectsDirect(ctx, config, prefix ?? "");
 		if (xml.includes("<Error>")) {
-			// Show the code and message in sections
+			// Show the error code and message in sections
 			const errorCodeMatch = xml.match(/<Code>(.*?)<\/Code>/);
 			const errorCode = errorCodeMatch
 				? errorCodeMatch[1]
@@ -242,6 +242,16 @@ async function renderPlugin(ctx: PluginContext) {
 				type: "section",
 				text: errorMessage,
 			});
+		} else if (!xml.includes("<Key>") && xml.includes("<KeyCount>")) {
+			// The fetch is ok but there are no keys
+			sections.push({
+				type: "header",
+				text: `No images`,
+			});
+			sections.push({
+				type: "section",
+				text: `No images found with the prefix "${prefix ?? ""}"`,
+			});
 		} else if (!xml.includes("<Key>")) {
 			// If the fetch fails or there are no keys
 			sections.push({
@@ -252,69 +262,69 @@ async function renderPlugin(ctx: PluginContext) {
 				type: "section",
 				text: xml,
 			});
-		}
-
-		let allKeys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map(
-			(match) => match[1],
-		);
-		let keys = allKeys.filter((i) => {
-			const name = i.toLowerCase();
-			return supportedFileTypes.some((supported) =>
-				name.endsWith(`.${supported}`),
-			);
-		});
-
-		// Prevents error Block response exceeds maximum node count 2000
-		keys = keys.slice(0, 75);
-
-		if (public_endpoint) {
-			for (const i of keys) {
-				// Some of our keys include spaces
-				const encodedKey = encodeURIComponent(i);
-
-				//  In case the public endpoint does not end with a slash
-				const url = public_endpoint.endsWith("/")
-					? public_endpoint + encodedKey
-					: public_endpoint + "/" + encodedKey;
-
-				sections.push({
-					type: "columns",
-					columns: [
-						[
-							{
-								type: "image",
-								block_id: `image_${i}`,
-								url: url,
-								alt: i,
-							},
-						],
-						[
-							{
-								type: "actions",
-								elements: [
-									{
-										type: "button",
-										label: "Save to media library",
-										action_id: `copy_${url}`,
-										style: "primary",
-									},
-								],
-							},
-						],
-					],
-				});
-				sections.push({
-					type: "section",
-					text: url,
-				});
-				sections.push({ type: "divider" });
-			}
 		} else {
-			for (const i of keys) {
-				sections.push({
-					type: "section",
-					text: i,
-				});
+			let allKeys = [...xml.matchAll(/<Key>(.*?)<\/Key>/g)].map(
+				(match) => match[1],
+			);
+			let keys = allKeys.filter((i) => {
+				const name = i.toLowerCase();
+				return supportedFileTypes.some((supported) =>
+					name.endsWith(`.${supported}`),
+				);
+			});
+
+			// Prevents error Block response exceeds maximum node count 2000
+			keys = keys.slice(0, 75);
+
+			if (public_endpoint) {
+				for (const i of keys) {
+					// Some of our keys include spaces
+					const encodedKey = encodeURIComponent(i);
+
+					//  In case the public endpoint does not end with a slash
+					const url = public_endpoint.endsWith("/")
+						? public_endpoint + encodedKey
+						: public_endpoint + "/" + encodedKey;
+
+					sections.push({
+						type: "columns",
+						columns: [
+							[
+								{
+									type: "image",
+									block_id: `image_${i}`,
+									url: url,
+									alt: i,
+								},
+							],
+							[
+								{
+									type: "actions",
+									elements: [
+										{
+											type: "button",
+											label: "Save to media library",
+											action_id: `copy_${url}`,
+											style: "primary",
+										},
+									],
+								},
+							],
+						],
+					});
+					sections.push({
+						type: "section",
+						text: url,
+					});
+					sections.push({ type: "divider" });
+				}
+			} else {
+				for (const i of keys) {
+					sections.push({
+						type: "section",
+						text: i,
+					});
+				}
 			}
 		}
 	}
