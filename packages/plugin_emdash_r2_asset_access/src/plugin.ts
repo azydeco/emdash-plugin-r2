@@ -364,6 +364,10 @@ async function fetchR2(ctx: PluginContext) {
 								],
 								submit: { label: "Save", action_id: "save" },
 							},
+							{
+								type: "section",
+								text: "Supported file extensions are avif, apng, png, jpg, jpeg, webp, pdf and gif.",
+							},
 						],
 					},
 					{
