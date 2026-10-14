@@ -3,21 +3,13 @@ import type { SandboxedPlugin, PluginContext } from "emdash/plugin";
 
 const supportedFileTypes = [
 	"avif",
-	"AVIF",
 	"apng",
-	"APNG",
 	"png",
-	"PNG",
 	"jpg",
-	"JPG",
 	"jpeg",
-	"JPEG",
 	"webp",
-	"WEBP",
 	"pdf",
-	"PDF",
 	"gif",
-	"GIF",
 ];
 
 interface S3Credentials {
@@ -194,7 +186,7 @@ async function loadSettings(ctx: PluginContext) {
 	};
 }
 
-async function renderPlugin(ctx: PluginContext) {
+async function renderPlugin(ctx: PluginContext): Promise<BlockResponse> {
 	if (!ctx.http) return { blocks: [] };
 
 	const sections = [];
