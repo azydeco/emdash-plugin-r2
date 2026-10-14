@@ -245,6 +245,10 @@ async function renderPlugin(ctx: PluginContext) {
 		} else if (!xml.includes("<Key>")) {
 			// If the fetch fails or there are no keys
 			sections.push({
+				type: "header",
+				text: `Failed to fetch images`,
+			});
+			sections.push({
 				type: "section",
 				text: xml,
 			});
