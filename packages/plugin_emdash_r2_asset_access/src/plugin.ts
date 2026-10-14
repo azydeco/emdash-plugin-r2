@@ -8,7 +8,6 @@ const supportedFileTypes = [
 	"jpg",
 	"jpeg",
 	"webp",
-	"pdf",
 	"gif",
 ];
 
