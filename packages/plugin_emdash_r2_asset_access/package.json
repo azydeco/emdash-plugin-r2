@@ -1,6 +1,6 @@
 {
 	"name": "@azydeco/emdash_plugin_r2_asset_access",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"private": true,
 	"files": [
 		"dist",
