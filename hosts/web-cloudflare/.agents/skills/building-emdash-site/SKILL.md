@@ -75,28 +75,28 @@ The runtime runs pending migrations on the first request and, before setup is co
 // Content (entries have .data.byline and .data.bylines eagerly loaded)
 import { getEmDashCollection, getEmDashEntry } from "emdash";
 const { entries, nextCursor, cacheHint } = await getEmDashCollection("posts", {
-  limit: 10,
-  cursor,
-  orderBy: { published_at: "desc" },
+	limit: 10,
+	cursor,
+	orderBy: { published_at: "desc" },
 });
 const { entry: post, cacheHint: entryCacheHint } = await getEmDashEntry("posts", slug);
 
 // Site features
 import {
-  getSiteSettings,
-  getSiteSettingsWithCacheHint,
-  getMenu,
-  getMenuWithCacheHint,
-  getTaxonomyTerms,
-  getTaxonomyTermsWithCacheHint,
-  getTerm,
-  getEntryTerms,
-  getEntriesByTerm,
-  getWidgetArea,
-  getWidgetAreaWithCacheHint,
-  search,
-  getSection,
-  getSeoMeta,
+	getSiteSettings,
+	getSiteSettingsWithCacheHint,
+	getMenu,
+	getMenuWithCacheHint,
+	getTaxonomyTerms,
+	getTaxonomyTermsWithCacheHint,
+	getTerm,
+	getEntryTerms,
+	getEntriesByTerm,
+	getWidgetArea,
+	getWidgetAreaWithCacheHint,
+	search,
+	getSection,
+	getSeoMeta,
 } from "emdash";
 
 // Bylines (standalone queries -- usually not needed since entries have bylines attached)
@@ -104,14 +104,14 @@ import { getByline, getBylineBySlug } from "emdash";
 
 // UI components
 import {
-  PortableText,
-  Blocks,
-  defineBlockComponents,
-  Image,
-  WidgetArea,
-  EmDashHead,
-  EmDashBodyStart,
-  EmDashBodyEnd,
+	PortableText,
+	Blocks,
+	defineBlockComponents,
+	Image,
+	WidgetArea,
+	EmDashHead,
+	EmDashBodyStart,
+	EmDashBodyEnd,
 } from "emdash/ui";
 import { Comments, CommentForm } from "emdash/ui/comments";
 import LiveSearch from "emdash/ui/search";

@@ -109,9 +109,9 @@ routes: {
 
 ```json
 {
-  "type": "section",
-  "text": "Configure your plugin settings below.",
-  "accessory": { "type": "button", "label": "Refresh", "action_id": "refresh" }
+	"type": "section",
+	"text": "Configure your plugin settings below.",
+	"accessory": { "type": "button", "label": "Refresh", "action_id": "refresh" }
 }
 ```
 
@@ -125,11 +125,11 @@ routes: {
 
 ```json
 {
-  "type": "fields",
-  "fields": [
-    { "label": "Status", "value": "Active" },
-    { "label": "Last Sync", "value": "2 hours ago" }
-  ]
+	"type": "fields",
+	"fields": [
+		{ "label": "Status", "value": "Active" },
+		{ "label": "Last Sync", "value": "2 hours ago" }
+	]
 }
 ```
 
@@ -137,11 +137,11 @@ routes: {
 
 ```json
 {
-  "type": "stats",
-  "items": [
-    { "label": "Total", "value": "1,234", "trend": "up", "description": "+12% vs last week" },
-    { "label": "Active", "value": "567" }
-  ]
+	"type": "stats",
+	"items": [
+		{ "label": "Total", "value": "1,234", "trend": "up", "description": "+12% vs last week" },
+		{ "label": "Active", "value": "567" }
+	]
 }
 ```
 
@@ -153,15 +153,15 @@ routes: {
 
 ```json
 {
-  "type": "table",
-  "columns": [
-    { "key": "name", "label": "Name" },
-    { "key": "status", "label": "Status" },
-    { "key": "date", "label": "Date" }
-  ],
-  "rows": [{ "name": "Item 1", "status": "Active", "date": "2025-01-01" }],
-  "page_action_id": "browse_items",
-  "empty_text": "No items yet."
+	"type": "table",
+	"columns": [
+		{ "key": "name", "label": "Name" },
+		{ "key": "status", "label": "Status" },
+		{ "key": "date", "label": "Date" }
+	],
+	"rows": [{ "name": "Item 1", "status": "Active", "date": "2025-01-01" }],
+	"page_action_id": "browse_items",
+	"empty_text": "No items yet."
 }
 ```
 
@@ -174,26 +174,26 @@ An `element` column holds a `button`, `link`, or `menu` per row, for row actions
 
 ```json
 {
-  "type": "table",
-  "columns": [
-    { "key": "title", "label": "Entry" },
-    { "key": "action", "label": "Actions", "format": "element" }
-  ],
-  "rows": [
-    {
-      "title": "Hello world",
-      "action": {
-        "type": "menu",
-        "action_id": "translate",
-        "label": "Translate",
-        "items": [
-          { "label": "French", "value": "fr:01K5POSTEXAMPLE" },
-          { "label": "Italian", "value": "it:01K5POSTEXAMPLE" }
-        ]
-      }
-    }
-  ],
-  "page_action_id": "missing_page"
+	"type": "table",
+	"columns": [
+		{ "key": "title", "label": "Entry" },
+		{ "key": "action", "label": "Actions", "format": "element" }
+	],
+	"rows": [
+		{
+			"title": "Hello world",
+			"action": {
+				"type": "menu",
+				"action_id": "translate",
+				"label": "Translate",
+				"items": [
+					{ "label": "French", "value": "fr:01K5POSTEXAMPLE" },
+					{ "label": "Italian", "value": "it:01K5POSTEXAMPLE" }
+				]
+			}
+		}
+	],
+	"page_action_id": "missing_page"
 }
 ```
 
@@ -201,11 +201,11 @@ An `element` column holds a `button`, `link`, or `menu` per row, for row actions
 
 ```json
 {
-  "type": "actions",
-  "elements": [
-    { "type": "button", "label": "Save", "action_id": "save", "style": "primary" },
-    { "type": "button", "label": "Cancel", "action_id": "cancel" }
-  ]
+	"type": "actions",
+	"elements": [
+		{ "type": "button", "label": "Save", "action_id": "save", "style": "primary" },
+		{ "type": "button", "label": "Cancel", "action_id": "cancel" }
+	]
 }
 ```
 
@@ -213,24 +213,24 @@ An `element` column holds a `button`, `link`, or `menu` per row, for row actions
 
 ```json
 {
-  "type": "form",
-  "block_id": "settings",
-  "fields": [
-    { "type": "text_input", "action_id": "name", "label": "Name" },
-    { "type": "number_input", "action_id": "count", "label": "Count", "min": 0, "max": 100 },
-    {
-      "type": "select",
-      "action_id": "theme",
-      "label": "Theme",
-      "options": [
-        { "label": "Light", "value": "light" },
-        { "label": "Dark", "value": "dark" }
-      ]
-    },
-    { "type": "toggle", "action_id": "enabled", "label": "Enabled", "initial_value": true },
-    { "type": "secret_input", "action_id": "api_key", "label": "API Key" }
-  ],
-  "submit": { "label": "Save", "action_id": "save_settings" }
+	"type": "form",
+	"block_id": "settings",
+	"fields": [
+		{ "type": "text_input", "action_id": "name", "label": "Name" },
+		{ "type": "number_input", "action_id": "count", "label": "Count", "min": 0, "max": 100 },
+		{
+			"type": "select",
+			"action_id": "theme",
+			"label": "Theme",
+			"options": [
+				{ "label": "Light", "value": "light" },
+				{ "label": "Dark", "value": "dark" }
+			]
+		},
+		{ "type": "toggle", "action_id": "enabled", "label": "Enabled", "initial_value": true },
+		{ "type": "secret_input", "action_id": "api_key", "label": "API Key" }
+	],
+	"submit": { "label": "Save", "action_id": "save_settings" }
 }
 ```
 
@@ -238,17 +238,17 @@ An `element` column holds a `button`, `link`, or `menu` per row, for row actions
 
 ```json
 {
-  "type": "columns",
-  "columns": [
-    [
-      { "type": "header", "text": "Usage" },
-      { "type": "meter", "label": "Storage used", "value": 65 }
-    ],
-    [
-      { "type": "header", "text": "Activity" },
-      { "type": "context", "text": "Last sync 2 hours ago" }
-    ]
-  ]
+	"type": "columns",
+	"columns": [
+		[
+			{ "type": "header", "text": "Usage" },
+			{ "type": "meter", "label": "Storage used", "value": 65 }
+		],
+		[
+			{ "type": "header", "text": "Activity" },
+			{ "type": "context", "text": "Last sync 2 hours ago" }
+		]
+	]
 }
 ```
 
@@ -258,34 +258,34 @@ An `element` column holds a `button`, `link`, or `menu` per row, for row actions
 
 ```json
 {
-  "type": "chart",
-  "config": {
-    "chart_type": "timeseries",
-    "series": [
-      {
-        "name": "Requests",
-        "data": [
-          [1709596800000, 42],
-          [1709600400000, 67],
-          [1709604000000, 53]
-        ],
-        "color": "#086FFF"
-      },
-      {
-        "name": "Errors",
-        "data": [
-          [1709596800000, 2],
-          [1709600400000, 5],
-          [1709604000000, 1]
-        ]
-      }
-    ],
-    "x_axis_name": "Time",
-    "y_axis_name": "Count",
-    "style": "line",
-    "gradient": true,
-    "height": 300
-  }
+	"type": "chart",
+	"config": {
+		"chart_type": "timeseries",
+		"series": [
+			{
+				"name": "Requests",
+				"data": [
+					[1709596800000, 42],
+					[1709600400000, 67],
+					[1709604000000, 53]
+				],
+				"color": "#086FFF"
+			},
+			{
+				"name": "Errors",
+				"data": [
+					[1709596800000, 2],
+					[1709600400000, 5],
+					[1709604000000, 1]
+				]
+			}
+		],
+		"x_axis_name": "Time",
+		"y_axis_name": "Count",
+		"style": "line",
+		"gradient": true,
+		"height": 300
+	}
 }
 ```
 
@@ -301,23 +301,23 @@ For pie charts, gauges, or any ECharts visualization:
 
 ```json
 {
-  "type": "chart",
-  "config": {
-    "chart_type": "custom",
-    "options": {
-      "series": [
-        {
-          "type": "pie",
-          "data": [
-            { "value": 335, "name": "Published" },
-            { "value": 234, "name": "Draft" },
-            { "value": 120, "name": "Scheduled" }
-          ]
-        }
-      ]
-    },
-    "height": 300
-  }
+	"type": "chart",
+	"config": {
+		"chart_type": "custom",
+		"options": {
+			"series": [
+				{
+					"type": "pie",
+					"data": [
+						{ "value": 335, "name": "Published" },
+						{ "value": 234, "name": "Draft" },
+						{ "value": 120, "name": "Scheduled" }
+					]
+				}
+			]
+		},
+		"height": 300
+	}
 }
 ```
 
@@ -327,9 +327,9 @@ For pie charts, gauges, or any ECharts visualization:
 
 ```json
 {
-  "type": "code",
-  "code": "const greeting = \"Hello!\";\nconsole.log(greeting);",
-  "language": "ts"
+	"type": "code",
+	"code": "const greeting = \"Hello!\";\nconsole.log(greeting);",
+	"language": "ts"
 }
 ```
 
@@ -339,10 +339,10 @@ For pie charts, gauges, or any ECharts visualization:
 
 ```json
 {
-  "type": "meter",
-  "label": "Storage used",
-  "value": 65,
-  "custom_value": "6.5 GB / 10 GB"
+	"type": "meter",
+	"label": "Storage used",
+	"value": 65,
+	"custom_value": "6.5 GB / 10 GB"
 }
 ```
 
@@ -354,10 +354,10 @@ For pie charts, gauges, or any ECharts visualization:
 
 ```json
 {
-  "type": "banner",
-  "title": "API key invalid",
-  "description": "Please check your API key in settings.",
-  "variant": "error"
+	"type": "banner",
+	"title": "API key invalid",
+	"description": "Please check your API key in settings.",
+	"variant": "error"
 }
 ```
 
@@ -368,12 +368,12 @@ For pie charts, gauges, or any ECharts visualization:
 
 ```json
 {
-  "type": "empty",
-  "title": "No submissions",
-  "description": "New submissions appear here.",
-  "command_line": "pnpm run seed",
-  "size": "base",
-  "actions": [{ "type": "button", "action_id": "refresh", "label": "Refresh" }]
+	"type": "empty",
+	"title": "No submissions",
+	"description": "New submissions appear here.",
+	"command_line": "pnpm run seed",
+	"size": "base",
+	"actions": [{ "type": "button", "action_id": "refresh", "label": "Refresh" }]
 }
 ```
 
@@ -383,13 +383,13 @@ Use `tab` to group related blocks into labelled panels:
 
 ```json
 {
-  "type": "tab",
-  "panels": [
-    {
-      "label": "General",
-      "blocks": [{ "type": "context", "text": "General settings" }]
-    }
-  ]
+	"type": "tab",
+	"panels": [
+		{
+			"label": "General",
+			"blocks": [{ "type": "context", "text": "General settings" }]
+		}
+	]
 }
 ```
 
@@ -397,10 +397,10 @@ Use `tab` to group related blocks into labelled panels:
 
 ```json
 {
-  "type": "accordion",
-  "label": "Advanced settings",
-  "default_open": false,
-  "blocks": [{ "type": "context", "text": "Settings visible when expanded" }]
+	"type": "accordion",
+	"label": "Advanced settings",
+	"default_open": false,
+	"blocks": [{ "type": "context", "text": "Settings visible when expanded" }]
 }
 ```
 
@@ -482,18 +482,18 @@ Show/hide fields based on other field values. Evaluated client-side, no round-tr
 
 ```json
 {
-  "type": "toggle",
-  "action_id": "auth_enabled",
-  "label": "Enable Authentication"
+	"type": "toggle",
+	"action_id": "auth_enabled",
+	"label": "Enable Authentication"
 }
 ```
 
 ```json
 {
-  "type": "secret_input",
-  "action_id": "api_key",
-  "label": "API Key",
-  "condition": { "field": "auth_enabled", "eq": true }
+	"type": "secret_input",
+	"action_id": "api_key",
+	"label": "API Key",
+	"condition": { "field": "auth_enabled", "eq": true }
 }
 ```
 
@@ -505,62 +505,62 @@ Show/hide fields based on other field values. Evaluated client-side, no round-tr
 import { blocks, elements } from "@emdash-cms/blocks";
 
 const {
-  header,
-  form,
-  section,
-  stats,
-  timeseriesChart,
-  customChart,
-  banner: bannerBlock,
-  empty,
-  accordion,
+	header,
+	form,
+	section,
+	stats,
+	timeseriesChart,
+	customChart,
+	banner: bannerBlock,
+	empty,
+	accordion,
 } = blocks;
 const { textInput, toggle, select, button, repeater, mediaPicker } = elements;
 
 return {
-  blocks: [
-    header("Settings"),
-    form({
-      blockId: "settings",
-      fields: [
-        textInput("site_title", "Site Title", { initialValue: "My Site" }),
-        toggle("generate_sitemap", "Generate Sitemap", { initialValue: true }),
-        select("robots", "Default Robots", [
-          { label: "Index, Follow", value: "index,follow" },
-          { label: "No Index", value: "noindex,follow" },
-        ]),
-      ],
-      submit: { label: "Save", actionId: "save" },
-    }),
-    // Timeseries chart
-    timeseriesChart({
-      series: [
-        {
-          name: "Page Views",
-          data: [
-            [Date.now() - 3600000, 100],
-            [Date.now(), 150],
-          ],
-        },
-      ],
-      yAxisName: "Views",
-      gradient: true,
-    }),
-    // Pie chart via custom ECharts options
-    customChart({
-      options: {
-        series: [
-          {
-            type: "pie",
-            data: [
-              { value: 335, name: "Published" },
-              { value: 234, name: "Draft" },
-            ],
-          },
-        ],
-      },
-    }),
-  ],
+	blocks: [
+		header("Settings"),
+		form({
+			blockId: "settings",
+			fields: [
+				textInput("site_title", "Site Title", { initialValue: "My Site" }),
+				toggle("generate_sitemap", "Generate Sitemap", { initialValue: true }),
+				select("robots", "Default Robots", [
+					{ label: "Index, Follow", value: "index,follow" },
+					{ label: "No Index", value: "noindex,follow" },
+				]),
+			],
+			submit: { label: "Save", actionId: "save" },
+		}),
+		// Timeseries chart
+		timeseriesChart({
+			series: [
+				{
+					name: "Page Views",
+					data: [
+						[Date.now() - 3600000, 100],
+						[Date.now(), 150],
+					],
+				},
+			],
+			yAxisName: "Views",
+			gradient: true,
+		}),
+		// Pie chart via custom ECharts options
+		customChart({
+			options: {
+				series: [
+					{
+						type: "pie",
+						data: [
+							{ value: 335, name: "Published" },
+							{ value: 234, name: "Draft" },
+						],
+					},
+				],
+			},
+		}),
+	],
 };
 ```
 
@@ -570,16 +570,16 @@ return {
 
 ```json
 {
-  "type": "button",
-  "label": "Delete All",
-  "action_id": "delete_all",
-  "style": "danger",
-  "confirm": {
-    "title": "Are you sure?",
-    "text": "This cannot be undone.",
-    "confirm": "Delete",
-    "deny": "Cancel"
-  }
+	"type": "button",
+	"label": "Delete All",
+	"action_id": "delete_all",
+	"style": "danger",
+	"confirm": {
+		"title": "Are you sure?",
+		"text": "This cannot be undone.",
+		"confirm": "Delete",
+		"deny": "Cancel"
+	}
 }
 ```
 
@@ -606,10 +606,10 @@ Use a structured link target instead of returning an admin URL:
 
 ```json
 {
-  "type": "link",
-  "label": "Edit article",
-  "target": { "kind": "content", "collection": "posts", "id": "post-1", "locale": "ar" },
-  "appearance": "primary"
+	"type": "link",
+	"label": "Edit article",
+	"target": { "kind": "content", "collection": "posts", "id": "post-1", "locale": "ar" },
+	"appearance": "primary"
 }
 ```
 
@@ -621,9 +621,9 @@ The admin route receives host-attested UI context separately from the interactio
 
 ```typescript
 const { locale, direction, surface } = routeCtx.ui ?? {
-  locale: "en",
-  direction: "ltr",
-  surface: "admin-page",
+	locale: "en",
+	direction: "ltr",
+	surface: "admin-page",
 };
 ```
 
@@ -635,7 +635,7 @@ Return a `toast` alongside blocks to show a notification:
 
 ```typescript
 return {
-  blocks: [/* ... */],
-  toast: { message: "Settings saved", type: "success" }, // "success" | "error" | "info"
+	blocks: [/* ... */],
+	toast: { message: "Settings saved", type: "success" }, // "success" | "error" | "info"
 };
 ```

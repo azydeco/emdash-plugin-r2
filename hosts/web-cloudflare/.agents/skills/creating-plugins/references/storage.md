@@ -16,12 +16,12 @@ Declare every collection and query index in the manifest:
 
 ```jsonc title="emdash-plugin.jsonc"
 {
-  "storage": {
-    "submissions": {
-      "indexes": ["formId", "status", "createdAt", ["formId", "createdAt"]],
-      "uniqueIndexes": ["externalId"],
-    },
-  },
+	"storage": {
+		"submissions": {
+			"indexes": ["formId", "status", "createdAt", ["formId", "createdAt"]],
+			"uniqueIndexes": ["externalId"],
+		},
+	},
 }
 ```
 
@@ -33,30 +33,30 @@ Every declared collection exposes this portable API in native, Cloudflare-sandbo
 
 ```typescript
 interface StorageCollection<T = unknown> {
-  get(id: string): Promise<T | null>;
-  put(id: string, data: T): Promise<void>;
-  delete(id: string): Promise<boolean>;
-  exists(id: string): Promise<boolean>;
+	get(id: string): Promise<T | null>;
+	put(id: string, data: T): Promise<void>;
+	delete(id: string): Promise<boolean>;
+	exists(id: string): Promise<boolean>;
 
-  getVersioned(id: string): Promise<{ value: T; revision: string } | null>;
-  compareAndSet(
-    id: string,
-    expectedRevision: string | null,
-    data: T,
-  ): Promise<{ applied: true; revision: string } | { applied: false }>;
-  compareAndDelete(id: string, expectedRevision: string): Promise<{ applied: boolean }>;
-  updateIf(id: string, args: UpdateIfArgs<T>): Promise<UpdateIfResult<T>>;
+	getVersioned(id: string): Promise<{ value: T; revision: string } | null>;
+	compareAndSet(
+		id: string,
+		expectedRevision: string | null,
+		data: T,
+	): Promise<{ applied: true; revision: string } | { applied: false }>;
+	compareAndDelete(id: string, expectedRevision: string): Promise<{ applied: boolean }>;
+	updateIf(id: string, args: UpdateIfArgs<T>): Promise<UpdateIfResult<T>>;
 
-  getMany(ids: string[]): Promise<Map<string, T>>;
-  putMany(items: Array<{ id: string; data: T }>): Promise<void>;
-  deleteMany(ids: string[]): Promise<number>;
+	getMany(ids: string[]): Promise<Map<string, T>>;
+	putMany(items: Array<{ id: string; data: T }>): Promise<void>;
+	deleteMany(ids: string[]): Promise<number>;
 
-  query(options?: QueryOptions): Promise<{
-    items: Array<{ id: string; data: T }>;
-    cursor?: string;
-    hasMore: boolean;
-  }>;
-  count(where?: WhereClause): Promise<number>;
+	query(options?: QueryOptions): Promise<{
+		items: Array<{ id: string; data: T }>;
+		cursor?: string;
+		hasMore: boolean;
+	}>;
+	count(where?: WhereClause): Promise<number>;
 }
 ```
 
@@ -68,9 +68,9 @@ The Node/workerd wrapper also contains content batch methods. They are not part 
 const submissions = ctx.storage.submissions as StorageCollection<Submission>;
 
 await submissions.put("sub_123", {
-  formId: "contact",
-  status: "pending",
-  createdAt: new Date().toISOString(),
+	formId: "contact",
+	status: "pending",
+	createdAt: new Date().toISOString(),
 });
 
 const item = await submissions.get("sub_123");
@@ -78,8 +78,8 @@ const exists = await submissions.exists("sub_123");
 
 const items = await submissions.getMany(["sub_123", "sub_456"]);
 await submissions.putMany([
-  { id: "sub_456", data: { formId: "contact", status: "pending" } },
-  { id: "sub_789", data: { formId: "sales", status: "pending" } },
+	{ id: "sub_456", data: { formId: "contact", status: "pending" } },
+	{ id: "sub_789", data: { formId: "sales", status: "pending" } },
 ]);
 const deleted = await submissions.deleteMany(["sub_456", "sub_789"]);
 ```
@@ -95,12 +95,12 @@ const current = await submissions.getVersioned("sub_123");
 if (!current) throw new Error("Submission not found");
 
 const result = await submissions.compareAndSet("sub_123", current.revision, {
-  ...current.value,
-  status: "processing",
+	...current.value,
+	status: "processing",
 });
 
 if (!result.applied) {
-  // Another request changed or deleted the value. Read it again before retrying.
+	// Another request changed or deleted the value. Read it again before retrying.
 }
 ```
 
@@ -131,13 +131,13 @@ const result = await ctx.kv.compareAndSet("state:completed", current?.revision ?
 
 ```typescript
 const result = await submissions.updateIf("sub_123", {
-  where: { status: "pending", attempts: { lt: 3 } },
-  set: { status: "processing", lastAttemptAt: new Date().toISOString() },
-  delta: { attempts: { inc: 1 } },
+	where: { status: "pending", attempts: { lt: 3 } },
+	set: { status: "processing", lastAttemptAt: new Date().toISOString() },
+	delta: { attempts: { inc: 1 } },
 });
 
 if (result.applied) {
-  ctx.log.info("Claimed submission", { submission: result.data });
+	ctx.log.info("Claimed submission", { submission: result.data });
 }
 ```
 
@@ -160,14 +160,14 @@ Only declared index fields can be filtered or ordered:
 
 ```typescript
 const result = await submissions.query({
-  where: {
-    formId: "contact",
-    status: { in: ["pending", "processing"] },
-    createdAt: { gte: "2026-01-01" },
-  },
-  orderBy: { createdAt: "desc" },
-  limit: 100,
-  cursor,
+	where: {
+		formId: "contact",
+		status: { in: ["pending", "processing"] },
+		createdAt: { gte: "2026-01-01" },
+	},
+	orderBy: { createdAt: "desc" },
+	limit: 100,
+	cursor,
 });
 ```
 
@@ -183,17 +183,17 @@ KV supports unconditional, versioned, delete, and prefix-list operations:
 
 ```typescript
 interface KVAccess {
-  get<T>(key: string): Promise<T | null>;
-  set(key: string, value: unknown): Promise<void>;
-  delete(key: string): Promise<boolean>;
-  list(prefix?: string): Promise<Array<{ key: string; value: unknown }>>;
-  getVersioned<T>(key: string): Promise<{ value: T; revision: string } | null>;
-  compareAndSet(
-    key: string,
-    expectedRevision: string | null,
-    value: unknown,
-  ): Promise<{ applied: true; revision: string } | { applied: false }>;
-  compareAndDelete(key: string, expectedRevision: string): Promise<{ applied: boolean }>;
+	get<T>(key: string): Promise<T | null>;
+	set(key: string, value: unknown): Promise<void>;
+	delete(key: string): Promise<boolean>;
+	list(prefix?: string): Promise<Array<{ key: string; value: unknown }>>;
+	getVersioned<T>(key: string): Promise<{ value: T; revision: string } | null>;
+	compareAndSet(
+		key: string,
+		expectedRevision: string | null,
+		value: unknown,
+	): Promise<{ applied: true; revision: string } | { applied: false }>;
+	compareAndDelete(key: string, expectedRevision: string): Promise<{ applied: boolean }>;
 }
 ```
 

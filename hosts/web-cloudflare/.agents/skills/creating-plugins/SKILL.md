@@ -31,11 +31,11 @@ The manifest is the identity and trust contract. Runtime hooks and routes live i
 import type { SandboxedPlugin } from "emdash/plugin";
 
 const plugin: SandboxedPlugin = {
-  hooks: {
-    "content:afterSave": async (event, ctx) => {
-      ctx.log.info("Content saved", { id: event.content.id });
-    },
-  },
+	hooks: {
+		"content:afterSave": async (event, ctx) => {
+			ctx.log.info("Content saved", { id: event.content.id });
+		},
+	},
 };
 
 export default plugin;
