@@ -6,6 +6,7 @@
 
 	"name": "R2 Asset Access",
 	"description": "A sandboxed plugin for EmDash that allows images to be saved into the media library from an R2 bucket. Keys can optionally be searched by prefix",
+	"keywords": ["azydeco", "sandboxed", "r2", "assets", "external"],
 	"sections": { "description": { "file": "listing/description.md" } },
 
 	"license": "MIT",
