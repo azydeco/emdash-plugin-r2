@@ -1,5 +1,6 @@
 {
 	"recommendations": [
+		"astro-build.astro-vscode",
 		"streetsidesoftware.code-spell-checker",
 		"mhutchie.git-graph",
 		"oxc.oxc-vscode"
