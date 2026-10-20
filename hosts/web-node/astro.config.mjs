@@ -21,6 +21,7 @@ export default defineConfig({
 				directory: "./uploads",
 				baseUrl: "/_emdash/api/media/file",
 			}),
+			sandboxRunner: "@emdash-cms/sandbox-workerd/sandbox",
 		}),
 	],
 	fonts: [
